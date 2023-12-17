@@ -34,14 +34,21 @@
 
 body {
   height: 100%;
+
   overflow: hidden;
-  color: var(--color-text-1);
+  user-select: none;
+
   background: var(--color-background);
-  line-height: 1.6;
+  color: var(--almost-white);
+
+  line-height: 1;
+
   font-family:
     'Nunito Sans',
     sans-serif;
   font-size: 14px;
+  font-weight: 700;
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
