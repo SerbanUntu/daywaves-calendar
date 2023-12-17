@@ -3,3 +3,29 @@
 #app {
   background: var(--color-background);
 }
+
+.font-menu-title {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.font-small-menu-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.font-standard-xl {
+  font-size: 20px;
+}
+
+.font-standard-large {
+  font-size: 18px;
+}
+
+.font-standard-small {
+  font-size: 10px;
+}
+
+.font-count {
+  font-size: 12px;
+}
