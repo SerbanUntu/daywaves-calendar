@@ -1,2 +1,3 @@
-# daywaves-calendar
-[WIP] A lightweight and flexible calendar app made with Vue.
+![Banner](./public/banner.svg)
+
+A lightweight calendar app built with VueJS.
