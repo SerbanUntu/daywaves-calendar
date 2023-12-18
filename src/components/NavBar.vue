@@ -86,7 +86,8 @@ nav {
   gap: 35px;
 }
 
-.top-icons, .bottom-icons {
+.top-icons,
+.bottom-icons {
   padding: 15px;
 }
 
@@ -136,5 +137,4 @@ i {
   background: var(--element-gray);
   transition: 200ms;
 }
-
 </style>

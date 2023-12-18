@@ -4,6 +4,10 @@
   background: var(--color-background);
 }
 
+img {
+  pointer-events: none;
+}
+
 .font-menu-title {
   font-size: 24px;
   font-weight: 800;

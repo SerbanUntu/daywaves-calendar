@@ -66,6 +66,11 @@ header {
   background: var(--highlight-gray);
 }
 
+.week-button,
+.week-display {
+  cursor: pointer;
+}
+
 .week-button:hover,
 .week-display:hover {
   background: var(--light-gray);
