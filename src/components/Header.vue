@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Tooltip from './Tooltip.vue'
 </script>
 
 <template>
@@ -9,15 +10,18 @@
         <svg class="left-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19" fill="none">
           <path d="M10 9.02124V9.72876L9.43398 9.375L10 9.02124Z" stroke-width="10" />
         </svg>
+        <Tooltip text="Previous week" />
       </div>
       <div class="week-display">
         <p class="font-menu-title">20 - 26 November 2023</p>
+        <Tooltip text="Open calendar" />
       </div>
       <div class="week-button">
         <svg class="right-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19"
           fill="none">
           <path d="M5 9.72876V9.02124L5.56602 9.375L5 9.72876Z" stroke-width="10" />
         </svg>
+        <Tooltip text="Next week" />
       </div>
     </div>
   </header>
@@ -92,5 +96,9 @@ header {
 .right-arrow {
   position: relative;
   right: -2px;
+}
+
+.tooltip {
+  top: 60px;
 }
 </style>

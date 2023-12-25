@@ -17,35 +17,35 @@ import Tooltip from './Tooltip.vue'
         <i>
           <NoteIcon />
         </i>
-        <Tooltip class="tooltip" text="Daily note" />
+        <Tooltip text="Daily note" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <TemplatesIcon />
         </i>
-        <Tooltip class="tooltip" text="Templates" />
+        <Tooltip text="Templates" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <RoutinesIcon />
         </i>
-        <Tooltip class="tooltip" text="Routines" />
+        <Tooltip text="Routines" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <PinsIcon />
         </i>
-        <Tooltip class="tooltip" text="Pins" />
+        <Tooltip text="Pins" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <BirthdaysIcon />
         </i>
-        <Tooltip class="tooltip" text="Birthdays" />
+        <Tooltip text="Birthdays" />
       </div>
     </div>
     <div class="bottom-icons">
@@ -54,14 +54,14 @@ import Tooltip from './Tooltip.vue'
         <i>
           <AccountIcon />
         </i>
-        <Tooltip class="tooltip" text="Account" />
+        <Tooltip text="Account" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <SettingsIcon />
         </i>
-        <Tooltip class="tooltip" text="Settings" />
+        <Tooltip text="Settings" />
       </div>
     </div>
     <div class="navbar-background"></div>
@@ -121,12 +121,6 @@ nav {
     background: var(--highlight-gray);
     transition: 200ms;
   }
-
-  .tooltip {
-    scale: 1;
-    transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition-delay: 200ms;
-  }
 }
 
 .icon-container:active {
@@ -154,9 +148,6 @@ i {
 }
 
 .tooltip {
-  z-index: 1000;
-  position: absolute;
   left: 110px;
-  scale: 0;
 }
 </style>
