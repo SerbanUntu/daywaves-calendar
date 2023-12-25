@@ -132,7 +132,7 @@ nav {
 i {
   width: 70px;
   height: 70px;
-  z-index: 100;
+  z-index: 1030;
 
   stroke: var(--light-gray);
 }
