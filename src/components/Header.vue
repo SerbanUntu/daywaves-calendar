@@ -4,7 +4,9 @@ import Tooltip from './Tooltip.vue'
 
 <template>
   <header>
-    <img src="../../public/banner.svg" alt="Daywaves logo and text" />
+    <div class="banner-container">
+      <img src="../../public/banner.svg" alt="Daywaves logo and text" />
+    </div>
     <div class="week-navigation">
       <div class="week-button">
         <svg class="left-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19" fill="none">
@@ -34,6 +36,11 @@ header {
   align-items: center;
   position: absolute;
   top: 0px;
+}
+
+.banner-container {
+  padding: 20px 20px;
+  height: 65px;
 }
 
 .week-navigation {
