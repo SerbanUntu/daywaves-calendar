@@ -6,7 +6,7 @@
     <path d="M15 31.7778V22.8889C15 20.4343 16.9898 18.4445 19.4444 18.4445H23.8889" stroke-width="3"
       stroke-linecap="round" stroke-linejoin="round" />
     <path d="M23.8889 14V22.8889" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M55 31.77V22.8833C55 20.4293 53.0099 18.44 50.555 18.44H46.11" stroke-width="3"
-      stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M55 31.77V22.8833C55 20.4293 53.0099 18.44 50.555 18.44H46.11" stroke-width="3" stroke-linecap="round"
+      stroke-linejoin="round" />
   </svg>
 </template>

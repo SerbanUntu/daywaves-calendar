@@ -1,23 +1,29 @@
 <script setup lang="ts">
+import Tooltip from './Tooltip.vue'
 </script>
 
 <template>
   <header>
-    <img src="../../public/banner.svg" alt="Daywaves logo and text" />
+    <div class="banner-container">
+      <img src="../../public/banner.svg" alt="Daywaves logo and text" />
+    </div>
     <div class="week-navigation">
       <div class="week-button">
         <svg class="left-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19" fill="none">
           <path d="M10 9.02124V9.72876L9.43398 9.375L10 9.02124Z" stroke-width="10" />
         </svg>
+        <Tooltip text="Previous week" />
       </div>
       <div class="week-display">
         <p class="font-menu-title">20 - 26 November 2023</p>
+        <Tooltip text="Open calendar" />
       </div>
       <div class="week-button">
         <svg class="right-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19"
           fill="none">
           <path d="M5 9.72876V9.02124L5.56602 9.375L5 9.72876Z" stroke-width="10" />
         </svg>
+        <Tooltip text="Next week" />
       </div>
     </div>
   </header>
@@ -26,10 +32,17 @@
 <style scoped>
 header {
   display: inline-flex;
-  width: 100%;
+  width: calc(100% - 100px);
+  /* TODO Improve this */
   align-items: center;
   position: absolute;
   top: 0px;
+  left: 100px;
+}
+
+.banner-container {
+  padding: 20px 20px;
+  height: 65px;
 }
 
 .week-navigation {
@@ -37,7 +50,7 @@ header {
   display: flex;
   align-items: center;
   position: absolute;
-  left: calc(50% - 350px);
+  left: calc(50% - 300px);
   gap: 10px;
   background: var(--bg-gray);
 }
@@ -66,6 +79,11 @@ header {
   background: var(--highlight-gray);
 }
 
+.week-button,
+.week-display {
+  cursor: pointer;
+}
+
 .week-button:hover,
 .week-display:hover {
   background: var(--light-gray);
@@ -87,5 +105,9 @@ header {
 .right-arrow {
   position: relative;
   right: -2px;
+}
+
+.tooltip {
+  top: 60px;
 }
 </style>

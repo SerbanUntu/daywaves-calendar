@@ -6,6 +6,7 @@ import PinsIcon from './icons/IconPinsLarge.vue'
 import BirthdaysIcon from './icons/IconBirthdaysLarge.vue'
 import AccountIcon from './icons/IconAccountLarge.vue'
 import SettingsIcon from './icons/IconSettingsLarge.vue'
+import Tooltip from './Tooltip.vue'
 </script>
 
 <template>
@@ -16,30 +17,35 @@ import SettingsIcon from './icons/IconSettingsLarge.vue'
         <i>
           <NoteIcon />
         </i>
+        <Tooltip text="Daily note" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <TemplatesIcon />
         </i>
+        <Tooltip text="Templates" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <RoutinesIcon />
         </i>
+        <Tooltip text="Routines" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <PinsIcon />
         </i>
+        <Tooltip text="Pins" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <BirthdaysIcon />
         </i>
+        <Tooltip text="Birthdays" />
       </div>
     </div>
     <div class="bottom-icons">
@@ -48,12 +54,14 @@ import SettingsIcon from './icons/IconSettingsLarge.vue'
         <i>
           <AccountIcon />
         </i>
+        <Tooltip text="Account" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>
         <i>
           <SettingsIcon />
         </i>
+        <Tooltip text="Settings" />
       </div>
     </div>
     <div class="navbar-background"></div>
@@ -64,6 +72,11 @@ import SettingsIcon from './icons/IconSettingsLarge.vue'
 nav {
   display: inline-flex;
   align-items: flex-start;
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  z-index: 1030;
+  /* TODO Fix height */
 }
 
 .top-icons {
@@ -86,7 +99,8 @@ nav {
   gap: 35px;
 }
 
-.top-icons, .bottom-icons {
+.top-icons,
+.bottom-icons {
   padding: 15px;
 }
 
@@ -104,6 +118,7 @@ nav {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
 }
 
 .icon-container:hover {
@@ -122,7 +137,7 @@ nav {
 i {
   width: 70px;
   height: 70px;
-  z-index: 100;
+  z-index: 1030;
 
   stroke: var(--light-gray);
 }
@@ -137,4 +152,7 @@ i {
   transition: 200ms;
 }
 
+.tooltip {
+  left: 110px;
+}
 </style>

@@ -1,24 +1,19 @@
-/* Base colors */
 :root {
+  /* Base colors */
   --daywaves-blue: hsla(230, 40%, 60%, 1);
-
   --bg-gray: hsla(0, 0%, 11%, 1);
   --element-gray: hsla(0, 0%, 14%, 1);
   --highlight-gray: hsla(0, 0%, 17%, 1);
   --light-gray: hsla(0, 0%, 35%, 1);
-
   --almost-white: hsla(0, 0%, 73%, 1);
-
   --intense-red: hsla(0, 60%, 40%, 1);
-
   --intense-green: hsla(120, 60%, 40%, 1);
 }
 
 /* Semantic colours */
 :root {
   --color-background: var(--bg-gray);
-
-  --color-text-1: var(--almost-white);
+  --color-text: var(--almost-white);
 }
 
 /* Dark theme */
@@ -29,7 +24,6 @@
 *::after {
   box-sizing: border-box;
   margin: 0;
-  font-weight: normal;
 }
 
 body {
@@ -39,7 +33,17 @@ body {
   user-select: none;
 
   background: var(--color-background);
-  color: var(--almost-white);
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+input,
+textarea,
+select {
+  color: var(--color-text);
 
   line-height: 1;
 
@@ -47,9 +51,8 @@ body {
     'Nunito Sans',
     sans-serif;
   font-size: 14px;
-  font-weight: 700;
+}
 
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body * {
+  font-weight: 700;
 }
