@@ -72,6 +72,11 @@ import Tooltip from './Tooltip.vue'
 nav {
   display: inline-flex;
   align-items: flex-start;
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  z-index: 1030;
+  /* TODO Fix height */
 }
 
 .top-icons {

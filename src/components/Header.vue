@@ -32,10 +32,12 @@ import Tooltip from './Tooltip.vue'
 <style scoped>
 header {
   display: inline-flex;
-  width: 100%;
+  width: calc(100% - 100px);
+  /* TODO Improve this */
   align-items: center;
   position: absolute;
   top: 0px;
+  left: 100px;
 }
 
 .banner-container {
@@ -48,7 +50,7 @@ header {
   display: flex;
   align-items: center;
   position: absolute;
-  left: calc(50% - 350px);
+  left: calc(50% - 300px);
   gap: 10px;
   background: var(--bg-gray);
 }
