@@ -97,7 +97,7 @@ export default {
       <div id="links-desc-content" class="content">
         <section id="links-section">
           <label for="">Links:</label>
-          <input />
+          <input type="url" />
           <div class="add-new-link">
             <i class="plus-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">

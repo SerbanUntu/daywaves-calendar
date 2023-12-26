@@ -8,12 +8,14 @@ img {
   pointer-events: none;
 }
 
-h1, .font-menu-title {
+h1,
+.font-menu-title {
   font-size: 24px;
   font-weight: 800;
 }
 
-h2, .font-small-menu-title {
+h2,
+.font-small-menu-title {
   font-size: 16px;
   font-weight: 800;
 }
@@ -22,7 +24,8 @@ h2, .font-small-menu-title {
   font-size: 20px;
 }
 
-label, .font-standard-large {
+label,
+.font-standard-large {
   font-size: 18px;
 }
 
@@ -32,4 +35,28 @@ label, .font-standard-large {
 
 .font-count {
   font-size: 12px;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid var(--light-gray);
+  background: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border: 1px solid var(--daywaves-blue);
+}
+
+select {
+  cursor: pointer;
+}
+
+::placeholder,
+::-moz-placeholder,
+::-webkit-input-placeholder {
+  color: var(--light-gray);
 }
