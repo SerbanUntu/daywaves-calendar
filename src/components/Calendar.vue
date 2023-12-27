@@ -1,5 +1,7 @@
 <script lang="ts">
 import HourMarker from './HourMarker.vue';
+import DaySquare from './DaySquare.vue';
+import { datesArr } from '../main'
 
 type HourMarker = {
   hour: string,
@@ -12,6 +14,12 @@ let markers: HourMarker[] = Array.from({ length: 49 }, () => ({
   isHalf: false,
   pm: false,
 }));
+
+let dates: number[] = [];
+
+if (datesArr) {
+  dates = datesArr();
+}
 
 for (let i = 0; i < 49; i++) {
   if (i % 2 == 1) {
@@ -31,11 +39,13 @@ for (let i = 0; i < 49; i++) {
 export default {
   components: {
     HourMarker,
+    DaySquare,
   },
   data() {
     return {
       markers: markers,
       days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+      dates: dates,
     };
   },
 }
@@ -44,14 +54,14 @@ export default {
 <template>
   <div class="calendar">
     <div class="day-squares">
-      <div :id="day + '-square'" class="day-square" v-for="day in days"></div>
+      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="dates[i - 1]" :day="days[i - 1][0].toUpperCase()"></DaySquare>
     </div>
     <div class="calendar-content">
       <div class="hour-displays">
         <HourMarker v-for="marker in markers" :hour="marker.hour" :isHalf="marker.isHalf" :pm="marker.pm" />
       </div>
       <div class="timelines">
-        <div :id="day + '-timeline'" class="timeline" v-for="day in days">
+        <div :id="days[i - 1] + '-timeline'" class="timeline" v-for="i in 7">
           <div class="day-line"></div>
         </div>
       </div>
@@ -70,7 +80,7 @@ export default {
   top: 65px;
   left: 100px;
   padding-right: 5px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .day-squares {
@@ -85,12 +95,6 @@ export default {
   height: 770px;
   background: var(--bg-gray);
   z-index: 1030;
-}
-
-.day-square {
-  width: 100px;
-  height: 100px;
-  background: var(--element-gray);
 }
 
 .calendar-content {
