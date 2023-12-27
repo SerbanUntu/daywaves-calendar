@@ -121,7 +121,6 @@ export default {
 .data-input {
   display: inline-flex;
   width: calc(100% - 100px);
-  /* TODO Improve this */
   height: 240px;
   align-items: center;
   position: absolute;

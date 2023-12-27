@@ -84,7 +84,7 @@ export default {
   gap: 5px;
   height: 770px;
   background: var(--bg-gray);
-  z-index: 1050;
+  z-index: 1030;
 }
 
 .day-square {
@@ -99,13 +99,12 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  flex-shrink: 0;
 }
 
 .hour-displays {
   top: 0px;
   position: sticky;
-  z-index: 1040;
+  z-index: 1020;
   display: flex;
   width: 1622px;
   height: 30px;
@@ -118,22 +117,22 @@ export default {
 }
 
 .timelines {
-display: flex;
-width: 1622px;
-height: 730px;
-align-items: center;
-align-content: center;
-gap: 5px 0px;
-flex-wrap: wrap;
-position: absolute;
-top: 40px;
+  display: flex;
+  width: 1622px;
+  height: 730px;
+  align-items: center;
+  align-content: center;
+  gap: 5px 0px;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 40px;
 }
 
 .timeline {
-width: 100%;
-height: 100px;
-display: flex;
-align-items: center;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
 }
 
 .day-line {
@@ -141,6 +140,6 @@ align-items: center;
   height: 5px;
   background: var(--element-gray);
   position: absolute;
-  z-index: 1030;
+  z-index: 1010;
 }
 </style>
