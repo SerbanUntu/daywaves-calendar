@@ -10,8 +10,8 @@ app.use(router)
 
 app.mount('#app')
 
-export function datesArr() {
-  let lastMonday: Date = new Date();
+export function datesArr(date: Date) {
+  let lastMonday: Date = new Date(date);
   lastMonday.setDate(lastMonday.getDate() - lastMonday.getDay() + 1);
 
   let result: number[] = Array(7);
@@ -24,9 +24,9 @@ export function datesArr() {
   return result;
 }
 
-export function weekName() {
+export function weekName(date: Date) {
   let months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  let lastMonday: Date = new Date();
+  let lastMonday: Date = new Date(date);
   lastMonday.setDate(lastMonday.getDate() - lastMonday.getDay() + 1);
 
   let thisSunday: Date = new Date(lastMonday);

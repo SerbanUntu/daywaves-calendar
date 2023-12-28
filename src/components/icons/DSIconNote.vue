@@ -1,11 +1,33 @@
+<script setup lang="ts">
+import Tooltip from '../Tooltip.vue';
+</script>
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <rect x="3" y="3" width="18" height="20" rx="3" fill="#585858" />
-    <rect x="4.5" y="0.5" width="3" height="5" rx="1.5" fill="#585858" stroke="#242424" />
-    <rect x="16.5" y="0.5" width="3" height="5" rx="1.5" fill="#585858" stroke="#242424" />
-    <rect x="10.5" y="0.5" width="3" height="5" rx="1.5" fill="#585858" stroke="#242424" />
-    <rect x="6" y="8" width="12" height="3" rx="1.5" fill="#242424" />
-    <rect x="6" y="16" width="12" height="3" rx="1.5" fill="#242424" />
-    <rect x="6" y="12" width="12" height="3" rx="1.5" fill="#242424" />
-  </svg>
+  <div class="note-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M19 22H5C3.89543 22 3 21.1046 3 20V6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V20C21 21.1046 20.1046 22 19 22Z"
+        stroke-width="2" />
+      <path d="M4.5 10.5H19.5V11.5H4.5V10.5Z" />
+      <path d="M7.5 6.5H6.5V1.5H7.5V6.5Z" />
+      <path d="M17.5 6.5H16.5V1.5H17.5V6.5Z" />
+    </svg>
+  </div>
+  <Tooltip text="Daily note" />
 </template>
+
+<style scoped>
+.note-icon {
+  cursor: pointer;
+  stroke: var(--light-gray);
+  transition: 200ms;
+}
+
+.note-icon:hover {
+  stroke: var(--daywaves-blue);
+  transition: 200ms;
+}
+
+.tooltip {
+  left: 30px;
+}
+</style>

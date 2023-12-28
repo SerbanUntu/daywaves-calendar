@@ -30,19 +30,19 @@ const props = defineProps({
         <DSIconNote v-if="dailyNote" />
       </i>
       <i id="pins">
-        <DSIconPin v-if="pins" :count="pins" />
+        <DSIconPin v-if="pins != undefined" :count="pins" />
       </i>
       <i id="globe">
         <DSIconGlobe v-if="globe" />
       </i>
       <i id="birthdays">
-        <DSIconBirthday v-if="birthdays" :count="birthdays" />
+        <DSIconBirthday v-if="birthdays != undefined" :count="birthdays" />
       </i>
       <i id="moon">
         <DSIconMoon v-if="moon" />
       </i>
       <i id="holidays">
-        <DSIconHoliday v-if="holidays" :count="holidays" />
+        <DSIconHoliday v-if="holidays != undefined" :count="holidays" />
       </i>
     </div>
   </div>

@@ -17,7 +17,7 @@ import Tooltip from './Tooltip.vue'
         <i>
           <NoteIcon />
         </i>
-        <Tooltip text="Daily note" />
+        <Tooltip text="Open today's daily note" />
       </div>
       <div class="icon-container">
         <div class="icon-background"></div>

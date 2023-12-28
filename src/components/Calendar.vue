@@ -44,7 +44,7 @@ for (let i = 0; i < 49; i++) {
 }
 
 onMounted(() => {
-  dates.value = datesArr();
+  dates.value = datesArr(currentDate.value);
   document.getElementById(`${days[currentDay - 1]}-timeline`)?.classList.add('current-timeline');
 });
 
@@ -57,7 +57,7 @@ console.log(currentDate.value.getHours(), currentDate.value.getMinutes(), comput
 <template>
   <div class="calendar">
     <div class="day-squares">
-      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="dates[i - 1]" :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :moon="true">
+      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="dates[i - 1]" :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :birthdays="0" :moon="true">
       </DaySquare>
     </div>
     <div class="calendar-content">
