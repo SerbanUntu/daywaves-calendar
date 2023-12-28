@@ -64,7 +64,6 @@ import Tooltip from './Tooltip.vue'
         <Tooltip text="Settings" />
       </div>
     </div>
-    <div class="navbar-background"></div>
   </nav>
 </template>
 
@@ -75,8 +74,10 @@ nav {
   position: absolute;
   top: 0px;
   height: 100%;
-  z-index: 1030;
-  /* TODO Fix height */
+  width: 100px;
+  z-index: 1040;
+  border: 1px solid var(--light-gray);
+  background: var(--element-gray);
 }
 
 .top-icons {
@@ -102,13 +103,6 @@ nav {
 .top-icons,
 .bottom-icons {
   padding: 15px;
-}
-
-.navbar-background {
-  width: 100px;
-  height: 1080px;
-  border: 1px solid var(--light-gray);
-  background: var(--element-gray);
 }
 
 .icon-container {
@@ -137,7 +131,7 @@ nav {
 i {
   width: 70px;
   height: 70px;
-  z-index: 1030;
+  z-index: 1040;
 
   stroke: var(--light-gray);
 }

@@ -27,9 +27,8 @@
 }
 
 body {
-  height: 100%;
-
   overflow: hidden;
+
   user-select: none;
 
   background: var(--color-background);

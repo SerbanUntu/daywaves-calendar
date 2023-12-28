@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import Tooltip from './Tooltip.vue'
+import { weekName } from '../main';
+
+let name = '';
+if(weekName) {
+  name = weekName();
+}
 </script>
 
 <template>
@@ -15,7 +21,7 @@ import Tooltip from './Tooltip.vue'
         <Tooltip text="Previous week" />
       </div>
       <div class="week-display">
-        <p class="font-menu-title">20 - 26 November 2023</p>
+        <p class="font-menu-title">{{ name }}</p>
         <Tooltip text="Open calendar" />
       </div>
       <div class="week-button">
@@ -33,7 +39,6 @@ import Tooltip from './Tooltip.vue'
 header {
   display: inline-flex;
   width: calc(100% - 100px);
-  /* TODO Improve this */
   align-items: center;
   position: absolute;
   top: 0px;
@@ -74,9 +79,8 @@ header {
   justify-content: center;
   align-items: center;
   border-radius: 40px;
-  transition: 200ms;
-
   background: var(--highlight-gray);
+  transition: 200ms;
 }
 
 .week-button,

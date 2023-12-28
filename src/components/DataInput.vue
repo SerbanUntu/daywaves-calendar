@@ -26,11 +26,11 @@ export default {
       <div id="setup-content" class="content">
         <section id="name-section">
           <label for="name">Name:</label>
-          <input name="name" maxlength="50" />
+          <input id="name" name="name" maxlength="50" />
         </section>
         <section id="type-section">
           <label for="type">Type:</label>
-          <select name="type">
+          <select id="type" name="type">
             <option value="activity">Activity</option>
             <option value="event">Event</option>
             <option value="flag">Flag</option>
@@ -49,36 +49,36 @@ export default {
       <h1>Time & Date</h1>
       <div id="time-date-content" class="content">
         <section id="date-section">
-          <label for="">Date:</label>
-          <div id="date-inputs" class="inputs-container">
-            <input maxlength="2" size="2" min="1" max="31" placeholder="DD" />
+          <label for="date-d">Date:</label>
+          <div id="date-inputs" name="date-inputs" class="inputs-container">
+            <input name="date-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
-            <input maxlength="2" size="2" min="1" max="12" placeholder="MM" />
+            <input name="date-m" maxlength="2" size="2" min="1" max="12" placeholder="MM" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
-            <input maxlength="4" size="4" min="1970" max="2070" placeholder="YYYY" />
+            <input name="date-y" maxlength="4" size="4" min="1970" max="2070" placeholder="YYYY" />
           </div>
         </section>
         <section id="time-section">
-          <label for="">Time:</label>
-          <div id="time-inputs" class="inputs-container">
-            <input maxlength="2" size="2" min="0" max="24" placeholder="HH" />
+          <label for="time-h">Time:</label>
+          <div id="time-inputs" name="time-inputs" class="inputs-container">
+            <input name="time-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
-            <input maxlength="2" size="2" min="0" max="59" placeholder="MM" />
+            <input name="time-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
           </div>
         </section>
         <section id="duration-section">
-          <label for="">Duration:</label>
-          <div id="duration-inputs" class="inputs-container">
-            <input maxlength="2" size="2" min="1" max="31" placeholder="DD" />
+          <label for="duration-d">Duration:</label>
+          <div id="duration-inputs" name="duration-inputs" class="inputs-container">
+            <input name="duration-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
-            <input maxlength="2" size="2" min="0" max="24" placeholder="HH" />
+            <input name="duration-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
-            <input maxlength="2" size="2" min="0" max="59" placeholder="MM" />
+            <input name="duration-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
           </div>
         </section>
         <section id="repeated-section">
-          <label for="">Repeated:</label>
-          <DayVariant v-for="letter in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
+          <label for="day-variant">Repeated:</label>
+          <DayVariant name="day-variant" v-for="letter in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
           <i class="settings-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
@@ -96,8 +96,8 @@ export default {
       <h1>Links & Description</h1>
       <div id="links-desc-content" class="content">
         <section id="links-section">
-          <label for="">Links:</label>
-          <input type="url" />
+          <label for="link">Links:</label>
+          <input id="link" name="link" type="url" />
           <div class="add-new-link">
             <i class="plus-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -109,8 +109,8 @@ export default {
           </div>
         </section>
         <section id="description-section">
-          <label for="">Description:</label>
-          <textarea />
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" />
         </section>
       </div>
     </div>
@@ -121,7 +121,6 @@ export default {
 .data-input {
   display: inline-flex;
   width: calc(100% - 100px);
-  /* TODO Improve this */
   height: 240px;
   align-items: center;
   position: absolute;
@@ -285,8 +284,8 @@ label {
 }
 
 textarea {
-  resize: none;
+  resize: vertical;
   width: 469px;
-  height: 127px;
+  max-height: 127px;
 }
 </style>
