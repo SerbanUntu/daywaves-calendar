@@ -24,7 +24,7 @@ onMounted(() => {
 <template>
   <header>
     <div class="banner-container">
-      <img src="../../public/banner.svg" alt="Daywaves logo and text" />
+      <img src="../assets/images/Banner.png" alt="Daywaves logo and text" />
     </div>
     <div class="week-navigation">
       <div class="week-button">
