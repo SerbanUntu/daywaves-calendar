@@ -32,8 +32,6 @@ export function weekName() {
   let thisSunday: Date = new Date(lastMonday);
   thisSunday.setDate(thisSunday.getDate() + 6);
 
-  console.log(lastMonday, thisSunday);
-
   if (thisSunday.getFullYear() > lastMonday.getFullYear()) {
     return `${lastMonday.getDate()} ${months[lastMonday.getMonth()].slice(0, 3)} ${lastMonday.getFullYear()} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()].slice(0, 3)} ${thisSunday.getFullYear()}`
   }
@@ -41,4 +39,12 @@ export function weekName() {
     return `${lastMonday.getDate()} ${months[lastMonday.getMonth()].slice(0, 3)} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()].slice(0, 3)} ${thisSunday.getFullYear()}`
   }
   return `${lastMonday.getDate()} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()]} ${thisSunday.getFullYear()}`
+}
+
+export function dayToTop(day: number) {
+  return 40 + day * 105; 
+}
+
+export function timeToLeft(hour: number, minute: number) {
+  return 109 + hour * 66 + minute * 66 / 60;
 }

@@ -1,7 +1,12 @@
-<script lang="ts">
+<script setup lang="ts">
 import HourMarker from './HourMarker.vue';
 import DaySquare from './DaySquare.vue';
-import { datesArr } from '../main'
+import TimeMarker from './icons/TimeMarker.vue';
+
+import { datesArr } from '../main';
+import { dayToTop } from '../main';
+import { timeToLeft } from '../main';
+import { ref, computed, onMounted } from 'vue';
 
 type HourMarker = {
   hour: string,
@@ -9,54 +14,56 @@ type HourMarker = {
   pm: boolean,
 }
 
-let markers: HourMarker[] = Array.from({ length: 49 }, () => ({
+let markers = ref<HourMarker[]>([]);
+
+let dates = ref<number[]>([]);
+const days: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+let currentDate = ref<Date>(new Date());
+let currentDay: number = currentDate.value.getDay();
+
+markers.value = Array.from({ length: 49 }, () => ({
   hour: '0',
   isHalf: false,
   pm: false,
 }));
 
-let dates: number[] = [];
-
-if (datesArr) {
-  dates = datesArr();
-}
-
 for (let i = 0; i < 49; i++) {
   if (i % 2 == 1) {
-    markers[i].isHalf = true;
-    markers[i].hour = '\'30';
+    markers.value[i].isHalf = true;
+    markers.value[i].hour = '\'30';
   } else {
-    markers[i].hour = ((i / 2) % 12).toString();
-    if (Number(markers[i].hour) == 0) {
-      markers[i].hour = '12';
+    markers.value[i].hour = ((i / 2) % 12).toString();
+    if (Number(markers.value[i].hour) == 0) {
+      markers.value[i].hour = '12';
     }
   }
-  if (i > 24) {
-    markers[i].pm = true;
+  if (i > 24 && i < 48) {
+    markers.value[i].pm = true;
   }
 }
 
-export default {
-  components: {
-    HourMarker,
-    DaySquare,
-  },
-  data() {
-    return {
-      markers: markers,
-      days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-      dates: dates,
-    };
-  },
-}
+onMounted(() => {
+  dates.value = datesArr();
+  document.getElementById(`${days[currentDay - 1]}-timeline`)?.classList.add('current-timeline');
+});
+
+const computedTop = computed(() => ({ top: `${dayToTop(currentDay - 1)}px` }));
+const computedLeft = computed(() => ({ left: `${timeToLeft(currentDate.value.getHours(), currentDate.value.getMinutes())}px` }));
+
+console.log(currentDate.value.getHours(), currentDate.value.getMinutes(), computedLeft.value);
 </script>
 
 <template>
   <div class="calendar">
     <div class="day-squares">
-      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="dates[i - 1]" :day="days[i - 1][0].toUpperCase()"></DaySquare>
+      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="dates[i - 1]" :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :moon="true">
+      </DaySquare>
     </div>
     <div class="calendar-content">
+      <i class="time-marker" :style="{ ...computedTop, ...computedLeft }">
+        <TimeMarker />
+      </i>
       <div class="hour-displays">
         <HourMarker v-for="marker in markers" :hour="marker.hour" :isHalf="marker.isHalf" :pm="marker.pm" />
       </div>
@@ -95,6 +102,16 @@ export default {
   height: 770px;
   background: var(--bg-gray);
   z-index: 1030;
+}
+
+.time-marker {
+  position: absolute;
+  z-index: 1019;
+  width: 25px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.50));
 }
 
 .calendar-content {
@@ -137,6 +154,14 @@ export default {
   height: 100px;
   display: flex;
   align-items: center;
+}
+
+.current-timeline {
+  background: hsla(0, 0%, 12%, 1);
+
+  .day-line {
+    background: var(--highlight-gray);
+  }
 }
 
 .day-line {
