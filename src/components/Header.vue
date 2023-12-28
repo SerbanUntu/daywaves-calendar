@@ -4,11 +4,21 @@ import SIconLeftArrow from './icons/SIconLeftArrow.vue';
 import SIconRightArrow from './icons/SIconRightArrow.vue';
 
 import { weekName } from '../main';
+import { ref, computed, onMounted } from 'vue'
 
-let name = '';
-if(weekName) {
-  name = weekName(new Date());
-}
+const currentDate = ref<Date>(new Date());
+let name = computed(() => weekName(currentDate.value));
+
+const updateTime = () => {
+  const now = new Date();
+  currentDate.value = now;
+};
+
+onMounted(() => {
+  updateTime();
+  setInterval(updateTime, 1000);
+});
+
 </script>
 
 <template>
