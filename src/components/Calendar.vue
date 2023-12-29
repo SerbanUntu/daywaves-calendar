@@ -171,4 +171,10 @@ onMounted(() => {
   position: absolute;
   z-index: 1010;
 }
+
+@media only screen and (max-height: 735px) {
+  .calendar {
+    left: 13vh;
+  } 
+}
 </style>

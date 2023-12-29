@@ -59,6 +59,12 @@ header {
   height: 65px;
 }
 
+@media only screen and (max-width: 1135px) {
+  .banner-container {
+    opacity: 0;
+  }
+}
+
 .week-navigation {
   height: 65px;
   display: flex;
@@ -67,11 +73,13 @@ header {
   left: calc(50% - 300px);
   gap: 10px;
   background: var(--bg-gray);
+  padding-top: 12.5px;
+  padding-bottom: 12.5px;
 }
 
 .week-button {
   width: 80px;
-  height: 40px;
+  height: 100%;
   background: var(--highlight-gray);
   stroke: var(--light-gray);
   transition: 200ms;
@@ -79,7 +87,7 @@ header {
 
 .week-display {
   width: 420px;
-  height: 40px;
+  height: 100%;
   background: var(--highlight-gray);
   transition: 200ms;
 }
@@ -119,5 +127,11 @@ header {
 
 .tooltip {
   top: 60px;
+}
+
+@media only screen and (max-height: 735px) {
+  header {
+    left: 13vh;
+  } 
 }
 </style>

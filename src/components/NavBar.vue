@@ -73,10 +73,11 @@ nav {
   background: var(--element-gray);
 }
 
+
 .top-icons {
   position: absolute;
   display: flex;
-  width: 100px;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   gap: 35px;
@@ -86,7 +87,7 @@ nav {
   position: absolute;
   bottom: 0px;
   display: flex;
-  width: 100px;
+  width: 100%;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
@@ -100,8 +101,8 @@ nav {
 
 .icon-container {
   display: inline-flex;
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
   border-radius: 25px;
   justify-content: center;
   align-items: center;
@@ -122,19 +123,40 @@ nav {
 }
 
 i {
-  width: 100%;
-  height: 100%;
   z-index: 1040;
   stroke: var(--light-gray);
+}
+
+.icon-svg {
+  width: 100%;
+  height: 100%;
 }
 
 .tooltip {
   left: 110px;
 }
 
-#navbar-birthdays-icon-container {
+@media only screen and (min-height: 735px) {
+  #navbar-birthdays-icon-container {
+    .tooltip {
+      top: 465px;
+    }
+  }
+}
+
+@media only screen and (max-height: 735px) {
+  nav {
+    width: 13vh;
+  }
+
+  .top-icons,
+  .bottom-icons {
+    padding: 2vh;
+    gap: 2vh;
+  }
+
   .tooltip {
-    top: 465px;
+    left: 13vh;
   }
 }
 </style>

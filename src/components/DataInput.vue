@@ -14,12 +14,12 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
       <h1>Setup</h1>
       <article id="setup-content" class="content">
         <section id="name-section" class="section">
-          <label for="name">Name:</label>
-          <input id="name" name="name" maxlength="50" />
+          <label for="name-input">Name:</label>
+          <input id="name-input" name="name" maxlength="50" />
         </section>
         <section id="type-section" class="section">
-          <label for="type">Type:</label>
-          <select id="type" name="type">
+          <label for="type-input">Type:</label>
+          <select id="type-input" name="type">
             <option value="activity">Activity</option>
             <option value="event">Event</option>
             <option value="flag">Flag</option>
@@ -27,9 +27,9 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
           </select>
         </section>
         <section id="colour-section" class="section">
-          <label for="colours-container">Colour:</label>
+          <label for="colour-variant-0">Colour:</label>
           <article id="colours-container" name="colours-container">
-            <ColourVariant v-for="hue in hues" :hue="hue" />
+            <ColourVariant :id="'colour-variant-' + hue" v-for="hue in hues" :hue="hue" />
           </article>
         </section>
       </article>
@@ -38,36 +38,36 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
       <h1>Time & Date</h1>
       <article id="time-date-content" class="content">
         <section id="date-section" class="section">
-          <label for="date-d">Date:</label>
+          <label for="date-d-input">Date:</label>
           <article id="date-inputs" name="date-inputs" class="inputs-container">
-            <input name="date-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
+            <input id="date-d-input" name="date-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
-            <input name="date-m" maxlength="2" size="2" min="1" max="12" placeholder="MM" />
+            <input id="date-m-input" name="date-m" maxlength="2" size="2" min="1" max="12" placeholder="MM" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
-            <input name="date-y" maxlength="4" size="4" min="1970" max="2070" placeholder="YYYY" />
+            <input id="date-y-input" name="date-y" maxlength="4" size="4" min="1970" max="2070" placeholder="YYYY" />
           </article>
         </section>
         <section id="time-section" class="section">
-          <label for="time-h">Time:</label>
+          <label for="time-h-input">Time:</label>
           <article id="time-inputs" name="time-inputs" class="inputs-container">
-            <input name="time-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
+            <input id="time-h-input" name="time-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
-            <input name="time-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
+            <input id="time-m-input" name="time-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
           </article>
         </section>
         <section id="duration-section" class="section">
-          <label for="duration-d">Duration:</label>
+          <label for="duration-d-input">Duration:</label>
           <article id="duration-inputs" name="duration-inputs" class="inputs-container">
-            <input name="duration-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
+            <input id="duration-d-input" name="duration-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
-            <input name="duration-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
+            <input id="duration-h-input" name="duration-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
-            <input name="duration-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
+            <input id="duration-m-input" name="duration-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
           </article>
         </section>
         <section id="repeated-section" class="section">
-          <label for="day-variant">Repeated:</label>
-          <DayVariant :id="'day-variant-' + letter" name="day-variant" v-for="letter in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
+          <label for="day-variant-0">Repeated:</label>
+          <DayVariant :id="'day-variant-' + index" name="day-variant" v-for="(letter, index) in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
           <i class="settings-icon">
             <IconGear />
           </i>
@@ -78,8 +78,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
       <h1>Links & Description</h1>
       <article id="links-desc-content" class="content">
         <section id="links-section" class="section">
-          <label for="link">Links:</label>
-          <input id="link" name="link" type="url" />
+          <label for="link-input">Links:</label>
+          <input id="link-input" name="link" type="url" />
           <article class="add-new-link">
             <i class="plus-icon">
               <IconPlus />
@@ -88,8 +88,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
           </article>
         </section>
         <section id="description-section" class="section">
-          <label for="description">Description:</label>
-          <textarea id="description" name="description" />
+          <label for="description-input">Description:</label>
+          <textarea id="description-input" name="description" />
         </section>
       </article>
     </section>
@@ -270,5 +270,11 @@ textarea {
   resize: vertical;
   width: 469px;
   max-height: 127px;
+}
+
+@media only screen and (max-height: 735px) {
+  .data-input {
+    left: 13vh;
+  } 
 }
 </style>
