@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ColourVariant from './ColourVariant.vue'
-import DayVariant from './DayVariant.vue';
-import Tooltip from './Tooltip.vue';
-import SIconGear from './icons/SIconGear.vue';
-import SIconPlus from './icons/SIconPlus.vue';
+import ColourVariant from './data_input/ColourVariant.vue'
+import DayVariant from './data_input/DayVariant.vue';
+import Tooltip from './util/Tooltip.vue';
+import IconGear from './icons/IconGear20x20.vue';
+import IconPlus from './icons/IconPlus16x16.vue';
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 </script>
@@ -67,9 +67,9 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
         </section>
         <section id="repeated-section">
           <label for="day-variant">Repeated:</label>
-          <DayVariant name="day-variant" v-for="letter in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
+          <DayVariant :id="'day-variant-' + letter" name="day-variant" v-for="letter in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
           <i class="settings-icon">
-            <SIconGear />
+            <IconGear />
           </i>
         </section>
       </div>
@@ -82,7 +82,7 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
           <input id="link" name="link" type="url" />
           <div class="add-new-link">
             <i class="plus-icon">
-              <SIconPlus />
+              <IconPlus />
             </i>
             <Tooltip text="Add new link" />
           </div>
@@ -98,18 +98,20 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 
 <style scoped>
 .data-input {
-  display: inline-flex;
-  width: calc(100% - 100px);
+  display: flex;
   height: 240px;
   align-items: center;
   position: absolute;
   bottom: 0px;
   left: 100px;
+  right: 0px;
+  max-width: 1820px;
+  overflow-x: auto;
 }
 
 .stage {
   height: 100%;
-  position: relative;
+  position: absolute;
   border-top: 1px solid var(--light-gray);
   border-bottom: 1px solid var(--light-gray);
   border-right: 1px solid var(--light-gray);
@@ -122,16 +124,18 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 
 #setup-stage {
   border-radius: 20px 0px 0px 0px;
-  flex-grow: 1;
+  width: 455px;
 }
 
 #time-date-stage {
-  flex-grow: 1;
+  width: 455px;
+  left: 455px;
 }
 
 #links-desc-stage {
   border-radius: 0px 20px 0px 0px;
-  flex-grow: 2;
+  width: 910px;
+  left: 910px;
 }
 
 h1 {

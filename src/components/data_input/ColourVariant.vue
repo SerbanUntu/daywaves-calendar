@@ -9,7 +9,7 @@ const computedColor = computed(() => `hsla(${props.hue}, 40%, 60%, 1)`);
 </script>
 
 <template>
-  <div class="colour-variant" :style="{ backgroundColor: computedColor }"></div>
+  <div :id="'colour-variant-' + hue" class="colour-variant" :style="{ backgroundColor: computedColor }"></div>
 </template>
 
 <style scoped>

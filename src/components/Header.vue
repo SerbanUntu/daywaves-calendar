@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Tooltip from './Tooltip.vue'
-import SIconLeftArrow from './icons/SIconLeftArrow.vue';
-import SIconRightArrow from './icons/SIconRightArrow.vue';
+import Tooltip from './util/Tooltip.vue';
+import IconLeftArrow from './icons/IconLeftArrow15x19.vue';
+import IconRightArrow from './icons/IconRightArrow15x19.vue';
 
 import { weekName } from '../main';
 import { ref, computed, onMounted } from 'vue'
@@ -22,31 +22,32 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    <div class="banner-container">
+  <header id="header">
+    <section id="header-banner-container" class="banner-container">
       <img src="../assets/images/Banner.png" alt="Daywaves logo and text" />
-    </div>
-    <div class="week-navigation">
-      <div class="week-button">
-        <SIconLeftArrow />
+    </section>
+    <section id="week-navigation-container" class="week-navigation">
+      <article id="previous-week-button" class="week-button">
+        <IconLeftArrow class="left-arrow" />
         <Tooltip text="Previous week" />
-      </div>
-      <div class="week-display">
+      </article>
+      <article id="open-calendar-button" class="week-display">
         <p class="font-menu-title">{{ name }}</p>
         <Tooltip text="Open calendar" />
-      </div>
-      <div class="week-button">
-        <SIconRightArrow />
+      </article>
+      <article id="next-week-button" class="week-button">
+        <IconRightArrow class="right-arrow" />
         <Tooltip text="Next week" />
-      </div>
-    </div>
+      </article>
+    </section>
   </header>
 </template>
-  
+
 <style scoped>
 header {
   display: inline-flex;
   width: calc(100% - 100px);
+  max-width: 1820px;
   align-items: center;
   position: absolute;
   top: 0px;
@@ -71,10 +72,6 @@ header {
 .week-button {
   width: 80px;
   height: 40px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 40px;
   background: var(--highlight-gray);
   stroke: var(--light-gray);
   transition: 200ms;
@@ -83,10 +80,6 @@ header {
 .week-display {
   width: 420px;
   height: 40px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 40px;
   background: var(--highlight-gray);
   transition: 200ms;
 }
@@ -94,6 +87,11 @@ header {
 .week-button,
 .week-display {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
 }
 
 .week-button:hover,

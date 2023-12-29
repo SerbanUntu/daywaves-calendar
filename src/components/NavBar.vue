@@ -1,63 +1,56 @@
 <script setup lang="ts">
-import NoteIcon from './icons/IconNoteLarge.vue'
-import TemplatesIcon from './icons/IconTemplatesLarge.vue'
-import RoutinesIcon from './icons/IconRoutinesLarge.vue'
-import PinsIcon from './icons/IconPinsLarge.vue'
-import BirthdaysIcon from './icons/IconBirthdaysLarge.vue'
-import AccountIcon from './icons/IconAccountLarge.vue'
-import SettingsIcon from './icons/IconSettingsLarge.vue'
-import Tooltip from './Tooltip.vue'
+import NoteIcon from './icons/IconNote70x70.vue'
+import TemplatesIcon from './icons/IconTemplates70x70.vue'
+import RoutinesIcon from './icons/IconRoutines70x70.vue'
+import PinsIcon from './icons/IconPins70x70.vue'
+import BirthdaysIcon from './icons/IconBirthdays70x70.vue'
+import AccountIcon from './icons/IconAccount70x70.vue'
+import SettingsIcon from './icons/IconSettings70x70.vue'
+import Tooltip from './util/Tooltip.vue'
 </script>
 
 <template>
-  <nav>
-    <div class="top-icons">
-      <div class="icon-container">
-        <div class="icon-background"></div>
+  <nav id="navbar">
+    <div id="navbar-top-icons" class="top-icons">
+      <div id="navbar-note-icon-container" class="icon-container">
         <i>
           <NoteIcon />
         </i>
         <Tooltip text="Open today's daily note" />
       </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      <div id="navbar-templates-icon-container" class="icon-container">
         <i>
           <TemplatesIcon />
         </i>
         <Tooltip text="Templates" />
       </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      <div id="navbar-routines-icon-container" class="icon-container">
         <i>
           <RoutinesIcon />
         </i>
         <Tooltip text="Routines" />
       </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      <div id="navbar-pins-icon-container" class="icon-container">
         <i>
           <PinsIcon />
         </i>
         <Tooltip text="Pins" />
       </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      <div id="navbar-birthdays-icon-container" class="icon-container">
         <i>
           <BirthdaysIcon />
         </i>
         <Tooltip text="Birthdays" />
       </div>
     </div>
-    <div class="bottom-icons">
-      <div class="icon-container">
-        <div class="icon-background"></div>
+    <div id="navbar-bottom-icons" class="bottom-icons">
+      <div id="navbar-account-icon-container" class="icon-container">
         <i>
           <AccountIcon />
         </i>
         <Tooltip text="Account" />
       </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      <div id="navbar-settings-icon-container" class="icon-container">
         <i>
           <SettingsIcon />
         </i>
@@ -109,17 +102,17 @@ nav {
   display: inline-flex;
   width: 70px;
   height: 70px;
+  border-radius: 25px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
+  background: var(--element-gray);
+  transition: 200ms;
 }
 
 .icon-container:hover {
-  .icon-background {
-    background: var(--highlight-gray);
-    transition: 200ms;
-  }
+  background: var(--highlight-gray);
+  transition: 200ms;
 }
 
 .icon-container:active {
@@ -132,18 +125,7 @@ i {
   width: 70px;
   height: 70px;
   z-index: 1040;
-
   stroke: var(--light-gray);
-}
-
-.icon-background {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  flex-shrink: 0;
-  border-radius: 25px;
-  background: var(--element-gray);
-  transition: 200ms;
 }
 
 .tooltip {

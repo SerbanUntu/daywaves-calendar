@@ -60,3 +60,32 @@ select {
 ::-webkit-input-placeholder {
   color: var(--light-gray);
 }
+
+.moon-icon * {
+  transition: 200ms;
+}
+
+.moon-icon {
+  stroke: var(--element-gray);
+  
+  .surface {
+    stroke: var(--light-gray);
+  }
+
+  .bright-side {
+    opacity: 0;
+    stroke: var(--daywaves-blue);
+  }
+}
+
+.moon-icon:hover {
+  .surface {
+    stroke: hsla(0, 0%, 17%, 1);
+  }
+
+  .bright-side {
+    opacity: 1;
+  }
+
+  transition: all 200ms;
+}

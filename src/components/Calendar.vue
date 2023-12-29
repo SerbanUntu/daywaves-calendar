@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HourMarker from './HourMarker.vue';
-import DaySquare from './DaySquare.vue';
-import TimeMarker from './icons/TimeMarker.vue';
+import HourMarker from './calendar/HourMarker.vue';
+import DaySquare from './calendar/DaySquare.vue';
+import TimeMarker from './icons/IconTimeMarker25x92.vue';
 
 import { datesArr } from '../main';
 import { dayToTop } from '../main';
@@ -55,22 +55,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="calendar">
-    <div class="day-squares">
+  <div id="calendar" class="calendar">
+    <div id="day-squares" class="day-squares">
       <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="datesArr(currentDate)[i - 1]"
         :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :birthdays="0" :moon="true">
       </DaySquare>
     </div>
-    <div class="calendar-content">
-      <i class="time-marker" :style="{ ...computedTop, ...computedLeft }">
+    <div id="calendar-content" class="calendar-content">
+      <i id="time-marker" class="time-marker" :style="{ ...computedTop, ...computedLeft }">
         <TimeMarker />
       </i>
-      <div class="hour-displays">
+      <div id="hour-displays" class="hour-displays">
         <HourMarker v-for="marker in markers" :hour="marker.hour" :isHalf="marker.isHalf" :pm="marker.pm" />
       </div>
-      <div class="timelines">
+      <div id="timelines" class="timelines">
         <div :id="days[i - 1] + '-timeline'" class="timeline" v-for="i in 7">
-          <div class="day-line"></div>
+          <div :id="days[i - 1] + '-day-line'" class="day-line"></div>
         </div>
       </div>
     </div>

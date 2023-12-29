@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import DSIconBirthday from './icons/DSIconBirthday.vue';
-import DSIconGlobe from './icons/DSIconGlobe.vue';
-import DSIconHoliday from './icons/DSIconHoliday.vue';
-import DSIconMoon from './icons/DSIconMoon.vue';
-import DSIconNote from './icons/DSIconNote.vue';
-import DSIconPin from './icons/DSIconPin.vue';
+import DSIconBirthday from './day_squares/BirthdayIcon.vue';
+import DSIconGlobe from './day_squares/GlobeIcon.vue';
+import DSIconHoliday from './day_squares/HolidayIcon.vue';
+import DSIconMoon from './day_squares/MoonIcon.vue';
+import DSIconNote from './day_squares/NoteIcon.vue';
+import DSIconPin from './day_squares/PinIcon.vue';
 
 const props = defineProps({
   date: Number,
@@ -26,22 +26,22 @@ const props = defineProps({
       <p class="day font-standard-xl">{{ props.day }}</p>
     </div>
     <div class="icons-container">
-      <i id="daily-note">
+      <i class="daily-note">
         <DSIconNote v-if="dailyNote" />
       </i>
-      <i id="pins">
+      <i class="pins">
         <DSIconPin v-if="pins != undefined" :count="pins" />
       </i>
-      <i id="globe">
+      <i class="globe">
         <DSIconGlobe v-if="globe" />
       </i>
-      <i id="birthdays">
+      <i class="birthdays">
         <DSIconBirthday v-if="birthdays != undefined" :count="birthdays" />
       </i>
-      <i id="moon">
+      <i class="moon">
         <DSIconMoon v-if="moon" />
       </i>
-      <i id="holidays">
+      <i class="holidays">
         <DSIconHoliday v-if="holidays != undefined" :count="holidays" />
       </i>
     </div>
