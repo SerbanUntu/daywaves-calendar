@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Tooltip from '../../util/Tooltip.vue';
+import Tooltip from '@/components/util/Tooltip.vue';
 import IconNote from '@/components/icons/IconNote24x24.vue';
 
 </script>
 <template>
-  <div class="note-icon">
+  <article class="note-icon">
     <IconNote />
-  </div>
+  </article>
   <Tooltip text="Daily note" />
 </template>
 

@@ -20,12 +20,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="day-square">
-    <div class="text-container">
+  <article class="day-square">
+    <section class="text-container">
       <p class="date font-standard-xl">{{ props.date }}</p>
       <p class="day font-standard-xl">{{ props.day }}</p>
-    </div>
-    <div class="icons-container">
+    </section>
+    <section class="icons-container">
       <i class="daily-note">
         <DSIconNote v-if="dailyNote" />
       </i>
@@ -44,8 +44,8 @@ const props = defineProps({
       <i class="holidays">
         <DSIconHoliday v-if="holidays != undefined" :count="holidays" />
       </i>
-    </div>
-  </div>
+    </section>
+  </article>
 </template>
 
 <style scoped>

@@ -9,15 +9,15 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 </script>
 
 <template>
-  <form class="data-input">
-    <div id="setup-stage" class="stage">
+  <form id="data-input" class="data-input">
+    <section id="setup-stage" class="stage">
       <h1>Setup</h1>
-      <div id="setup-content" class="content">
-        <section id="name-section">
+      <article id="setup-content" class="content">
+        <section id="name-section" class="section">
           <label for="name">Name:</label>
           <input id="name" name="name" maxlength="50" />
         </section>
-        <section id="type-section">
+        <section id="type-section" class="section">
           <label for="type">Type:</label>
           <select id="type" name="type">
             <option value="activity">Activity</option>
@@ -26,73 +26,73 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
             <option value="pin">Pin</option>
           </select>
         </section>
-        <section id="colour-section">
+        <section id="colour-section" class="section">
           <label for="colours-container">Colour:</label>
-          <div id="colours-container" name="colours-container">
+          <article id="colours-container" name="colours-container">
             <ColourVariant v-for="hue in hues" :hue="hue" />
-          </div>
+          </article>
         </section>
-      </div>
-    </div>
-    <div id="time-date-stage" class="stage">
+      </article>
+    </section>
+    <section id="time-date-stage" class="stage">
       <h1>Time & Date</h1>
-      <div id="time-date-content" class="content">
-        <section id="date-section">
+      <article id="time-date-content" class="content">
+        <section id="date-section" class="section">
           <label for="date-d">Date:</label>
-          <div id="date-inputs" name="date-inputs" class="inputs-container">
+          <article id="date-inputs" name="date-inputs" class="inputs-container">
             <input name="date-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
             <input name="date-m" maxlength="2" size="2" min="1" max="12" placeholder="MM" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
             <input name="date-y" maxlength="4" size="4" min="1970" max="2070" placeholder="YYYY" />
-          </div>
+          </article>
         </section>
-        <section id="time-section">
+        <section id="time-section" class="section">
           <label for="time-h">Time:</label>
-          <div id="time-inputs" name="time-inputs" class="inputs-container">
+          <article id="time-inputs" name="time-inputs" class="inputs-container">
             <input name="time-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input name="time-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
-          </div>
+          </article>
         </section>
-        <section id="duration-section">
+        <section id="duration-section" class="section">
           <label for="duration-d">Duration:</label>
-          <div id="duration-inputs" name="duration-inputs" class="inputs-container">
+          <article id="duration-inputs" name="duration-inputs" class="inputs-container">
             <input name="duration-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input name="duration-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input name="duration-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
-          </div>
+          </article>
         </section>
-        <section id="repeated-section">
+        <section id="repeated-section" class="section">
           <label for="day-variant">Repeated:</label>
           <DayVariant :id="'day-variant-' + letter" name="day-variant" v-for="letter in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
           <i class="settings-icon">
             <IconGear />
           </i>
         </section>
-      </div>
-    </div>
-    <div id="links-desc-stage" class="stage">
+      </article>
+    </section>
+    <section id="links-desc-stage" class="stage">
       <h1>Links & Description</h1>
-      <div id="links-desc-content" class="content">
-        <section id="links-section">
+      <article id="links-desc-content" class="content">
+        <section id="links-section" class="section">
           <label for="link">Links:</label>
           <input id="link" name="link" type="url" />
-          <div class="add-new-link">
+          <article class="add-new-link">
             <i class="plus-icon">
               <IconPlus />
             </i>
             <Tooltip text="Add new link" />
-          </div>
+          </article>
         </section>
-        <section id="description-section">
+        <section id="description-section" class="section">
           <label for="description">Description:</label>
           <textarea id="description" name="description" />
         </section>
-      </div>
-    </div>
+      </article>
+    </section>
   </form>
 </template>
 
@@ -165,7 +165,7 @@ h1 {
   padding-left: 17px;
 }
 
-section {
+.section {
   display: flex;
   align-items: center;
   gap: 12px;

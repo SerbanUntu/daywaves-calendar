@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Tooltip from '../../util/Tooltip.vue';
+import Tooltip from '@/components/util/Tooltip.vue';
 import IconBirthday from '@/components/icons/IconBirthday24x24.vue';
 
 const props = defineProps({
@@ -8,12 +8,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <div :class="{ 'birthday-icon': true, 'zero': count == 0 }">
+  <article :class="{ 'birthday-icon': true, 'zero': count == 0 }">
     <IconBirthday />
-    <div class="count-bg" v-if="props.count != undefined"></div>
+    <section class="count-bg" v-if="props.count != undefined"></section>
     <p class="font-count" v-if="props.count && props.count > 1">{{ props.count }}</p>
     <p class="large-count font-count" v-else>+</p>
-  </div>
+  </article>
   <Tooltip text="Birthdays" />
 </template>
 

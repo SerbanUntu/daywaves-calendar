@@ -20,10 +20,10 @@ const computedColour = computed(() => props.isHalf ? `var(--light-gray)` : (prop
 </script>
 
 <template>
-  <div class="hour-marker">
+  <section class="hour-marker">
     <p :class="{ 'font-standard-small': isHalf }" :style="{ color: computedColour }">{{ props.hour }}</p>
-    <div class="marker" :style="{ background: computedColour }"></div>
-  </div>
+    <article class="marker" :style="{ background: computedColour }"></article>
+  </section>
 </template>
 
 <style scoped>

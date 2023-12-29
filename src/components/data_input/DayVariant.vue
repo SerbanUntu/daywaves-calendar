@@ -7,9 +7,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="day-variant">
+  <article class="day-variant">
     <p class="font-standard-small">{{ props.letter }}</p>
-  </div>
+  </article>
 </template>
 
 <style scoped>

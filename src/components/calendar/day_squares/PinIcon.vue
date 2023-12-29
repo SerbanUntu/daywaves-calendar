@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Tooltip from '../../util/Tooltip.vue';
+import Tooltip from '@/components/util/Tooltip.vue';
 import IconPin from '@/components/icons/IconPin24x24.vue';
 
 const props = defineProps({
@@ -8,11 +8,11 @@ const props = defineProps({
 </script>
 
 <template>
-  <div :class="{ 'pin-icon': true, 'zero': count == 0 }">
+  <article :class="{ 'pin-icon': true, 'zero': count == 0 }">
     <IconPin />
     <p class="font-count" v-if="props.count && props.count > 1">{{ props.count }}</p>
     <p class="large-count font-count" v-else>+</p>
-  </div>
+  </article>
   <Tooltip text="Pins" />
 </template>
 

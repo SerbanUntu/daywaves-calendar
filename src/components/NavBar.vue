@@ -11,52 +11,52 @@ import Tooltip from './util/Tooltip.vue'
 
 <template>
   <nav id="navbar">
-    <div id="navbar-top-icons" class="top-icons">
-      <div id="navbar-note-icon-container" class="icon-container">
+    <section id="navbar-top-icons" class="top-icons">
+      <article id="navbar-note-icon-container" class="icon-container">
         <i>
-          <NoteIcon />
+          <NoteIcon class="icon-svg" />
         </i>
         <Tooltip text="Open today's daily note" />
-      </div>
-      <div id="navbar-templates-icon-container" class="icon-container">
+      </article>
+      <article id="navbar-templates-icon-container" class="icon-container">
         <i>
-          <TemplatesIcon />
+          <TemplatesIcon class="icon-svg" />
         </i>
         <Tooltip text="Templates" />
-      </div>
-      <div id="navbar-routines-icon-container" class="icon-container">
+      </article>
+      <article id="navbar-routines-icon-container" class="icon-container">
         <i>
-          <RoutinesIcon />
+          <RoutinesIcon class="icon-svg" />
         </i>
         <Tooltip text="Routines" />
-      </div>
-      <div id="navbar-pins-icon-container" class="icon-container">
+      </article>
+      <article id="navbar-pins-icon-container" class="icon-container">
         <i>
-          <PinsIcon />
+          <PinsIcon class="icon-svg" />
         </i>
         <Tooltip text="Pins" />
-      </div>
-      <div id="navbar-birthdays-icon-container" class="icon-container">
+      </article>
+      <article id="navbar-birthdays-icon-container" class="icon-container">
         <i>
-          <BirthdaysIcon />
+          <BirthdaysIcon class="icon-svg" />
         </i>
         <Tooltip text="Birthdays" />
-      </div>
-    </div>
-    <div id="navbar-bottom-icons" class="bottom-icons">
-      <div id="navbar-account-icon-container" class="icon-container">
+      </article>
+    </section>
+    <section id="navbar-bottom-icons" class="bottom-icons">
+      <article id="navbar-account-icon-container" class="icon-container">
         <i>
-          <AccountIcon />
+          <AccountIcon class="icon-svg" />
         </i>
         <Tooltip text="Account" />
-      </div>
-      <div id="navbar-settings-icon-container" class="icon-container">
+      </article>
+      <article id="navbar-settings-icon-container" class="icon-container">
         <i>
-          <SettingsIcon />
+          <SettingsIcon class="icon-svg" />
         </i>
         <Tooltip text="Settings" />
-      </div>
-    </div>
+      </article>
+    </section>
   </nav>
 </template>
 
@@ -122,13 +122,19 @@ nav {
 }
 
 i {
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
   z-index: 1040;
   stroke: var(--light-gray);
 }
 
 .tooltip {
   left: 110px;
+}
+
+#navbar-birthdays-icon-container {
+  .tooltip {
+    top: 465px;
+  }
 }
 </style>

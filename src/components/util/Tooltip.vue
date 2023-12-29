@@ -5,9 +5,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="tooltip">
+  <article class="tooltip">
     <p class="tooltip-text">{{ props.text }}</p>
-  </div>
+  </article>
 </template>
 
 <style scoped>

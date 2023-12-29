@@ -51,30 +51,29 @@ onMounted(() => {
   updateTime();
   setInterval(updateTime, 1000);
 });
-
 </script>
 
 <template>
-  <div id="calendar" class="calendar">
-    <div id="day-squares" class="day-squares">
+  <section id="calendar" class="calendar">
+    <aside id="day-squares" class="day-squares">
       <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="datesArr(currentDate)[i - 1]"
         :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :birthdays="0" :moon="true">
       </DaySquare>
-    </div>
-    <div id="calendar-content" class="calendar-content">
+    </aside>
+    <section id="calendar-content" class="calendar-content">
       <i id="time-marker" class="time-marker" :style="{ ...computedTop, ...computedLeft }">
         <TimeMarker />
       </i>
-      <div id="hour-displays" class="hour-displays">
+      <article id="hour-displays" class="hour-displays">
         <HourMarker v-for="marker in markers" :hour="marker.hour" :isHalf="marker.isHalf" :pm="marker.pm" />
-      </div>
-      <div id="timelines" class="timelines">
-        <div :id="days[i - 1] + '-timeline'" class="timeline" v-for="i in 7">
-          <div :id="days[i - 1] + '-day-line'" class="day-line"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+      </article>
+      <article id="timelines" class="timelines">
+        <section :id="days[i - 1] + '-timeline'" class="timeline" v-for="i in 7">
+          <article :id="days[i - 1] + '-day-line'" class="day-line"></article>
+        </section>
+      </article>
+    </section>
+  </section>
 </template>
 
 <style scoped>

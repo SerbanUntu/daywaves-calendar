@@ -32,7 +32,7 @@ onMounted(() => {
         <Tooltip text="Previous week" />
       </article>
       <article id="open-calendar-button" class="week-display">
-        <p class="font-menu-title">{{ name }}</p>
+        <h1 class="font-menu-title">{{ name }}</h1>
         <Tooltip text="Open calendar" />
       </article>
       <article id="next-week-button" class="week-button">

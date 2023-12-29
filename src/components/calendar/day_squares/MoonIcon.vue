@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Tooltip from '../../util/Tooltip.vue';
+import Tooltip from '@/components/util/Tooltip.vue';
 import IconMoon from '@/components/icons/IconMoon20x20.vue';
 
 </script>
 <template>
-  <div class="moon-icon">
+  <article class="moon-icon">
     <IconMoon />
-  </div>
+  </article>
   <Tooltip text="Moon data" />
 </template>
 
