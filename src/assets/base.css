@@ -1,5 +1,5 @@
+/* Base colors */
 :root {
-  /* Base colors */
   --daywaves-blue: hsla(230, 40%, 60%, 1);
   --bg-gray: hsla(0, 0%, 11%, 1);
   --element-gray: hsla(0, 0%, 14%, 1);
@@ -24,6 +24,7 @@
 *::after {
   box-sizing: border-box;
   margin: 0;
+  font-style: normal;
 }
 
 body {

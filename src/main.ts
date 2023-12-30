@@ -10,9 +10,13 @@ app.use(router)
 
 app.mount('#app')
 
-export function datesArr() {
-  let lastMonday: Date = new Date();
-  lastMonday.setDate(lastMonday.getDate() - lastMonday.getDay() + 1);
+export function datesArr(date: Date) {
+  let lastMonday: Date = new Date(date);
+  let change: number = lastMonday.getDay();
+  if (change == 0) {
+    change = 7;
+  }
+  lastMonday.setDate(lastMonday.getDate() - change + 1);
 
   let result: number[] = Array(7);
 
@@ -24,10 +28,14 @@ export function datesArr() {
   return result;
 }
 
-export function weekName() {
+export function weekName(date: Date) {
   let months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  let lastMonday: Date = new Date();
-  lastMonday.setDate(lastMonday.getDate() - lastMonday.getDay() + 1);
+  let lastMonday: Date = new Date(date);
+  let change: number = lastMonday.getDay();
+  if (change == 0) {
+    change = 7;
+  }
+  lastMonday.setDate(lastMonday.getDate() - change + 1);
 
   let thisSunday: Date = new Date(lastMonday);
   thisSunday.setDate(thisSunday.getDate() + 6);
@@ -42,9 +50,9 @@ export function weekName() {
 }
 
 export function dayToTop(day: number) {
-  return 40 + day * 105; 
+  return 40 + day * 105;
 }
 
-export function timeToLeft(hour: number, minute: number) {
-  return 109 + hour * 66 + minute * 66 / 60;
+export function timeToLeft(hour: number, minute: number, second: number) {
+  return 109 + hour * 66.2 + minute * 66.2 / 60 + second * 66.2 / 3600;
 }

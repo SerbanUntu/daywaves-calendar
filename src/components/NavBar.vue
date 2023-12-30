@@ -1,69 +1,62 @@
 <script setup lang="ts">
-import NoteIcon from './icons/IconNoteLarge.vue'
-import TemplatesIcon from './icons/IconTemplatesLarge.vue'
-import RoutinesIcon from './icons/IconRoutinesLarge.vue'
-import PinsIcon from './icons/IconPinsLarge.vue'
-import BirthdaysIcon from './icons/IconBirthdaysLarge.vue'
-import AccountIcon from './icons/IconAccountLarge.vue'
-import SettingsIcon from './icons/IconSettingsLarge.vue'
-import Tooltip from './Tooltip.vue'
+import NoteIcon from './icons/IconNote70x70.vue'
+import TemplatesIcon from './icons/IconTemplates70x70.vue'
+import RoutinesIcon from './icons/IconRoutines70x70.vue'
+import PinsIcon from './icons/IconPins70x70.vue'
+import BirthdaysIcon from './icons/IconBirthdays70x70.vue'
+import AccountIcon from './icons/IconAccount70x70.vue'
+import SettingsIcon from './icons/IconSettings70x70.vue'
+import Tooltip from './util/Tooltip.vue'
 </script>
 
 <template>
-  <nav>
-    <div class="top-icons">
-      <div class="icon-container">
-        <div class="icon-background"></div>
+  <nav id="navbar">
+    <section id="navbar-top-icons" class="top-icons">
+      <article id="navbar-note-icon-container" class="icon-container">
         <i>
-          <NoteIcon />
+          <NoteIcon class="icon-svg" />
         </i>
-        <Tooltip text="Daily note" />
-      </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+        <Tooltip text="Open today's daily note" />
+      </article>
+      <article id="navbar-templates-icon-container" class="icon-container">
         <i>
-          <TemplatesIcon />
+          <TemplatesIcon class="icon-svg" />
         </i>
         <Tooltip text="Templates" />
-      </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      </article>
+      <article id="navbar-routines-icon-container" class="icon-container">
         <i>
-          <RoutinesIcon />
+          <RoutinesIcon class="icon-svg" />
         </i>
         <Tooltip text="Routines" />
-      </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      </article>
+      <article id="navbar-pins-icon-container" class="icon-container">
         <i>
-          <PinsIcon />
+          <PinsIcon class="icon-svg" />
         </i>
         <Tooltip text="Pins" />
-      </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      </article>
+      <article id="navbar-birthdays-icon-container" class="icon-container">
         <i>
-          <BirthdaysIcon />
+          <BirthdaysIcon class="icon-svg" />
         </i>
         <Tooltip text="Birthdays" />
-      </div>
-    </div>
-    <div class="bottom-icons">
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      </article>
+    </section>
+    <section id="navbar-bottom-icons" class="bottom-icons">
+      <article id="navbar-account-icon-container" class="icon-container">
         <i>
-          <AccountIcon />
+          <AccountIcon class="icon-svg" />
         </i>
         <Tooltip text="Account" />
-      </div>
-      <div class="icon-container">
-        <div class="icon-background"></div>
+      </article>
+      <article id="navbar-settings-icon-container" class="icon-container">
         <i>
-          <SettingsIcon />
+          <SettingsIcon class="icon-svg" />
         </i>
         <Tooltip text="Settings" />
-      </div>
-    </div>
+      </article>
+    </section>
   </nav>
 </template>
 
@@ -80,10 +73,11 @@ nav {
   background: var(--element-gray);
 }
 
+
 .top-icons {
   position: absolute;
   display: flex;
-  width: 100px;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   gap: 35px;
@@ -93,7 +87,7 @@ nav {
   position: absolute;
   bottom: 0px;
   display: flex;
-  width: 100px;
+  width: 100%;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
@@ -107,19 +101,19 @@ nav {
 
 .icon-container {
   display: inline-flex;
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
+  background: var(--element-gray);
+  transition: 200ms;
 }
 
 .icon-container:hover {
-  .icon-background {
-    background: var(--highlight-gray);
-    transition: 200ms;
-  }
+  background: var(--highlight-gray);
+  transition: 200ms;
 }
 
 .icon-container:active {
@@ -129,24 +123,43 @@ nav {
 }
 
 i {
-  width: 70px;
-  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1040;
-
   stroke: var(--light-gray);
 }
 
-.icon-background {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  flex-shrink: 0;
-  border-radius: 25px;
-  background: var(--element-gray);
-  transition: 200ms;
+.icon-svg {
+  width: 100%;
+  height: 100%;
 }
 
 .tooltip {
   left: 110px;
+}
+
+@media only screen and (min-height: 735px) {
+  #navbar-birthdays-icon-container {
+    .tooltip {
+      top: 455px;
+    }
+  }
+}
+
+@media only screen and (max-height: 735px) {
+  nav {
+    width: 13vh;
+  }
+
+  .top-icons,
+  .bottom-icons {
+    padding: 2vh;
+    gap: 3vh;
+  }
+
+  .tooltip {
+    left: 13vh;
+  }
 }
 </style>

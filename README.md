@@ -1,9 +1,7 @@
-![Banner](./public/banner.svg)
+![Banner](./public/BannerFill.png)
 
 A lightweight calendar app built with VueJS.
-
 # Features
-
 ### Activity
 An activity spans **minutes to hours**. It is the centrepiece of the calendar.
 ### Event
@@ -16,8 +14,7 @@ Pins are a different type of reminder. They represent activities or events which
 Templates provide an efficient and flexible way to **create** and **organize** activities. They can represent categories (activities with the same colour and structure).
 ### Routines
 Routines are used to **automatically load** items into your calendar based on the rules you set out.
-
 # Roadmap
-The app is currently in version **v0.1**.
+The app is currently in version **v0.1.4**.
 
-![Roadmap](./public/roadmap.svg)
+![Roadmap](./public/Roadmap.png)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HourMarker from './HourMarker.vue';
-import DaySquare from './DaySquare.vue';
-import TimeMarker from './icons/TimeMarker.vue';
+import HourMarker from './calendar/HourMarker.vue';
+import DaySquare from './calendar/DaySquare.vue';
+import TimeMarker from './icons/IconTimeMarker25x92.vue';
 
 import { datesArr } from '../main';
 import { dayToTop } from '../main';
@@ -14,66 +14,66 @@ type HourMarker = {
   pm: boolean,
 }
 
-let markers = ref<HourMarker[]>([]);
-
-let dates = ref<number[]>([]);
-const days: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
 let currentDate = ref<Date>(new Date());
-let currentDay: number = currentDate.value.getDay();
+let currentDay = computed(() => currentDate.value.getDay() == 0 ? 7 : currentDate.value.getDay());
+let computedTop = computed(() => ({ top: `${dayToTop(currentDay.value - 1)}px` }));
+let computedLeft = computed(() => ({ left: `${timeToLeft(currentDate.value.getHours(), currentDate.value.getMinutes(), currentDate.value.getSeconds())}px` }));
 
-markers.value = Array.from({ length: 49 }, () => ({
+const updateTime = () => {
+  document.getElementById(`${days[currentDay.value - 1]}-timeline`)?.classList.remove('current-timeline');
+  const now = new Date();
+  currentDate.value = now;
+  document.getElementById(`${days[currentDay.value - 1]}-timeline`)?.classList.add('current-timeline');
+};
+
+const days: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+let markers: HourMarker[] = Array.from({ length: 49 }, () => ({
   hour: '0',
   isHalf: false,
   pm: false,
 }));
-
 for (let i = 0; i < 49; i++) {
   if (i % 2 == 1) {
-    markers.value[i].isHalf = true;
-    markers.value[i].hour = '\'30';
+    markers[i].isHalf = true;
+    markers[i].hour = '\'30';
   } else {
-    markers.value[i].hour = ((i / 2) % 12).toString();
-    if (Number(markers.value[i].hour) == 0) {
-      markers.value[i].hour = '12';
+    markers[i].hour = ((i / 2) % 12).toString();
+    if (Number(markers[i].hour) == 0) {
+      markers[i].hour = '12';
     }
   }
   if (i > 24 && i < 48) {
-    markers.value[i].pm = true;
+    markers[i].pm = true;
   }
 }
 
 onMounted(() => {
-  dates.value = datesArr();
-  document.getElementById(`${days[currentDay - 1]}-timeline`)?.classList.add('current-timeline');
+  updateTime();
+  setInterval(updateTime, 1000);
 });
-
-const computedTop = computed(() => ({ top: `${dayToTop(currentDay - 1)}px` }));
-const computedLeft = computed(() => ({ left: `${timeToLeft(currentDate.value.getHours(), currentDate.value.getMinutes())}px` }));
-
-console.log(currentDate.value.getHours(), currentDate.value.getMinutes(), computedLeft.value);
 </script>
 
 <template>
-  <div class="calendar">
-    <div class="day-squares">
-      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="dates[i - 1]" :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :moon="true">
+  <section id="calendar" class="calendar">
+    <aside id="day-squares" class="day-squares">
+      <DaySquare :id="days[i - 1] + '-square'" v-for="i in 7" :date="datesArr(currentDate)[i - 1]"
+        :day="days[i - 1][0].toUpperCase()" :dailyNote="true" :pins="0" :birthdays="0" :moon="true">
       </DaySquare>
-    </div>
-    <div class="calendar-content">
-      <i class="time-marker" :style="{ ...computedTop, ...computedLeft }">
+    </aside>
+    <section id="calendar-content" class="calendar-content">
+      <i id="time-marker" class="time-marker" :style="{ ...computedTop, ...computedLeft }">
         <TimeMarker />
       </i>
-      <div class="hour-displays">
+      <article id="hour-displays" class="hour-displays">
         <HourMarker v-for="marker in markers" :hour="marker.hour" :isHalf="marker.isHalf" :pm="marker.pm" />
-      </div>
-      <div class="timelines">
-        <div :id="days[i - 1] + '-timeline'" class="timeline" v-for="i in 7">
-          <div class="day-line"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+      </article>
+      <article id="timelines" class="timelines">
+        <section :id="days[i - 1] + '-timeline'" class="timeline" v-for="i in 7">
+          <article :id="days[i - 1] + '-day-line'" class="day-line"></article>
+        </section>
+      </article>
+    </section>
+  </section>
 </template>
 
 <style scoped>
@@ -83,7 +83,7 @@ console.log(currentDate.value.getHours(), currentDate.value.getMinutes(), comput
   position: absolute;
   max-width: 1752px;
   right: 0px;
-  bottom: 240px;
+  bottom: 220px;
   top: 65px;
   left: 100px;
   padding-right: 5px;
@@ -170,5 +170,11 @@ console.log(currentDate.value.getHours(), currentDate.value.getMinutes(), comput
   background: var(--element-gray);
   position: absolute;
   z-index: 1010;
+}
+
+@media only screen and (max-height: 735px) {
+  .calendar {
+    left: 13vh;
+  } 
 }
 </style>

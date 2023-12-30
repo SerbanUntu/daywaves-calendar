@@ -1,44 +1,53 @@
 <script setup lang="ts">
-import Tooltip from './Tooltip.vue'
-import { weekName } from '../main';
+import Tooltip from './util/Tooltip.vue';
+import IconLeftArrow from './icons/IconLeftArrow15x19.vue';
+import IconRightArrow from './icons/IconRightArrow15x19.vue';
 
-let name = '';
-if(weekName) {
-  name = weekName();
-}
+import { weekName } from '../main';
+import { ref, computed, onMounted } from 'vue'
+
+const currentDate = ref<Date>(new Date());
+let name = computed(() => weekName(currentDate.value));
+
+const updateTime = () => {
+  const now = new Date();
+  currentDate.value = now;
+};
+
+onMounted(() => {
+  updateTime();
+  setInterval(updateTime, 1000);
+});
+
 </script>
 
 <template>
-  <header>
-    <div class="banner-container">
-      <img src="../../public/banner.svg" alt="Daywaves logo and text" />
-    </div>
-    <div class="week-navigation">
-      <div class="week-button">
-        <svg class="left-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19" fill="none">
-          <path d="M10 9.02124V9.72876L9.43398 9.375L10 9.02124Z" stroke-width="10" />
-        </svg>
+  <header id="header">
+    <section id="header-banner-container" class="banner-container">
+      <img src="../assets/images/Banner.png" alt="Daywaves logo and text" />
+    </section>
+    <section id="week-navigation-container" class="week-navigation">
+      <article id="previous-week-button" class="week-button">
+        <IconLeftArrow class="left-arrow" />
         <Tooltip text="Previous week" />
-      </div>
-      <div class="week-display">
-        <p class="font-menu-title">{{ name }}</p>
+      </article>
+      <article id="open-calendar-button" class="week-display">
+        <h1 class="font-menu-title">{{ name }}</h1>
         <Tooltip text="Open calendar" />
-      </div>
-      <div class="week-button">
-        <svg class="right-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="19" viewBox="0 0 15 19"
-          fill="none">
-          <path d="M5 9.72876V9.02124L5.56602 9.375L5 9.72876Z" stroke-width="10" />
-        </svg>
+      </article>
+      <article id="next-week-button" class="week-button">
+        <IconRightArrow class="right-arrow" />
         <Tooltip text="Next week" />
-      </div>
-    </div>
+      </article>
+    </section>
   </header>
 </template>
-  
+
 <style scoped>
 header {
   display: inline-flex;
   width: calc(100% - 100px);
+  max-width: 1820px;
   align-items: center;
   position: absolute;
   top: 0px;
@@ -50,6 +59,17 @@ header {
   height: 65px;
 }
 
+@media only screen and (max-width: 1135px) {
+  .banner-container {
+    opacity: 0;
+  }
+}
+
+img {
+  width: 197px;
+  height: 36px;
+}
+
 .week-navigation {
   height: 65px;
   display: flex;
@@ -58,15 +78,13 @@ header {
   left: calc(50% - 300px);
   gap: 10px;
   background: var(--bg-gray);
+  padding-top: 12.5px;
+  padding-bottom: 12.5px;
 }
 
 .week-button {
   width: 80px;
-  height: 40px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 40px;
+  height: 100%;
   background: var(--highlight-gray);
   stroke: var(--light-gray);
   transition: 200ms;
@@ -74,11 +92,7 @@ header {
 
 .week-display {
   width: 420px;
-  height: 40px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 40px;
+  height: 100%;
   background: var(--highlight-gray);
   transition: 200ms;
 }
@@ -86,6 +100,11 @@ header {
 .week-button,
 .week-display {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
 }
 
 .week-button:hover,
@@ -113,5 +132,11 @@ header {
 
 .tooltip {
   top: 60px;
+}
+
+@media only screen and (max-height: 735px) {
+  header {
+    left: 13vh;
+  } 
 }
 </style>
