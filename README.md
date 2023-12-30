@@ -15,6 +15,6 @@ Templates provide an efficient and flexible way to **create** and **organize** a
 ### Routines
 Routines are used to **automatically load** items into your calendar based on the rules you set out.
 # Roadmap
-The app is currently in version **v0.1**.
+The app is currently in version **v0.1.4**.
 
 ![Roadmap](./public/Roadmap.png)

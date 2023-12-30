@@ -123,6 +123,9 @@ nav {
 }
 
 i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1040;
   stroke: var(--light-gray);
 }
@@ -139,7 +142,7 @@ i {
 @media only screen and (min-height: 735px) {
   #navbar-birthdays-icon-container {
     .tooltip {
-      top: 465px;
+      top: 455px;
     }
   }
 }
@@ -152,7 +155,7 @@ i {
   .top-icons,
   .bottom-icons {
     padding: 2vh;
-    gap: 2vh;
+    gap: 3vh;
   }
 
   .tooltip {

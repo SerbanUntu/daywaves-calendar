@@ -10,14 +10,14 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 
 <template>
   <form id="data-input" class="data-input">
-    <section id="setup-stage" class="stage">
+    <section id="setup-stage" class="setup-stage stage">
       <h1>Setup</h1>
-      <article id="setup-content" class="content">
-        <section id="name-section" class="section">
+      <article id="setup-content" class="setup-content content">
+        <section id="name-section" class="name-section section">
           <label for="name-input">Name:</label>
           <input id="name-input" name="name" maxlength="50" />
         </section>
-        <section id="type-section" class="section">
+        <section id="type-section" class="type-section section">
           <label for="type-input">Type:</label>
           <select id="type-input" name="type">
             <option value="activity">Activity</option>
@@ -26,20 +26,20 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
             <option value="pin">Pin</option>
           </select>
         </section>
-        <section id="colour-section" class="section">
+        <section id="colour-section" class="colour-section section">
           <label for="colour-variant-0">Colour:</label>
-          <article id="colours-container" name="colours-container">
+          <article id="colours-container" name="colours-container" class="colours-container">
             <ColourVariant :id="'colour-variant-' + hue" v-for="hue in hues" :hue="hue" />
           </article>
         </section>
       </article>
     </section>
-    <section id="time-date-stage" class="stage">
+    <section id="time-date-stage" class="time-date-stage stage">
       <h1>Time & Date</h1>
-      <article id="time-date-content" class="content">
-        <section id="date-section" class="section">
+      <article id="time-date-content" class="time-date-content content">
+        <section id="date-section" class="date-section section">
           <label for="date-d-input">Date:</label>
-          <article id="date-inputs" name="date-inputs" class="inputs-container">
+          <article id="date-inputs" name="date-inputs" class="date-inputs inputs-container">
             <input id="date-d-input" name="date-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;/&nbsp;</p>
             <input id="date-m-input" name="date-m" maxlength="2" size="2" min="1" max="12" placeholder="MM" />
@@ -47,17 +47,17 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
             <input id="date-y-input" name="date-y" maxlength="4" size="4" min="1970" max="2070" placeholder="YYYY" />
           </article>
         </section>
-        <section id="time-section" class="section">
+        <section id="time-section" class="time-section section">
           <label for="time-h-input">Time:</label>
-          <article id="time-inputs" name="time-inputs" class="inputs-container">
+          <article id="time-inputs" name="time-inputs" class="time-inputs inputs-container">
             <input id="time-h-input" name="time-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input id="time-m-input" name="time-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
           </article>
         </section>
-        <section id="duration-section" class="section">
+        <section id="duration-section" class="duration-section section">
           <label for="duration-d-input">Duration:</label>
-          <article id="duration-inputs" name="duration-inputs" class="inputs-container">
+          <article id="duration-inputs" name="duration-inputs" class="duration-inputs inputs-container">
             <input id="duration-d-input" name="duration-d" maxlength="2" size="2" min="1" max="31" placeholder="DD" />
             <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input id="duration-h-input" name="duration-h" maxlength="2" size="2" min="0" max="24" placeholder="HH" />
@@ -65,19 +65,20 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
             <input id="duration-m-input" name="duration-m" maxlength="2" size="2" min="0" max="59" placeholder="MM" />
           </article>
         </section>
-        <section id="repeated-section" class="section">
+        <section id="repeated-section" class="repeated-section section">
           <label for="day-variant-0">Repeated:</label>
-          <DayVariant :id="'day-variant-' + index" name="day-variant" v-for="(letter, index) in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
+          <DayVariant :id="'day-variant-' + index" name="day-variant"
+            v-for="(letter, index) in ['M', 'T', 'W', 'T', 'F', 'S', 'S']" :letter="letter" />
           <i class="settings-icon">
             <IconGear />
           </i>
         </section>
       </article>
     </section>
-    <section id="links-desc-stage" class="stage">
+    <section id="links-desc-stage" class="links-desc-stage stage">
       <h1>Links & Description</h1>
-      <article id="links-desc-content" class="content">
-        <section id="links-section" class="section">
+      <article id="links-desc-content" class="links-desc-content content">
+        <section id="links-section" class="links-section section">
           <label for="link-input">Links:</label>
           <input id="link-input" name="link" type="url" />
           <article class="add-new-link">
@@ -87,7 +88,7 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
             <Tooltip text="Add new link" />
           </article>
         </section>
-        <section id="description-section" class="section">
+        <section id="description-section" class="description-section section">
           <label for="description-input">Description:</label>
           <textarea id="description-input" name="description" />
         </section>
@@ -99,7 +100,7 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 <style scoped>
 .data-input {
   display: flex;
-  height: 240px;
+  height: 220px;
   align-items: center;
   position: absolute;
   bottom: 0px;
@@ -112,57 +113,63 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 .stage {
   height: 100%;
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border-top: 1px solid var(--light-gray);
   border-bottom: 1px solid var(--light-gray);
   border-right: 1px solid var(--light-gray);
+  padding: 10px;
   background: var(--element-gray);
 
   p {
     color: var(--light-gray);
   }
+
+  label {
+    color: var(--light-gray);
+    text-align: end;
+  }
 }
 
-#setup-stage {
+.setup-stage {
   border-radius: 20px 0px 0px 0px;
   width: 455px;
+
+  label {
+    width: 60.2px;
+  }
 }
 
-#time-date-stage {
+.time-date-stage {
   width: 455px;
   left: 455px;
+
+  label {
+    width: 81.4px;
+  }
 }
 
-#links-desc-stage {
+.links-desc-stage {
   border-radius: 0px 20px 0px 0px;
   width: 910px;
   left: 910px;
+
+  label {
+    text-align: start;
+  }
 }
 
 h1 {
-  position: absolute;
-  top: 8px;
-  left: 8px;
   white-space: nowrap;
 }
 
 .content {
-  position: absolute;
-  top: 60px;
-  left: 10px;
-
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   height: 150px;
-}
-
-#name-section {
-  padding-left: 8px;
-}
-
-#type-section {
-  padding-left: 17px;
 }
 
 .section {
@@ -171,29 +178,13 @@ h1 {
   gap: 12px;
 }
 
-label {
-  color: var(--light-gray);
-}
-
-#colours-container {
+.colours-container {
   display: flex;
   width: 260px;
   align-items: flex-start;
   align-content: flex-start;
   gap: 10px;
   flex-wrap: wrap;
-}
-
-#date-section {
-  padding-left: 39px;
-}
-
-#time-section {
-  padding-left: 38px;
-}
-
-#duration-section {
-  padding-left: 6px;
 }
 
 .inputs-container {
@@ -217,43 +208,46 @@ label {
   cursor: pointer;
 }
 
-#links-desc-content {
-  display: flex;
+.links-desc-content {
   flex-direction: row;
-  width: 889px;
-  height: 150px;
-  align-items: flex-start;
   gap: 20px;
 }
 
-#links-section,
-#description-section {
+.links-section,
+.description-section {
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
+  width: 100%;
+  height: 100%;
 }
 
-#links-section input {
-  width: 400px;
-  height: 20px;
+.links-section {
+  input {
+  width: 100%;
+  }
+
+  i {
+    height: 16px;
+  }
 }
 
 .add-new-link {
   display: flex;
-  padding: 2px 0px;
+  padding: 4px 0px;
   justify-content: center;
   align-items: center;
   align-self: stretch;
   border-radius: 20px;
   background: var(--highlight-gray);
   stroke: var(--light-gray);
+  cursor: pointer;
   transition: 200ms;
 }
 
 .add-new-link:hover {
   background: var(--light-gray);
   stroke: var(--almost-white);
-  cursor: pointer;
   transition: 200ms;
 }
 
@@ -263,18 +257,18 @@ label {
 }
 
 .tooltip {
-  top: 80px;
+  top: 140px;
 }
 
 textarea {
   resize: vertical;
-  width: 469px;
-  max-height: 127px;
+  width: 100%;
+  max-height: 100%;
 }
 
 @media only screen and (max-height: 735px) {
   .data-input {
     left: 13vh;
-  } 
+  }
 }
 </style>

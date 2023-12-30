@@ -83,7 +83,7 @@ onMounted(() => {
   position: absolute;
   max-width: 1752px;
   right: 0px;
-  bottom: 240px;
+  bottom: 220px;
   top: 65px;
   left: 100px;
   padding-right: 5px;

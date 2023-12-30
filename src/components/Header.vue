@@ -65,6 +65,11 @@ header {
   }
 }
 
+img {
+  width: 197px;
+  height: 36px;
+}
+
 .week-navigation {
   height: 65px;
   display: flex;

@@ -59,15 +59,13 @@ p {
 }
 
 .zero {
-  opacity: 0;
-  transition: 0ms;
+  stroke: var(--highlight-gray);
+  color: var(--highlight-gray);
 }
 
 .zero:hover {
-  opacity: 1;
-  stroke: var(--highlight-gray);
-  color: var(--highlight-gray);
-  transition: 0ms;
+  stroke: var(--light-gray);
+  color: var(--light-gray);
 }
 
 .zero:active {
