@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import Tooltip from '@/components/util/Tooltip.vue';
-import IconBirthday from '@/components/icons/IconBirthday24x24.vue';
+import Tooltip from "@/components/util/TooltipItem.vue";
+import IconBirthday from "@/components/icons/IconBirthday24x24.vue";
 
 const props = defineProps({
-  count: Number,
+  count: {
+    default: 1,
+    type: Number
+  },
 });
 </script>
 
 <template>
   <article :class="{ 'birthday-icon': true, 'zero': count == 0 }">
     <IconBirthday />
-    <section class="count-bg" v-if="props.count != undefined"></section>
-    <p class="font-count" v-if="props.count && props.count > 1">{{ props.count }}</p>
-    <p class="large-count font-count" v-else>+</p>
+    <section
+      v-if="props.count != undefined"
+      class="count-bg" />
+    <p
+      v-if="props.count && props.count > 1"
+      class="font-count">
+      {{ props.count }}
+    </p>
+    <p
+      v-else
+      class="large-count font-count">
+      +
+    </p>
   </article>
   <Tooltip text="Birthdays" />
 </template>

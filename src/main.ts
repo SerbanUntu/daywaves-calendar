@@ -1,24 +1,24 @@
-import './assets/main.css'
+import "./assets/main.css";
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(router)
+app.use(router);
 
-app.mount('#app')
+app.mount("#app");
 
 export function datesArr(date: Date) {
-  let lastMonday: Date = new Date(date);
+  const lastMonday: Date = new Date(date);
   let change: number = lastMonday.getDay();
   if (change == 0) {
     change = 7;
   }
   lastMonday.setDate(lastMonday.getDate() - change + 1);
 
-  let result: number[] = Array(7);
+  const result: number[] = Array(7);
 
   for (let i = 0; i < 7; i++) {
     result[i] = lastMonday.getDate();
@@ -29,24 +29,24 @@ export function datesArr(date: Date) {
 }
 
 export function weekName(date: Date) {
-  let months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  let lastMonday: Date = new Date(date);
+  const months: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const lastMonday: Date = new Date(date);
   let change: number = lastMonday.getDay();
   if (change == 0) {
     change = 7;
   }
   lastMonday.setDate(lastMonday.getDate() - change + 1);
 
-  let thisSunday: Date = new Date(lastMonday);
+  const thisSunday: Date = new Date(lastMonday);
   thisSunday.setDate(thisSunday.getDate() + 6);
 
   if (thisSunday.getFullYear() > lastMonday.getFullYear()) {
-    return `${lastMonday.getDate()} ${months[lastMonday.getMonth()].slice(0, 3)} ${lastMonday.getFullYear()} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()].slice(0, 3)} ${thisSunday.getFullYear()}`
+    return `${lastMonday.getDate()} ${months[lastMonday.getMonth()].slice(0, 3)} ${lastMonday.getFullYear()} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()].slice(0, 3)} ${thisSunday.getFullYear()}`;
   }
   if (thisSunday.getMonth() > lastMonday.getMonth()) {
-    return `${lastMonday.getDate()} ${months[lastMonday.getMonth()].slice(0, 3)} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()].slice(0, 3)} ${thisSunday.getFullYear()}`
+    return `${lastMonday.getDate()} ${months[lastMonday.getMonth()].slice(0, 3)} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()].slice(0, 3)} ${thisSunday.getFullYear()}`;
   }
-  return `${lastMonday.getDate()} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()]} ${thisSunday.getFullYear()}`
+  return `${lastMonday.getDate()} - ${thisSunday.getDate()} ${months[thisSunday.getMonth()]} ${thisSunday.getFullYear()}`;
 }
 
 export function dayToTop(day: number) {

@@ -1,12 +1,17 @@
 <script setup lang="ts">
 const props = defineProps({
-  text: String,
+  text: {
+    type: String,
+    default: "",
+  }
 });
 </script>
 
 <template>
   <article class="tooltip">
-    <p class="tooltip-text">{{ props.text }}</p>
+    <p class="tooltip-text">
+      {{ props.text }}
+    </p>
   </article>
 </template>
 

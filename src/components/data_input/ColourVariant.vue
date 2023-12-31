@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from "vue";
 
 const props = defineProps({
-  hue: Number,
+  hue: {
+    default: 0,
+    type: Number
+  },
 });
 
 const computedColor = computed(() => `hsla(${props.hue}, 40%, 60%, 1)`);
 </script>
 
 <template>
-  <article class="colour-variant" :style="{ backgroundColor: computedColor }"></article>
+  <article
+    class="colour-variant"
+    :style="{ backgroundColor: computedColor }" />
 </template>
 
 <style scoped>

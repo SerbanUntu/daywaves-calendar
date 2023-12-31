@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Tooltip from '@/components/util/Tooltip.vue';
-import IconNote from '@/components/icons/IconNote24x24.vue';
+import Tooltip from "@/components/util/TooltipItem.vue";
+import IconNote from "@/components/icons/IconNote24x24.vue";
 
 </script>
 <template>

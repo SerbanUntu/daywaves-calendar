@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Tooltip from '@/components/util/Tooltip.vue';
-import IconMoon from '@/components/icons/IconMoon20x20.vue';
+import Tooltip from "@/components/util/TooltipItem.vue";
+import IconMoon from "@/components/icons/IconMoon20x20.vue";
 
 </script>
 <template>
@@ -11,7 +11,6 @@ import IconMoon from '@/components/icons/IconMoon20x20.vue';
 </template>
 
 <style scoped>
-
 .moon-icon {
   width: 24px;
   height: 24px;

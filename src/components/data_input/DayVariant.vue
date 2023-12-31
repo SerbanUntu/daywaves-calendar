@@ -1,14 +1,19 @@
 <script setup lang="ts">
 
 const props = defineProps({
-  letter: String,
+  letter: {
+    default: "M",
+    type: String
+  }
 });
 
 </script>
 
 <template>
   <article class="day-variant">
-    <p class="font-standard-small">{{ props.letter }}</p>
+    <p class="font-standard-small">
+      {{ props.letter }}
+    </p>
   </article>
 </template>
 

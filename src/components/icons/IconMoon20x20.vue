@@ -1,6 +1,12 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path class="surface"
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none">
+    <path
+      class="surface"
       d="M5 10C5 7.23858 7.23858 5 10 5C12.7614 5 15 7.23858 15 10C15 12.7614 12.7614 15 10 15C7.23858 15 5 12.7614 5 10Z"
       stroke-width="10" />
     <path
@@ -12,7 +18,9 @@
     <path
       d="M3.50002 13C3.50002 12.1716 4.17159 11.5 5.00002 11.5C5.82844 11.5 6.50002 12.1716 6.50002 13C6.50002 13.8284 5.82844 14.5 5.00002 14.5C4.17159 14.5 3.50002 13.8284 3.50002 13Z"
       stroke-width="3" />
-    <path class="bright-side"
-      d="M10 0C8.90341 0 8.90341 20 10 20C15.5228 20.0002 20 15.5229 20 10C20 4.47716 15.5228 0 10 0Z" fill="#707EC2" />
+    <path
+      class="bright-side"
+      d="M10 0C8.90341 0 8.90341 20 10 20C15.5228 20.0002 20 15.5229 20 10C20 4.47716 15.5228 0 10 0Z"
+      fill="#707EC2" />
   </svg>
 </template>

@@ -1,5 +1,5 @@
-/* Base colors */
 :root {
+  /* Base colors */
   --daywaves-blue: hsla(230, 40%, 60%, 1);
   --bg-gray: hsla(0, 0%, 11%, 1);
   --element-gray: hsla(0, 0%, 14%, 1);
@@ -8,16 +8,10 @@
   --almost-white: hsla(0, 0%, 73%, 1);
   --intense-red: hsla(0, 60%, 40%, 1);
   --intense-green: hsla(120, 60%, 40%, 1);
-}
-
-/* Semantic colours */
-:root {
+  /* Semantic colours */
   --color-background: var(--bg-gray);
   --color-text: var(--almost-white);
 }
-
-/* Dark theme */
-@media (prefers-color-scheme: dark) {}
 
 *,
 *::before,
@@ -47,9 +41,7 @@ select {
 
   line-height: 1;
 
-  font-family:
-    'Nunito Sans',
-    sans-serif;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 14px;
 }
 

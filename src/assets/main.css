@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
   background: var(--color-background);
@@ -67,7 +67,7 @@ select {
 
 .moon-icon {
   stroke: var(--element-gray);
-  
+
   .surface {
     stroke: var(--light-gray);
   }

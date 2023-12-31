@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import Tooltip from '@/components/util/Tooltip.vue';
-import IconHoliday from '@/components/icons/IconHoliday24x24.vue';
+import Tooltip from "@/components/util/TooltipItem.vue";
+import IconHoliday from "@/components/icons/IconHoliday24x24.vue";
 
 const props = defineProps({
-  count: Number,
+  count: {
+    default: 0,
+    type: Number
+  }
 });
 </script>
 
 <template>
   <article class="holiday-icon">
     <IconHoliday />
-    <section class="count-bg" v-if="props.count && props.count > 1"></section>
-    <p class="count font-count" v-if="props.count && props.count > 1">{{ props.count }}</p>
+    <section
+      v-if="props.count && props.count > 1"
+      class="count-bg" />
+    <p
+      v-if="props.count && props.count > 1"
+      class="count font-count">
+      {{ props.count }}
+    </p>
   </article>
   <Tooltip text="Holidays" />
 </template>

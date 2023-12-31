@@ -1,20 +1,44 @@
 <script setup lang="ts">
-import DSIconBirthday from './day_squares/BirthdayIcon.vue';
-import DSIconGlobe from './day_squares/GlobeIcon.vue';
-import DSIconHoliday from './day_squares/HolidayIcon.vue';
-import DSIconMoon from './day_squares/MoonIcon.vue';
-import DSIconNote from './day_squares/NoteIcon.vue';
-import DSIconPin from './day_squares/PinIcon.vue';
+import DSIconBirthday from "./day_squares/BirthdayIcon.vue";
+import DSIconGlobe from "./day_squares/GlobeIcon.vue";
+import DSIconHoliday from "./day_squares/HolidayIcon.vue";
+import DSIconMoon from "./day_squares/MoonIcon.vue";
+import DSIconNote from "./day_squares/NoteIcon.vue";
+import DSIconPin from "./day_squares/PinIcon.vue";
 
 const props = defineProps({
-  date: Number,
-  day: String,
-  dailyNote: Boolean,
-  pins: Number,
-  globe: Boolean,
-  birthdays: Number,
-  moon: Boolean,
-  holidays: Number,
+  date: {
+    default: 1,
+    type: Number
+  },
+  day: {
+    default: "M",
+    type: String
+  },
+  dailyNote: {
+    default: true,
+    type: Boolean,
+  },
+  pins: {
+    default: 0,
+    type: Number
+  },
+  globe: {
+    default: false,
+    type: Boolean
+  },
+  birthdays: {
+    default: 0,
+    type: Number
+  },
+  moon: {
+    default: true,
+    type: Boolean
+  },
+  holidays: {
+    default: 0,
+    type: Number
+  }
 });
 
 </script>
@@ -22,27 +46,37 @@ const props = defineProps({
 <template>
   <article class="day-square">
     <section class="text-container">
-      <p class="date font-standard-xl">{{ props.date }}</p>
-      <p class="day font-standard-xl">{{ props.day }}</p>
+      <p class="date font-standard-xl">
+        {{ props.date }}
+      </p>
+      <p class="day font-standard-xl">
+        {{ props.day }}
+      </p>
     </section>
     <section class="icons-container">
       <i class="daily-note">
         <DSIconNote v-if="dailyNote" />
       </i>
       <i class="pins">
-        <DSIconPin v-if="pins != undefined" :count="pins" />
+        <DSIconPin
+          v-if="pins != undefined"
+          :count="pins" />
       </i>
       <i class="globe">
         <DSIconGlobe v-if="globe" />
       </i>
       <i class="birthdays">
-        <DSIconBirthday v-if="birthdays != undefined" :count="birthdays" />
+        <DSIconBirthday
+          v-if="birthdays != undefined"
+          :count="birthdays" />
       </i>
       <i class="moon">
         <DSIconMoon v-if="moon" />
       </i>
       <i class="holidays">
-        <DSIconHoliday v-if="holidays != undefined" :count="holidays" />
+        <DSIconHoliday
+          v-if="holidays != undefined"
+          :count="holidays" />
       </i>
     </section>
   </article>
