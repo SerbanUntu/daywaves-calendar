@@ -17,8 +17,8 @@ const computedColor = computed(() => `hsla(${props.hue}, 40%, 60%, 1)`);
 
 <style scoped>
 .colour-variant {
-  height: 20px;
   width: 20px;
+  height: 20px;
   border-radius: 20px;
 }
 

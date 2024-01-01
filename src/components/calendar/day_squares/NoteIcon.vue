@@ -12,10 +12,13 @@ import IconNote from "@/components/icons/IconNote24x24.vue";
 
 <style scoped>
 .note-icon {
+  cursor: pointer;
+
   width: 24px;
   height: 24px;
-  cursor: pointer;
+
   stroke: var(--light-gray);
+
   transition: 200ms;
 }
 

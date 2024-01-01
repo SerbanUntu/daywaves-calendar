@@ -24,12 +24,17 @@ const props = defineProps({
 
 <style scoped>
 .birthday-icon {
+  cursor: pointer;
+
+  position: relative;
+
   width: 29px;
   height: 24px;
-  position: relative;
-  cursor: pointer;
-  stroke: var(--light-gray);
+
   color: var(--light-gray);
+
+  stroke: var(--light-gray);
+
   transition: 200ms;
 }
 
@@ -38,12 +43,14 @@ const props = defineProps({
 }
 
 .count-bg {
-  left: 13px;
+  z-index: 1000;
   top: 14px;
+  left: 13px;
+
   width: 16px;
   height: 10px;
+
   background: var(--element-gray);
-  z-index: 1000;
 }
 
 .large-count {
@@ -52,30 +59,30 @@ const props = defineProps({
 }
 
 p {
-  left: 13px;
-  top: 14px;
   z-index: 1001;
+  top: 14px;
+  left: 13px;
 }
 
 .birthday-icon:hover {
-  stroke: var(--daywaves-blue);
   color: var(--daywaves-blue);
+  stroke: var(--daywaves-blue);
   transition: 200ms;
 }
 
 .zero {
-  stroke: var(--highlight-gray);
   color: var(--highlight-gray);
+  stroke: var(--highlight-gray);
 }
 
 .zero:hover {
-  stroke: var(--light-gray);
   color: var(--light-gray);
+  stroke: var(--light-gray);
 }
 
 .zero:active {
-  stroke: var(--daywaves-blue);
   color: var(--daywaves-blue);
+  stroke: var(--daywaves-blue);
   transition: 0ms;
 }
 

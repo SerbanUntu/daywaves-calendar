@@ -23,18 +23,23 @@ const props = defineProps({
 
 <style scoped>
 .holiday-icon {
+  cursor: pointer;
+
+  position: relative;
+
   width: 29px;
   height: 24px;
-  position: relative;
-  cursor: pointer;
-  stroke: var(--light-gray);
+
   color: var(--light-gray);
+
+  stroke: var(--light-gray);
+
   transition: 200ms;
 }
 
 .holiday-icon:hover {
-  stroke: var(--daywaves-blue);
   color: var(--daywaves-blue);
+  stroke: var(--daywaves-blue);
   transition: 200ms;
 }
 
@@ -43,18 +48,20 @@ const props = defineProps({
 }
 
 .count-bg {
-  left: 13px;
+  z-index: 1000;
   top: 14px;
+  left: 13px;
+
   width: 16px;
   height: 10px;
+
   background: var(--element-gray);
-  z-index: 1000;
 }
 
 p {
-  left: 13px;
-  top: 14px;
   z-index: 1001;
+  top: 14px;
+  left: 13px;
 }
 
 .tooltip {

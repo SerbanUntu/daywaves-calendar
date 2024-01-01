@@ -175,28 +175,33 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 
 <style scoped>
 .data-input {
-  display: flex;
-  height: 220px;
-  align-items: center;
   position: absolute;
-  bottom: 0px;
+  right: 0;
+  bottom: 0;
   left: 100px;
-  right: 0px;
-  max-width: 1820px;
+
   overflow-x: auto;
+  display: flex;
+  align-items: center;
+
+  max-width: 1820px;
+  height: 220px;
 }
 
 .stage {
-  height: 100%;
   position: absolute;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-top: 1px solid var(--light-gray);
-  border-bottom: 1px solid var(--light-gray);
-  border-right: 1px solid var(--light-gray);
+
+  height: 100%;
   padding: 10px;
+
   background: var(--element-gray);
+  border-top: 1px solid var(--light-gray);
+  border-right: 1px solid var(--light-gray);
+  border-bottom: 1px solid var(--light-gray);
 
   p {
     color: var(--light-gray);
@@ -209,8 +214,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 }
 
 .setup-stage {
-  border-radius: 20px 0px 0px 0px;
   width: 455px;
+  border-radius: 20px 0 0;
 
   label {
     width: 60.2px;
@@ -218,8 +223,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 }
 
 .time-date-stage {
-  width: 455px;
   left: 455px;
+  width: 455px;
 
   label {
     width: 81.4px;
@@ -227,9 +232,9 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 }
 
 .links-desc-stage {
-  border-radius: 0px 20px 0px 0px;
-  width: 910px;
   left: 910px;
+  width: 910px;
+  border-radius: 0 20px 0 0;
 
   label {
     text-align: start;
@@ -245,28 +250,30 @@ h1 {
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+
   height: 150px;
 }
 
 .section {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
 }
 
 .colours-container {
   display: flex;
-  width: 260px;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 10px;
+  align-content: flex-start;
+  align-items: flex-start;
+
+  width: 260px;
 }
 
 .inputs-container {
   display: flex;
-  align-items: center;
   flex-direction: row;
+  align-items: center;
 }
 
 .colour-variant,
@@ -280,8 +287,8 @@ h1 {
 }
 
 .settings-icon:hover {
-  stroke: var(--daywaves-blue);
   cursor: pointer;
+  stroke: var(--daywaves-blue);
 }
 
 .links-desc-content {
@@ -292,8 +299,9 @@ h1 {
 .links-section,
 .description-section {
   flex-direction: column;
-  align-items: flex-start;
   gap: 5px;
+  align-items: flex-start;
+
   width: 100%;
   height: 100%;
 }
@@ -309,15 +317,20 @@ h1 {
 }
 
 .add-new-link {
+  cursor: pointer;
+
   display: flex;
-  padding: 4px 0px;
-  justify-content: center;
   align-items: center;
   align-self: stretch;
-  border-radius: 20px;
+  justify-content: center;
+
+  padding: 4px 0;
+
   background: var(--highlight-gray);
+  border-radius: 20px;
+
   stroke: var(--light-gray);
-  cursor: pointer;
+
   transition: 200ms;
 }
 
@@ -342,7 +355,7 @@ textarea {
   max-height: 100%;
 }
 
-@media only screen and (max-height: 735px) {
+@media only screen and (height <= 735px) {
   .data-input {
     left: 13vh;
   }

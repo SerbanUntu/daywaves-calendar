@@ -46,21 +46,23 @@ onMounted(() => {
 
 <style scoped>
 header {
+  position: absolute;
+  top: 0;
+  left: 100px;
+
   display: inline-flex;
+  align-items: center;
+
   width: calc(100% - 100px);
   max-width: 1820px;
-  align-items: center;
-  position: absolute;
-  top: 0px;
-  left: 100px;
 }
 
 .banner-container {
-  padding: 20px 20px;
   height: 65px;
+  padding: 20px;
 }
 
-@media only screen and (max-width: 1135px) {
+@media only screen and (width <= 1135px) {
   .banner-container {
     opacity: 0;
   }
@@ -72,22 +74,28 @@ img {
 }
 
 .week-navigation {
-  height: 65px;
-  display: flex;
-  align-items: center;
   position: absolute;
   left: calc(50% - 300px);
+
+  display: flex;
   gap: 10px;
-  background: var(--bg-gray);
+  align-items: center;
+
+  height: 65px;
   padding-top: 12.5px;
   padding-bottom: 12.5px;
+
+  background: var(--bg-gray);
 }
 
 .week-button {
   width: 80px;
   height: 100%;
+
   background: var(--highlight-gray);
+
   stroke: var(--light-gray);
+
   transition: 200ms;
 }
 
@@ -101,10 +109,12 @@ img {
 .week-button,
 .week-display {
   cursor: pointer;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   border-radius: 40px;
 }
 
@@ -135,7 +145,7 @@ img {
   top: 60px;
 }
 
-@media only screen and (max-height: 735px) {
+@media only screen and (height <= 735px) {
   header {
     left: 13vh;
   }

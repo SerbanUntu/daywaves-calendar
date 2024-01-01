@@ -1,4 +1,4 @@
-@import "./base.css";
+@import url("./base.css");
 
 #app {
   background: var(--color-background);
@@ -40,25 +40,24 @@ label,
 input,
 textarea,
 select {
-  border: 1px solid var(--light-gray);
   background: none;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none !important;
-  border: 1px solid var(--daywaves-blue);
+  border: 1px solid var(--light-gray);
 }
 
 select {
   cursor: pointer;
 }
 
-::placeholder,
-::-moz-placeholder,
-::-webkit-input-placeholder {
+input:focus,
+textarea:focus,
+select:focus {
+  border: 1px solid var(--daywaves-blue);
+  outline: none !important;
+}
+
+::placeholder {
   color: var(--light-gray);
+  opacity: 0.5;
 }
 
 .moon-icon * {
@@ -80,7 +79,7 @@ select {
 
 .moon-icon:hover {
   .surface {
-    stroke: hsla(0, 0%, 17%, 1);
+    stroke: hsl(0deg 0% 17% / 100%);
   }
 
   .bright-side {

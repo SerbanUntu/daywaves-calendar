@@ -1,13 +1,14 @@
 :root {
   /* Base colors */
-  --daywaves-blue: hsla(230, 40%, 60%, 1);
-  --bg-gray: hsla(0, 0%, 11%, 1);
-  --element-gray: hsla(0, 0%, 14%, 1);
-  --highlight-gray: hsla(0, 0%, 17%, 1);
-  --light-gray: hsla(0, 0%, 35%, 1);
-  --almost-white: hsla(0, 0%, 73%, 1);
-  --intense-red: hsla(0, 60%, 40%, 1);
-  --intense-green: hsla(120, 60%, 40%, 1);
+  --daywaves-blue: hsl(230deg 40% 60% / 100%);
+  --bg-gray: hsl(0deg 0% 11% / 100%);
+  --element-gray: hsl(0deg 0% 14% / 100%);
+  --highlight-gray: hsl(0deg 0% 17% / 100%);
+  --light-gray: hsl(0deg 0% 35% / 100%);
+  --almost-white: hsl(0deg 0% 73% / 100%);
+  --intense-red: hsl(0deg 60% 40% / 100%);
+  --intense-green: hsl(120deg 60% 40% / 100%);
+
   /* Semantic colours */
   --color-background: var(--bg-gray);
   --color-text: var(--almost-white);
@@ -22,13 +23,14 @@
 }
 
 body {
+  user-select: none;
+
   overflow: hidden;
 
-  user-select: none;
+  text-rendering: optimizelegibility;
 
   background: var(--color-background);
 
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -37,12 +39,10 @@ body,
 input,
 textarea,
 select {
-  color: var(--color-text);
-
-  line-height: 1;
-
   font-family: "Nunito Sans", sans-serif;
   font-size: 14px;
+  line-height: 1;
+  color: var(--color-text);
 }
 
 body * {

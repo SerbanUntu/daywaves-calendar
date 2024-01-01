@@ -119,102 +119,115 @@ onMounted(() => {
 
 <style scoped>
 .calendar {
+  position: absolute;
+  inset: 65px 0 220px 100px;
+
+  overflow: auto;
   display: flex;
   flex-direction: row;
-  position: absolute;
+
   max-width: 1752px;
-  right: 0px;
-  bottom: 220px;
-  top: 65px;
-  left: 100px;
   padding-right: 5px;
-  overflow: auto;
 }
 
 .day-squares {
   position: sticky;
+  z-index: 1030;
+  left: 0;
+
   display: flex;
   flex-direction: column;
-  width: 105px;
-  padding-left: 5px;
-  left: 0px;
-  padding-top: 40px;
   gap: 5px;
+
+  width: 105px;
   height: 770px;
+  padding-top: 40px;
+  padding-left: 5px;
+
   background: var(--bg-gray);
-  z-index: 1030;
 }
 
 .time-marker {
   position: absolute;
   z-index: 1019;
-  width: 25px;
-  height: 100px;
+
   display: flex;
   align-items: center;
-  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5));
+
+  width: 25px;
+  height: 100px;
+
+  /* TODO Add drop shadow */
 }
 
 .calendar-content {
   display: inline-flex;
-  height: 770px;
   flex-direction: column;
-  align-items: flex-start;
   gap: 10px;
+  align-items: flex-start;
+
+  height: 770px;
 }
 
 .hour-displays {
-  top: 0px;
   position: sticky;
   z-index: 1020;
+  top: 0;
+
   display: flex;
+  gap: 12px;
+  align-content: space-between;
+  align-items: center;
+
   width: 1622px;
   height: 30px;
   padding: 4px 6px;
-  padding-top: 0px;
-  align-items: center;
-  align-content: space-between;
-  background: var(--bg-gray);
+  padding-top: 0;
+
   opacity: 0.8;
-  gap: 12px;
+  background: var(--bg-gray);
 }
 
 .timelines {
-  display: flex;
-  width: 1622px;
-  height: 730px;
-  align-items: center;
-  align-content: center;
-  gap: 5px 0px;
-  flex-wrap: wrap;
   position: absolute;
   top: 40px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 0;
+  align-content: center;
+  align-items: center;
+
+  width: 1622px;
+  height: 730px;
 }
 
 .timeline {
-  width: 100%;
-  height: 100px;
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 100px;
 }
 
 .day-line {
-  width: 100%;
-  height: 5px;
-  background: var(--element-gray);
   position: absolute;
   z-index: 1010;
+
+  width: 100%;
+  height: 5px;
+
+  background: var(--element-gray);
 }
 
 .current-timeline {
-  background: hsla(0, 0%, 12%, 1);
+  background: hsl(0deg 0% 12% / 100%);
 }
 
 .current-timeline .day-line {
   background: var(--highlight-gray);
 }
 
-@media only screen and (max-height: 735px) {
+@media only screen and (height <= 735px) {
   .calendar {
     left: 13vh;
   }

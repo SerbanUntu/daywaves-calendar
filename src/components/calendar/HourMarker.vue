@@ -42,14 +42,16 @@ const computedColour = computed(() =>
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+
   width: 26px;
   height: 22px;
+
   opacity: 0.8;
 }
 
 .marker {
+  flex-shrink: 0;
   width: 2px;
   height: 5px;
-  flex-shrink: 0;
 }
 </style>

@@ -17,13 +17,15 @@ const props = defineProps({
 
 <style scoped>
 .day-variant {
-  height: 20px;
-  width: 20px;
-  border-radius: 20px;
-  border: 1px solid var(--light-gray);
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  border: 1px solid var(--light-gray);
+  border-radius: 20px;
 }
 
 p {

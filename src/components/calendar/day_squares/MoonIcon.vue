@@ -12,11 +12,13 @@ import IconMoon from "@/components/icons/IconMoon20x20.vue";
 
 <style scoped>
 .moon-icon {
+  cursor: pointer;
+
+  position: relative;
+
   width: 24px;
   height: 24px;
   padding: 2px;
-  cursor: pointer;
-  position: relative;
 }
 
 .moon-icon * {

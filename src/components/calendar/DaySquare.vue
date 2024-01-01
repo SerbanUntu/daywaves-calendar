@@ -79,22 +79,27 @@ const props = defineProps({
 
 <style scoped>
 .day-square {
+  position: relative;
+
   display: flex;
   flex-direction: row;
-  position: relative;
+
   width: 100px;
   height: 100px;
+
   background: var(--element-gray);
 }
 
 .text-container {
-  display: flex;
-  flex-direction: column;
   position: relative;
-  width: fit-content;
-  height: fit-content;
   top: 5px;
   left: 5px;
+
+  display: flex;
+  flex-direction: column;
+
+  width: fit-content;
+  height: fit-content;
 }
 
 .day {
@@ -103,25 +108,28 @@ const props = defineProps({
 
 .icons-container {
   position: absolute;
+  top: 6px;
+  right: 0;
+
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-self: flex-end;
+
   width: 61px;
   height: fit-content;
-  top: 6px;
-  right: 0px;
-  justify-self: flex-end;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 
 i {
   display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
   width: 24px;
   height: 24px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
 }
 
 i:nth-child(2),
