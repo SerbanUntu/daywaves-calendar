@@ -9,28 +9,50 @@ import { timeToLeft } from "../main";
 import { ref, computed, onMounted } from "vue";
 
 type HourMarkerType = {
-  hour: string,
-  isHalf: boolean,
-  pm: boolean,
-}
-
-let currentDate = ref<Date>(new Date());
-let currentDay = computed(() => currentDate.value.getDay() == 0 ? 7 : currentDate.value.getDay());
-let computedTop = computed(() => ({ top: `${dayToTop(currentDay.value - 1)}px` }));
-let computedLeft = computed(() => ({ left: `${timeToLeft(currentDate.value.getHours(), currentDate.value.getMinutes(), currentDate.value.getSeconds())}px` }));
-
-const updateTime = () => {
-  document.getElementById(`${days[currentDay.value - 1]}-timeline`)?.classList.remove("current-timeline");
-  const now = new Date();
-  currentDate.value = now;
-  document.getElementById(`${days[currentDay.value - 1]}-timeline`)?.classList.add("current-timeline");
+  hour: string;
+  isHalf: boolean;
+  pm: boolean;
 };
 
-const days: string[] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+let currentDate = ref<Date>(new Date());
+let currentDay = computed(() =>
+  currentDate.value.getDay() == 0 ? 7 : currentDate.value.getDay()
+);
+let computedTop = computed(() => ({
+  top: `${dayToTop(currentDay.value - 1)}px`
+}));
+let computedLeft = computed(() => ({
+  left: `${timeToLeft(
+    currentDate.value.getHours(),
+    currentDate.value.getMinutes(),
+    currentDate.value.getSeconds()
+  )}px`
+}));
+
+const updateTime = () => {
+  document
+    .getElementById(`${days[currentDay.value - 1]}-timeline`)
+    ?.classList.remove("current-timeline");
+  const now = new Date();
+  currentDate.value = now;
+  document
+    .getElementById(`${days[currentDay.value - 1]}-timeline`)
+    ?.classList.add("current-timeline");
+};
+
+const days: string[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday"
+];
 let markers: HourMarkerType[] = Array.from({ length: 49 }, () => ({
   hour: "0",
   isHalf: false,
-  pm: false,
+  pm: false
 }));
 for (let i = 0; i < 49; i++) {
   if (i % 2 == 1) {
@@ -54,12 +76,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <section
-    id="calendar"
-    class="calendar">
-    <aside
-      id="day-squares"
-      class="day-squares">
+  <section id="calendar" class="calendar">
+    <aside id="day-squares" class="day-squares">
       <DaySquare
         v-for="i in 7"
         :id="days[i - 1] + '-square'"
@@ -71,18 +89,14 @@ onMounted(() => {
         :birthdays="0"
         :moon="true" />
     </aside>
-    <section
-      id="calendar-content"
-      class="calendar-content">
+    <section id="calendar-content" class="calendar-content">
       <i
         id="time-marker"
         class="time-marker"
         :style="{ ...computedTop, ...computedLeft }">
         <TimeMarker />
       </i>
-      <article
-        id="hour-displays"
-        class="hour-displays">
+      <article id="hour-displays" class="hour-displays">
         <HourMarker
           v-for="(marker, index) in markers"
           :key="index"
@@ -90,17 +104,13 @@ onMounted(() => {
           :is-half="marker.isHalf"
           :pm="marker.pm" />
       </article>
-      <article
-        id="timelines"
-        class="timelines">
+      <article id="timelines" class="timelines">
         <section
           v-for="i in 7"
           :id="days[i - 1] + '-timeline'"
           :key="i"
           class="timeline">
-          <article
-            :id="days[i - 1] + '-day-line'"
-            class="day-line" />
+          <article :id="days[i - 1] + '-day-line'" class="day-line" />
         </section>
       </article>
     </section>
@@ -142,7 +152,7 @@ onMounted(() => {
   height: 100px;
   display: flex;
   align-items: center;
-  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.50));
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5));
 }
 
 .calendar-content {
@@ -161,6 +171,7 @@ onMounted(() => {
   width: 1622px;
   height: 30px;
   padding: 4px 6px;
+  padding-top: 0px;
   align-items: center;
   align-content: space-between;
   background: var(--bg-gray);

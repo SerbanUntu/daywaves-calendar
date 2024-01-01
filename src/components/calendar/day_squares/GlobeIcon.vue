@@ -14,14 +14,14 @@ let isHovered = ref<boolean>(false);
       v-if="!isHovered"
       src="../../../assets/images/GlobeVectorGray.png"
       alt="Gray icon of the globe"
-      fetchpriority="low">
+      fetchpriority="low" />
     <img
       v-else
       src="../../../assets/images/GlobeVectorBlue.png"
       alt="Blue icon of the globe"
-      fetchpriority="low">
+      fetchpriority="low" />
+    <Tooltip text="Earth data" />
   </article>
-  <Tooltip text="Earth data" />
 </template>
 
 <style scoped>

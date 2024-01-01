@@ -1,12 +1,10 @@
 <script setup lang="ts">
-
 const props = defineProps({
   letter: {
     default: "M",
     type: String
   }
 });
-
 </script>
 
 <template>

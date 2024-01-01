@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Tooltip from "@/components/util/TooltipItem.vue";
 import IconMoon from "@/components/icons/IconMoon20x20.vue";
-
 </script>
+
 <template>
   <article class="moon-icon">
     <IconMoon />
+    <Tooltip text="Moon data" />
   </article>
-  <Tooltip text="Moon data" />
 </template>
 
 <style scoped>
@@ -16,9 +16,15 @@ import IconMoon from "@/components/icons/IconMoon20x20.vue";
   height: 24px;
   padding: 2px;
   cursor: pointer;
+  position: relative;
+}
+
+.moon-icon * {
+  position: absolute;
 }
 
 .tooltip {
+  top: -2px;
   left: 30px;
 }
 </style>

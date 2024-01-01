@@ -18,38 +18,25 @@ onMounted(() => {
   updateTime();
   setInterval(updateTime, 1000);
 });
-
 </script>
 
 <template>
   <header id="header">
-    <section
-      id="header-banner-container"
-      class="banner-container">
-      <img
-        src="../assets/images/Banner.png"
-        alt="Daywaves logo and text">
+    <section id="header-banner-container" class="banner-container">
+      <img src="../assets/images/Banner.png" alt="Daywaves logo and text" />
     </section>
-    <section
-      id="week-navigation-container"
-      class="week-navigation">
-      <article
-        id="previous-week-button"
-        class="week-button">
+    <section id="week-navigation-container" class="week-navigation">
+      <article id="previous-week-button" class="week-button">
         <IconLeftArrow class="left-arrow" />
         <Tooltip text="Previous week" />
       </article>
-      <article
-        id="open-calendar-button"
-        class="week-display">
+      <article id="open-calendar-button" class="week-display">
         <h1 class="font-menu-title">
           {{ name }}
         </h1>
         <Tooltip text="Open calendar" />
       </article>
-      <article
-        id="next-week-button"
-        class="week-button">
+      <article id="next-week-button" class="week-button">
         <IconRightArrow class="right-arrow" />
         <Tooltip text="Next week" />
       </article>

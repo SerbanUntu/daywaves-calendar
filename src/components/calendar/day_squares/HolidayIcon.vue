@@ -13,16 +13,12 @@ const props = defineProps({
 <template>
   <article class="holiday-icon">
     <IconHoliday />
-    <section
-      v-if="props.count && props.count > 1"
-      class="count-bg" />
-    <p
-      v-if="props.count && props.count > 1"
-      class="count font-count">
+    <section v-if="props.count && props.count > 1" class="count-bg" />
+    <p v-if="props.count && props.count > 1" class="count font-count">
       {{ props.count }}
     </p>
+    <Tooltip text="Holidays" />
   </article>
-  <Tooltip text="Holidays" />
 </template>
 
 <style scoped>
@@ -62,6 +58,6 @@ p {
 }
 
 .tooltip {
-  left: 62px;
+  left: 30px;
 }
 </style>

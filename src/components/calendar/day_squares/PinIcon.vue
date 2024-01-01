@@ -11,20 +11,14 @@ const props = defineProps({
 </script>
 
 <template>
-  <article :class="{ 'pin-icon': true, 'zero': count == 0 }">
+  <article :class="{ 'pin-icon': true, zero: count == 0 }">
     <IconPin />
-    <p
-      v-if="props.count && props.count > 1"
-      class="font-count">
+    <p v-if="props.count && props.count > 1" class="font-count">
       {{ props.count }}
     </p>
-    <p
-      v-else
-      class="large-count font-count">
-      +
-    </p>
+    <p v-else class="large-count font-count">+</p>
+    <Tooltip text="Pins" />
   </article>
-  <Tooltip text="Pins" />
 </template>
 
 <style scoped>
@@ -76,6 +70,6 @@ p {
 }
 
 .tooltip {
-  left: 62px;
+  left: 30px;
 }
 </style>

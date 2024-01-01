@@ -5,16 +5,14 @@ const props = defineProps({
   hue: {
     default: 0,
     type: Number
-  },
+  }
 });
 
 const computedColor = computed(() => `hsla(${props.hue}, 40%, 60%, 1)`);
 </script>
 
 <template>
-  <article
-    class="colour-variant"
-    :style="{ backgroundColor: computedColor }" />
+  <article class="colour-variant" :style="{ backgroundColor: computedColor }" />
 </template>
 
 <style scoped>

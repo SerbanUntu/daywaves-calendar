@@ -17,7 +17,7 @@ const props = defineProps({
   },
   dailyNote: {
     default: true,
-    type: Boolean,
+    type: Boolean
   },
   pins: {
     default: 0,
@@ -40,7 +40,6 @@ const props = defineProps({
     type: Number
   }
 });
-
 </script>
 
 <template>
@@ -58,24 +57,20 @@ const props = defineProps({
         <DSIconNote v-if="dailyNote" />
       </i>
       <i class="pins">
-        <DSIconPin
-          v-if="pins != undefined"
-          :count="pins" />
+        <DSIconPin v-if="pins != undefined" :count="pins" />
       </i>
       <i class="globe">
         <DSIconGlobe v-if="globe" />
       </i>
       <i class="birthdays">
-        <DSIconBirthday
-          v-if="birthdays != undefined"
-          :count="birthdays" />
+        <DSIconBirthday v-if="birthdays != undefined" :count="birthdays" />
       </i>
       <i class="moon">
         <DSIconMoon v-if="moon" />
       </i>
       <i class="holidays">
         <DSIconHoliday
-          v-if="holidays != undefined"
+          v-if="holidays != undefined && holidays > 0"
           :count="holidays" />
       </i>
     </section>
@@ -86,6 +81,7 @@ const props = defineProps({
 .day-square {
   display: flex;
   flex-direction: row;
+  position: relative;
   width: 100px;
   height: 100px;
   background: var(--element-gray);
@@ -106,12 +102,12 @@ const props = defineProps({
 }
 
 .icons-container {
-  position: relative;
+  position: absolute;
   display: flex;
   width: 61px;
   height: fit-content;
   top: 6px;
-  left: 15px;
+  right: 0px;
   justify-self: flex-end;
   align-items: flex-start;
   align-content: flex-start;

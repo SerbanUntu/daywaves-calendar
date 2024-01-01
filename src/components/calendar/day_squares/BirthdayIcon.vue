@@ -6,28 +6,20 @@ const props = defineProps({
   count: {
     default: 1,
     type: Number
-  },
+  }
 });
 </script>
 
 <template>
-  <article :class="{ 'birthday-icon': true, 'zero': count == 0 }">
+  <article :class="{ 'birthday-icon': true, zero: count == 0 }">
     <IconBirthday />
-    <section
-      v-if="props.count != undefined"
-      class="count-bg" />
-    <p
-      v-if="props.count && props.count > 1"
-      class="font-count">
+    <section v-if="props.count != undefined" class="count-bg" />
+    <p v-if="props.count && props.count > 1" class="font-count">
       {{ props.count }}
     </p>
-    <p
-      v-else
-      class="large-count font-count">
-      +
-    </p>
+    <p v-else class="large-count font-count">+</p>
+    <Tooltip text="Birthdays" />
   </article>
-  <Tooltip text="Birthdays" />
 </template>
 
 <style scoped>
@@ -88,7 +80,7 @@ p {
 }
 
 .tooltip {
-  top: 36px;
-  left: 62px;
+  top: 2px;
+  left: 30px;
 }
 </style>

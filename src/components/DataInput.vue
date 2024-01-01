@@ -9,51 +9,24 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 </script>
 
 <template>
-  <form
-    id="data-input"
-    class="data-input">
-    <section
-      id="setup-stage"
-      class="setup-stage stage">
-      <h1>
-        Setup
-      </h1>
-      <article
-        id="setup-content"
-        class="setup-content content">
-        <section
-          id="name-section"
-          class="name-section section">
+  <form id="data-input" class="data-input">
+    <section id="setup-stage" class="setup-stage stage">
+      <h1>Setup</h1>
+      <article id="setup-content" class="setup-content content">
+        <section id="name-section" class="name-section section">
           <label for="name-input">Name:</label>
-          <input
-            id="name-input"
-            name="name"
-            maxlength="50">
+          <input id="name-input" name="name" maxlength="50" />
         </section>
-        <section
-          id="type-section"
-          class="type-section section">
+        <section id="type-section" class="type-section section">
           <label for="type-input">Type:</label>
-          <select
-            id="type-input"
-            name="type">
-            <option value="activity">
-              Activity
-            </option>
-            <option value="event">
-              Event
-            </option>
-            <option value="flag">
-              Flag
-            </option>
-            <option value="pin">
-              Pin
-            </option>
+          <select id="type-input" name="type">
+            <option value="activity">Activity</option>
+            <option value="event">Event</option>
+            <option value="flag">Flag</option>
+            <option value="pin">Pin</option>
           </select>
         </section>
-        <section
-          id="colour-section"
-          class="colour-section section">
+        <section id="colour-section" class="colour-section section">
           <label for="colour-variant-0">Colour:</label>
           <article
             id="colours-container"
@@ -68,18 +41,10 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
         </section>
       </article>
     </section>
-    <section
-      id="time-date-stage"
-      class="time-date-stage stage">
-      <h1>
-        Time & Date
-      </h1>
-      <article
-        id="time-date-content"
-        class="time-date-content content">
-        <section
-          id="date-section"
-          class="date-section section">
+    <section id="time-date-stage" class="time-date-stage stage">
+      <h1>Time & Date</h1>
+      <article id="time-date-content" class="time-date-content content">
+        <section id="date-section" class="date-section section">
           <label for="date-d-input">Date:</label>
           <article
             id="date-inputs"
@@ -92,10 +57,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="1"
               max="31"
-              placeholder="DD">
-            <p class="font-standard-large">
-              &nbsp;/&nbsp;
-            </p>
+              placeholder="DD" />
+            <p class="font-standard-large">&nbsp;/&nbsp;</p>
             <input
               id="date-m-input"
               name="date-m"
@@ -103,10 +66,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="1"
               max="12"
-              placeholder="MM">
-            <p class="font-standard-large">
-              &nbsp;/&nbsp;
-            </p>
+              placeholder="MM" />
+            <p class="font-standard-large">&nbsp;/&nbsp;</p>
             <input
               id="date-y-input"
               name="date-y"
@@ -114,12 +75,10 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="4"
               min="1970"
               max="2070"
-              placeholder="YYYY">
+              placeholder="YYYY" />
           </article>
         </section>
-        <section
-          id="time-section"
-          class="time-section section">
+        <section id="time-section" class="time-section section">
           <label for="time-h-input">Time:</label>
           <article
             id="time-inputs"
@@ -132,10 +91,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="0"
               max="24"
-              placeholder="HH">
-            <p class="font-standard-large">
-              &nbsp;:&nbsp;
-            </p>
+              placeholder="HH" />
+            <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input
               id="time-m-input"
               name="time-m"
@@ -143,12 +100,10 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="0"
               max="59"
-              placeholder="MM">
+              placeholder="MM" />
           </article>
         </section>
-        <section
-          id="duration-section"
-          class="duration-section section">
+        <section id="duration-section" class="duration-section section">
           <label for="duration-d-input">Duration:</label>
           <article
             id="duration-inputs"
@@ -161,10 +116,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="1"
               max="31"
-              placeholder="DD">
-            <p class="font-standard-large">
-              &nbsp;:&nbsp;
-            </p>
+              placeholder="DD" />
+            <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input
               id="duration-h-input"
               name="duration-h"
@@ -172,10 +125,8 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="0"
               max="24"
-              placeholder="HH">
-            <p class="font-standard-large">
-              &nbsp;:&nbsp;
-            </p>
+              placeholder="HH" />
+            <p class="font-standard-large">&nbsp;:&nbsp;</p>
             <input
               id="duration-m-input"
               name="duration-m"
@@ -183,12 +134,10 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
               size="2"
               min="0"
               max="59"
-              placeholder="MM">
+              placeholder="MM" />
           </article>
         </section>
-        <section
-          id="repeated-section"
-          class="repeated-section section">
+        <section id="repeated-section" class="repeated-section section">
           <label for="day-variant-0">Repeated:</label>
           <DayVariant
             v-for="(letter, index) in ['M', 'T', 'W', 'T', 'F', 'S', 'S']"
@@ -202,23 +151,12 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
         </section>
       </article>
     </section>
-    <section
-      id="links-desc-stage"
-      class="links-desc-stage stage">
-      <h1>
-        Links & Description
-      </h1>
-      <article
-        id="links-desc-content"
-        class="links-desc-content content">
-        <section
-          id="links-section"
-          class="links-section section">
+    <section id="links-desc-stage" class="links-desc-stage stage">
+      <h1>Links & Description</h1>
+      <article id="links-desc-content" class="links-desc-content content">
+        <section id="links-section" class="links-section section">
           <label for="link-input">Links:</label>
-          <input
-            id="link-input"
-            name="link"
-            type="url">
+          <input id="link-input" name="link" type="url" />
           <article class="add-new-link">
             <i class="plus-icon">
               <IconPlus />
@@ -226,13 +164,9 @@ const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
             <Tooltip text="Add new link" />
           </article>
         </section>
-        <section
-          id="description-section"
-          class="description-section section">
+        <section id="description-section" class="description-section section">
           <label for="description-input">Description:</label>
-          <textarea
-            id="description-input"
-            name="description" />
+          <textarea id="description-input" name="description" />
         </section>
       </article>
     </section>
