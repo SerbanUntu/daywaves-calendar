@@ -552,7 +552,7 @@ textarea {
   cursor: pointer;
 
   position: absolute;
-  z-index: 2000;
+  z-index: 1030;
   top: 10px;
   right: 10px;
 

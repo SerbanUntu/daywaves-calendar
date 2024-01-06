@@ -10,6 +10,26 @@ app.use(router);
 
 app.mount("#app");
 
+document.getElementById("app").addEventListener("mousemove", getCursor);
+
+let cursorX = 0;
+let cursorY = 0;
+
+function getCursor(event) {
+  cursorX = event.clientX;
+  cursorY = event.clientY;
+}
+
+export function getCursorX() {
+  console.log(cursorX);
+  return cursorX;
+}
+
+export function getCursorY() {
+  console.log(cursorY);
+  return cursorY;
+}
+
 export function datesArr(date: Date) {
   const lastMonday: Date = new Date(date);
   let change: number = lastMonday.getDay();
@@ -81,4 +101,8 @@ export function dayToTop(day: number) {
 
 export function timeToLeft(hour: number, minute: number, second: number) {
   return 109 + hour * 66.2 + (minute * 66.2) / 60 + (second * 66.2) / 3600;
+}
+
+export function timeToWidth(hour: number, minute: number) {
+  return hour * 66.2 + (minute * 66.2) / 60;
 }
