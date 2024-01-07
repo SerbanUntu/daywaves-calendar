@@ -1,24 +1,14 @@
 <script setup lang="ts">
-import Tooltip from './util/Tooltip.vue';
-import IconLeftArrow from './icons/IconLeftArrow15x19.vue';
-import IconRightArrow from './icons/IconRightArrow15x19.vue';
+import Tooltip from "./util/TooltipItem.vue";
+import IconLeftArrow from "./icons/IconLeftArrow15x19.vue";
+import IconRightArrow from "./icons/IconRightArrow15x19.vue";
 
-import { weekName } from '../main';
-import { ref, computed, onMounted } from 'vue'
+import { useActivitiesStore } from "@/stores/Activities";
+import { storeToRefs } from "pinia";
 
-const currentDate = ref<Date>(new Date());
-let name = computed(() => weekName(currentDate.value));
+let store = useActivitiesStore();
 
-const updateTime = () => {
-  const now = new Date();
-  currentDate.value = now;
-};
-
-onMounted(() => {
-  updateTime();
-  setInterval(updateTime, 1000);
-});
-
+const { displayWeek } = storeToRefs(store);
 </script>
 
 <template>
@@ -27,15 +17,23 @@ onMounted(() => {
       <img src="../assets/images/Banner.png" alt="Daywaves logo and text" />
     </section>
     <section id="week-navigation-container" class="week-navigation">
-      <article id="previous-week-button" class="week-button">
+      <article
+        id="previous-week-button"
+        class="week-button"
+        @click="store.changeDisplay(-1)">
         <IconLeftArrow class="left-arrow" />
         <Tooltip text="Previous week" />
       </article>
       <article id="open-calendar-button" class="week-display">
-        <h1 class="font-menu-title">{{ name }}</h1>
+        <h1 class="font-menu-title">
+          {{ displayWeek }}
+        </h1>
         <Tooltip text="Open calendar" />
       </article>
-      <article id="next-week-button" class="week-button">
+      <article
+        id="next-week-button"
+        class="week-button"
+        @click="store.changeDisplay(1)">
         <IconRightArrow class="right-arrow" />
         <Tooltip text="Next week" />
       </article>
@@ -45,21 +43,23 @@ onMounted(() => {
 
 <style scoped>
 header {
+  position: absolute;
+  top: 0;
+  left: 100px;
+
   display: inline-flex;
+  align-items: center;
+
   width: calc(100% - 100px);
   max-width: 1820px;
-  align-items: center;
-  position: absolute;
-  top: 0px;
-  left: 100px;
 }
 
 .banner-container {
-  padding: 20px 20px;
   height: 65px;
+  padding: 20px;
 }
 
-@media only screen and (max-width: 1135px) {
+@media only screen and (width <= 1135px) {
   .banner-container {
     opacity: 0;
   }
@@ -71,22 +71,28 @@ img {
 }
 
 .week-navigation {
-  height: 65px;
-  display: flex;
-  align-items: center;
   position: absolute;
   left: calc(50% - 300px);
+
+  display: flex;
   gap: 10px;
-  background: var(--bg-gray);
+  align-items: center;
+
+  height: 65px;
   padding-top: 12.5px;
   padding-bottom: 12.5px;
+
+  background: var(--bg-gray);
 }
 
 .week-button {
   width: 80px;
   height: 100%;
+
   background: var(--highlight-gray);
+
   stroke: var(--light-gray);
+
   transition: 200ms;
 }
 
@@ -100,10 +106,12 @@ img {
 .week-button,
 .week-display {
   cursor: pointer;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   border-radius: 40px;
 }
 
@@ -134,9 +142,9 @@ img {
   top: 60px;
 }
 
-@media only screen and (max-height: 735px) {
+@media only screen and (height <= 735px) {
   header {
     left: 13vh;
-  } 
+  }
 }
 </style>

@@ -1,29 +1,56 @@
 <script setup lang="ts">
-import DSIconBirthday from './day_squares/BirthdayIcon.vue';
-import DSIconGlobe from './day_squares/GlobeIcon.vue';
-import DSIconHoliday from './day_squares/HolidayIcon.vue';
-import DSIconMoon from './day_squares/MoonIcon.vue';
-import DSIconNote from './day_squares/NoteIcon.vue';
-import DSIconPin from './day_squares/PinIcon.vue';
+import DSIconBirthday from "./day_squares/BirthdayIcon.vue";
+import DSIconGlobe from "./day_squares/GlobeIcon.vue";
+import DSIconHoliday from "./day_squares/HolidayIcon.vue";
+import DSIconMoon from "./day_squares/MoonIcon.vue";
+import DSIconNote from "./day_squares/NoteIcon.vue";
+import DSIconPin from "./day_squares/PinIcon.vue";
 
 const props = defineProps({
-  date: Number,
-  day: String,
-  dailyNote: Boolean,
-  pins: Number,
-  globe: Boolean,
-  birthdays: Number,
-  moon: Boolean,
-  holidays: Number,
+  date: {
+    default: 1,
+    type: Number
+  },
+  day: {
+    default: "M",
+    type: String
+  },
+  dailyNote: {
+    default: true,
+    type: Boolean
+  },
+  pins: {
+    default: 0,
+    type: Number
+  },
+  globe: {
+    default: false,
+    type: Boolean
+  },
+  birthdays: {
+    default: 0,
+    type: Number
+  },
+  moon: {
+    default: true,
+    type: Boolean
+  },
+  holidays: {
+    default: 0,
+    type: Number
+  }
 });
-
 </script>
 
 <template>
   <article class="day-square">
     <section class="text-container">
-      <p class="date font-standard-xl">{{ props.date }}</p>
-      <p class="day font-standard-xl">{{ props.day }}</p>
+      <p class="date font-standard-xl">
+        {{ props.date }}
+      </p>
+      <p class="day font-standard-xl">
+        {{ props.day }}
+      </p>
     </section>
     <section class="icons-container">
       <i class="daily-note">
@@ -42,7 +69,9 @@ const props = defineProps({
         <DSIconMoon v-if="moon" />
       </i>
       <i class="holidays">
-        <DSIconHoliday v-if="holidays != undefined" :count="holidays" />
+        <DSIconHoliday
+          v-if="holidays != undefined && holidays > 0"
+          :count="holidays" />
       </i>
     </section>
   </article>
@@ -50,21 +79,27 @@ const props = defineProps({
 
 <style scoped>
 .day-square {
+  position: relative;
+
   display: flex;
   flex-direction: row;
+
   width: 100px;
   height: 100px;
+
   background: var(--element-gray);
 }
 
 .text-container {
-  display: flex;
-  flex-direction: column;
   position: relative;
-  width: fit-content;
-  height: fit-content;
   top: 5px;
   left: 5px;
+
+  display: flex;
+  flex-direction: column;
+
+  width: fit-content;
+  height: fit-content;
 }
 
 .day {
@@ -72,26 +107,29 @@ const props = defineProps({
 }
 
 .icons-container {
-  position: relative;
+  position: absolute;
+  top: 6px;
+  right: 0;
+
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-self: flex-end;
+
   width: 61px;
   height: fit-content;
-  top: 6px;
-  left: 15px;
-  justify-self: flex-end;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 
 i {
   display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
   width: 24px;
   height: 24px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
 }
 
 i:nth-child(2),

@@ -1,26 +1,36 @@
 <script setup lang="ts">
 const props = defineProps({
-  text: String,
+  text: {
+    type: String,
+    default: ""
+  }
 });
 </script>
 
 <template>
   <article class="tooltip">
-    <p class="tooltip-text">{{ props.text }}</p>
+    <p class="tooltip-text">
+      {{ props.text }}
+    </p>
   </article>
 </template>
 
 <style scoped>
 .tooltip {
-  display: inline-flex;
-  padding: 6px 10px;
-  justify-content: center;
-  align-items: center;
-  background: #000000;
-  border-radius: 25px;
-  z-index: 1070;
   position: absolute;
+  z-index: 1070;
   scale: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+
+  background: black;
+  border-radius: 25px;
+
+  transition: all 200ms cubic-bezier(0.15, 0.7, 0.5, 1);
 }
 
 *:has(> .tooltip):hover .tooltip {

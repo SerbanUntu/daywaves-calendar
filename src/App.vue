@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue'
-import Header from './components/Header.vue'
-import DataInput from './components/DataInput.vue'
-import Calendar from './components/Calendar.vue';
+import { RouterView } from "vue-router";
+import NavBar from "./components/PageNavbar.vue";
+import Header from "./components/PageHeader.vue";
+import DataInput from "./components/DataInput.vue";
+import Calendar from "./components/CalendarContent.vue";
 </script>
 
 <template>
@@ -13,5 +13,3 @@ import Calendar from './components/Calendar.vue';
   <DataInput />
   <RouterView />
 </template>
-
-<style scoped></style>
