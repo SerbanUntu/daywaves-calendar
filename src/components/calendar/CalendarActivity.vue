@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { dayToTop, timeToLeft, timeToWidth } from "@/main";
+import { useActivitiesStore } from "@/stores/Activities";
 import { computed, ref } from "vue";
 import Tooltip from "../util/TooltipItem.vue";
+
+const store = useActivitiesStore();
 
 const props = defineProps({
   name: {
@@ -29,7 +31,7 @@ const props = defineProps({
 let displayDate = ref<Date>(new Date());
 let sameWeek: boolean = true;
 let activityName = ref<string>(props.name);
-let activityWidth: number = timeToWidth(props.durationH, props.durationM);
+let activityWidth: number = store.timeToWidth(props.durationH, props.durationM);
 
 if (props.durationH == 0 && props.durationM < 30) {
   activityName.value = "";
@@ -57,12 +59,12 @@ if (
 let computedStyle = computed(() => ({
   width: `${activityWidth}px`,
   background: `hsl(${props.hue}deg 40% 60% / 100%)`,
-  left: `calc(11.6px + ${timeToLeft(
+  left: `calc(11.6px + ${store.timeToLeft(
     props.date.getHours(),
     props.date.getMinutes(),
     0
   )}px)`,
-  top: `calc(10px + ${dayToTop(adjustedDay - 1)}px)`,
+  top: `calc(10px + ${store.dayToTop(adjustedDay - 1)}px)`,
   opacity: `${sameWeek ? 1 : 0}`
 }));
 

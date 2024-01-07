@@ -3,42 +3,32 @@ import HourMarker from "./calendar/HourMarker.vue";
 import DaySquare from "./calendar/DaySquare.vue";
 import TimeMarker from "./icons/IconTimeMarker25x92.vue";
 
-import { datesArr } from "../main";
-import { dayToTop } from "../main";
-import { timeToLeft } from "../main";
-import { ref, computed, onMounted } from "vue";
+import { useActivitiesStore } from "@/stores/Activities";
+import { computed } from "vue";
+import { storeToRefs } from "pinia";
+
+const store = useActivitiesStore();
+
+const { currentDate, displayDate } = storeToRefs(store);
 
 type HourMarkerType = {
   hour: string;
   isHalf: boolean;
   pm: boolean;
 };
-
-let currentDate = ref<Date>(new Date());
 let currentDay = computed(() =>
   currentDate.value.getDay() == 0 ? 7 : currentDate.value.getDay()
 );
 let computedTop = computed(() => ({
-  top: `${dayToTop(currentDay.value - 1)}px`
+  top: `${store.dayToTop(currentDay.value - 1)}px`
 }));
 let computedLeft = computed(() => ({
-  left: `${timeToLeft(
+  left: `${store.timeToLeft(
     currentDate.value.getHours(),
     currentDate.value.getMinutes(),
     currentDate.value.getSeconds()
   )}px`
 }));
-
-const updateTime = () => {
-  document
-    .getElementById(`${days[currentDay.value - 1]}-timeline`)
-    ?.classList.remove("current-timeline");
-  const now = new Date();
-  currentDate.value = now;
-  document
-    .getElementById(`${days[currentDay.value - 1]}-timeline`)
-    ?.classList.add("current-timeline");
-};
 
 const days: string[] = [
   "monday",
@@ -68,11 +58,6 @@ for (let i = 0; i < 49; i++) {
     markers[i].pm = true;
   }
 }
-
-onMounted(() => {
-  updateTime();
-  setInterval(updateTime, 1000);
-});
 </script>
 
 <template>
@@ -82,7 +67,7 @@ onMounted(() => {
         v-for="i in 7"
         :id="days[i - 1] + '-square'"
         :key="i"
-        :date="datesArr(currentDate)[i - 1]"
+        :date="store.datesArr(displayDate)[i - 1]"
         :day="days[i - 1][0].toUpperCase()"
         :daily-note="true"
         :pins="0"
@@ -91,6 +76,7 @@ onMounted(() => {
     </aside>
     <section id="calendar-content" class="calendar-content">
       <i
+        v-if="store.sameWeek(displayDate, currentDate)"
         id="time-marker"
         class="time-marker"
         :style="{ ...computedTop, ...computedLeft }">
@@ -109,7 +95,11 @@ onMounted(() => {
           v-for="i in 7"
           :id="days[i - 1] + '-timeline'"
           :key="i"
-          class="timeline">
+          :class="{
+            timeline: true,
+            'current-timeline':
+              i == currentDay && store.sameWeek(displayDate, currentDate)
+          }">
           <article :id="days[i - 1] + '-day-line'" class="day-line" />
         </section>
       </article>
