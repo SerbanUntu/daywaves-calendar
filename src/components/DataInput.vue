@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ColourVariant from "./data_input/ColourVariant.vue";
 import DayVariant from "./data_input/DayVariant.vue";
 import Tooltip from "./util/TooltipItem.vue";
 import IconGear from "./icons/IconGear20x20.vue";
@@ -7,7 +6,11 @@ import IconPlus from "./icons/IconPlus16x16.vue";
 import TemplatesIcon from "./icons/IconTemplates70x70.vue";
 import ImportArrowIcon from "./icons/IconImportArrow33x24.vue";
 import PlusIcon from "./icons/IconPlus16x16.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { ActivityType } from "@/stores/Activities";
+import { useActivitiesStore } from "@/stores/Activities";
+
+const store = useActivitiesStore();
 
 enum DataInputEvent {
   None,
@@ -17,6 +20,51 @@ enum DataInputEvent {
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 let formState = ref<DataInputEvent>(DataInputEvent.None);
+let dataInputValid = computed(
+  () =>
+    inputName.value &&
+    inputHue.value &&
+    inputDateD.value &&
+    inputDateM.value &&
+    inputDateY.value &&
+    inputTimeH.value &&
+    inputTimeM.value &&
+    inputDurationM.value &&
+    inputDurationH.value &&
+    inputDateY.value >= 1970 &&
+    inputDateY.value <= 2070 &&
+    !isNaN(
+      new Date(
+        `${inputDateY.value}-${inputDateM.value}-${inputDateD.value}T${inputTimeH.value}:${inputTimeM.value}Z`
+      ).getTime()
+    ) &&
+    inputDurationH.value < 24 &&
+    inputDurationM.value < 60 &&
+    (inputDurationH.value > 0 ||
+      (inputDurationH.value == 0 && inputDurationM.value > 0)) &&
+    inputDurationM.value >= 0 &&
+    Number(inputDurationH.value) * 60 +
+      Number(inputDurationM.value) +
+      Number(inputTimeH.value) * 60 +
+      Number(inputTimeM.value) <=
+      1440
+);
+
+let currentLink: string;
+
+let inputName = ref<string | undefined>();
+let inputType = ref<ActivityType>(ActivityType.ACTIVITY);
+let inputHue = ref<number | undefined>();
+let inputDateD = ref<number | undefined>();
+let inputDateM = ref<number | undefined>();
+let inputDateY = ref<number | undefined>();
+let inputTimeH = ref<number | undefined>();
+let inputTimeM = ref<number | undefined>();
+let inputDurationD = ref<number | undefined>();
+let inputDurationH = ref<number | undefined>();
+let inputDurationM = ref<number | undefined>();
+let inputLinks = ref<string[]>([]);
+let inputDescription = ref<string>();
 </script>
 
 <template>
@@ -61,15 +109,16 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
         <article id="setup-content" class="setup-content content">
           <section id="name-section" class="name-section section">
             <label for="name-input">Name:</label>
-            <input id="name-input" name="name" maxlength="50" />
+            <input
+              id="name-input"
+              v-model="inputName"
+              name="name"
+              maxlength="50" />
           </section>
           <section id="type-section" class="type-section section">
             <label for="type-input">Type:</label>
             <select id="type-input" name="type">
-              <option value="activity">Activity</option>
-              <option value="event">Event</option>
-              <option value="flag">Flag</option>
-              <option value="pin">Pin</option>
+              <option value="activity" selected>Activity</option>
             </select>
           </section>
           <section id="colour-section" class="colour-section section">
@@ -78,10 +127,16 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               id="colours-container"
               name="colours-container"
               class="colours-container">
-              <ColourVariant
+              <input
                 v-for="(hue, index) in hues"
                 :id="'colour-variant-' + hue"
                 :key="index"
+                v-model="inputHue"
+                class="colour-variant"
+                :style="{ backgroundColor: `hsl(${hue}deg 40% 60% / 100%)` }"
+                type="radio"
+                name="colour"
+                :value="hue"
                 :hue="hue" />
             </article>
           </section>
@@ -98,6 +153,7 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               class="date-inputs inputs-container">
               <input
                 id="date-d-input"
+                v-model="inputDateD"
                 name="date-d"
                 maxlength="2"
                 size="2"
@@ -107,6 +163,7 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               <p class="font-standard-large">&nbsp;/&nbsp;</p>
               <input
                 id="date-m-input"
+                v-model="inputDateM"
                 name="date-m"
                 maxlength="2"
                 size="2"
@@ -116,6 +173,7 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               <p class="font-standard-large">&nbsp;/&nbsp;</p>
               <input
                 id="date-y-input"
+                v-model="inputDateY"
                 name="date-y"
                 maxlength="4"
                 size="4"
@@ -132,6 +190,7 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               class="time-inputs inputs-container">
               <input
                 id="time-h-input"
+                v-model="inputTimeH"
                 name="time-h"
                 maxlength="2"
                 size="2"
@@ -141,6 +200,7 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               <p class="font-standard-large">&nbsp;:&nbsp;</p>
               <input
                 id="time-m-input"
+                v-model="inputTimeM"
                 name="time-m"
                 maxlength="2"
                 size="2"
@@ -155,8 +215,10 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               id="duration-inputs"
               name="duration-inputs"
               class="duration-inputs inputs-container">
+              <!--
               <input
                 id="duration-d-input"
+                v-model="inputDurationD"
                 name="duration-d"
                 maxlength="2"
                 size="2"
@@ -164,8 +226,10 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
                 max="31"
                 placeholder="DD" />
               <p class="font-standard-large">&nbsp;:&nbsp;</p>
+              -->
               <input
                 id="duration-h-input"
+                v-model="inputDurationH"
                 name="duration-h"
                 maxlength="2"
                 size="2"
@@ -175,6 +239,7 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
               <p class="font-standard-large">&nbsp;:&nbsp;</p>
               <input
                 id="duration-m-input"
+                v-model="inputDurationM"
                 name="duration-m"
                 maxlength="2"
                 size="2"
@@ -202,8 +267,34 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
         <article id="links-desc-content" class="links-desc-content content">
           <section id="links-section" class="links-section section">
             <label for="link-input">Links:</label>
-            <input id="link-input" name="link" type="url" />
-            <article class="add-new-link">
+            <a
+              v-for="link in inputLinks"
+              :key="link"
+              class="added-link"
+              :href="link"
+              target="_blank"
+              v-text="link"></a>
+            <input
+              v-if="inputLinks.length <= 4"
+              id="link-input"
+              v-model="currentLink"
+              name="link"
+              type="url" />
+            <article
+              v-if="inputLinks.length <= 4"
+              class="add-new-link"
+              @click="
+                () => {
+                  if (
+                    currentLink &&
+                    currentLink != '' &&
+                    inputLinks.length <= 4
+                  ) {
+                    inputLinks.push(currentLink);
+                    currentLink = '';
+                  }
+                }
+              ">
               <i class="plus-icon">
                 <IconPlus />
               </i>
@@ -212,13 +303,56 @@ let formState = ref<DataInputEvent>(DataInputEvent.None);
           </section>
           <section id="description-section" class="description-section section">
             <label for="description-input">Description:</label>
-            <textarea id="description-input" name="description" />
+            <textarea
+              id="description-input"
+              v-model="inputDescription"
+              name="description" />
           </section>
-          <input
+          <article
             id="submit-button"
-            class="submit-button"
-            type="submit"
-            value="Submit" />
+            :class="{ 'submit-button': true, 'submit-error': !dataInputValid }"
+            @click="
+              () => {
+                if (dataInputValid) {
+                  store.addActivity({
+                    name: inputName as string,
+                    type: inputType,
+                    hue: inputHue as number,
+                    dateD: inputDateD as number,
+                    dateM: inputDateM as number,
+                    dateY: inputDateY as number,
+                    timeH: inputTimeH as number,
+                    timeM: inputTimeM as number,
+                    durationD: 0,
+                    durationH: inputDurationH as number,
+                    durationM: inputDurationM as number,
+                    links: inputLinks as string[],
+                    description: inputDescription as string
+                  });
+                  formState = DataInputEvent.None;
+                  inputName = undefined;
+                  inputHue = undefined;
+                  inputDateD = undefined;
+                  inputDateM = undefined;
+                  inputDateY = undefined;
+                  inputTimeH = undefined;
+                  inputTimeM = undefined;
+                  inputDurationD = undefined;
+                  inputDurationH = undefined;
+                  inputDurationM = undefined;
+                  inputLinks = [];
+                  inputDescription = undefined;
+                }
+              }
+            ">
+            <p>Submit</p>
+          </article>
+          <article
+            id="cancel-button"
+            class="cancel-button"
+            @click="formState = DataInputEvent.None">
+            <p>Cancel</p>
+          </article>
         </article>
       </section>
     </form>
@@ -465,7 +599,31 @@ h1 {
   align-items: center;
 }
 
-.colour-variant,
+input[type="radio"] {
+  cursor: pointer;
+
+  position: relative;
+
+  display: inline-block;
+
+  width: 20px;
+  height: 20px;
+
+  vertical-align: middle;
+
+  appearance: none;
+  border: none;
+  border-radius: 50%;
+}
+
+input[type="radio"]:hover {
+  border: 1px solid white;
+}
+
+input[type="radio"]:checked {
+  border: 1px solid white;
+}
+
 .day-variant {
   cursor: pointer;
 }
@@ -503,6 +661,13 @@ h1 {
   i {
     height: 16px;
   }
+}
+
+.added-link {
+  overflow: hidden;
+  max-width: 430px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .add-new-link {
@@ -548,15 +713,22 @@ textarea {
   max-height: 100%;
 }
 
+.cancel-button,
 .submit-button {
   cursor: pointer;
 
   position: absolute;
   z-index: 1030;
   top: 10px;
-  right: 10px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 80px;
   padding: 10px;
+
+  text-align: center;
 
   background: var(--element-gray);
   border-radius: 10px;
@@ -564,9 +736,44 @@ textarea {
   transition: 200ms;
 }
 
-.submit-button:hover {
+.submit-button {
+  right: 10px;
+}
+
+.cancel-button {
+  right: 100px;
+}
+
+.submit-button:hover,
+.cancel-button:hover {
   background: var(--highlight-gray);
   transition: 200ms;
+
+  p {
+    transition: 200ms;
+  }
+}
+
+.cancel-button:active,
+.submit-button:active {
+  transition: 0ms;
+}
+
+.submit-button:active {
+  background-color: var(--intense-green);
+
+  p {
+    color: var(--almost-white);
+    transition: 0ms;
+  }
+}
+
+.cancel-button:active {
+  background-color: var(--almost-white);
+}
+
+.submit-error:active {
+  background-color: var(--intense-red);
 }
 
 @media only screen and (height <= 735px) {

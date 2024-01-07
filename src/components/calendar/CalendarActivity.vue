@@ -7,16 +7,32 @@ const store = useActivitiesStore();
 
 const props = defineProps({
   name: {
-    default: "Unnamed123",
+    default: "Unnamed",
     type: String
   },
   hue: {
     default: 0,
     type: Number
   },
-  date: {
-    default: new Date("1970-01-01"),
-    type: Date
+  dateD: {
+    default: 1,
+    type: Number
+  },
+  dateM: {
+    default: 1,
+    type: Number
+  },
+  dateY: {
+    default: 1970,
+    type: Number
+  },
+  timeH: {
+    default: 12,
+    type: Number
+  },
+  timeM: {
+    default: 0,
+    type: Number
   },
   durationH: {
     default: 1,
@@ -28,8 +44,6 @@ const props = defineProps({
   }
 });
 
-let displayDate = ref<Date>(new Date());
-let sameWeek: boolean = true;
 let activityName = ref<string>(props.name);
 let activityWidth: number = store.timeToWidth(props.durationH, props.durationM);
 
@@ -37,35 +51,16 @@ if (props.durationH == 0 && props.durationM < 30) {
   activityName.value = "";
 }
 
-let adjustedDay: number = props.date.getDay() == 0 ? 7 : props.date.getDay();
-let adjustedDisplayDay = computed(() =>
-  displayDate.value.getDay() == 0 ? 7 : displayDate.value.getDay()
-);
+let computedDate = new Date(`${props.dateY}-${props.dateM}-${props.dateD}`);
 
-if (
-  adjustedDay - adjustedDisplayDay.value !=
-    Math.round(
-      (props.date.getTime() - displayDate.value.getTime()) / 1000 / 60 / 60 / 24
-    ) +
-      1 &&
-  adjustedDay - adjustedDisplayDay.value !=
-    Math.round(
-      (props.date.getTime() - displayDate.value.getTime()) / 1000 / 60 / 60 / 24
-    )
-) {
-  sameWeek = false;
-}
+let adjustedDay: number =
+  computedDate.getDay() == 0 ? 7 : computedDate.getDay();
 
 let computedStyle = computed(() => ({
   width: `${activityWidth}px`,
   background: `hsl(${props.hue}deg 40% 60% / 100%)`,
-  left: `calc(11.6px + ${store.timeToLeft(
-    props.date.getHours(),
-    props.date.getMinutes(),
-    0
-  )}px)`,
-  top: `calc(10px + ${store.dayToTop(adjustedDay - 1)}px)`,
-  opacity: `${sameWeek ? 1 : 0}`
+  left: `calc(11.6px + ${store.timeToLeft(props.timeH, props.timeM, 0)}px)`,
+  top: `calc(10px + ${store.dayToTop(adjustedDay - 1)}px)`
 }));
 
 let computedStyleName = computed(() => ({

@@ -1,17 +1,13 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-/*
-const calendarRef: HTMLDivElement = document.getElementById(
-  "calendar"
-) as HTMLDivElement;
-*/
-enum ActivityType {
+
+export enum ActivityType {
   ACTIVITY,
   EVENT,
   FLAG
 }
 
-type Activity = {
+export type Activity = {
   name: string;
   type: ActivityType;
   hue: number;
@@ -131,36 +127,34 @@ export const useActivitiesStore = defineStore("activities", () => {
     }
     return true;
   }
-  /*
-  eventsMap.value.set("1-7 January 2024", [
-    {
-      name: "Work on the app",
-      type: ActivityType.ACTIVITY,
-      hue: 120,
-      dateD: 1,
-      dateM: 1,
-      dateY: 2024,
-      timeH: 10,
-      timeM: 0,
-      durationD: 0,
-      durationH: 12,
-      durationM: 0,
-      links: [],
-      description: ""
+
+  function addActivity(activity: Activity) {
+    const activityDate: Date = new Date(
+      `${activity.dateY}-${activity.dateM}-${activity.dateD}`
+    );
+    const activityWeek: string = weekName(activityDate);
+    const arr = eventsMap.value.get(activityWeek);
+    if (arr) {
+      eventsMap.value.set(activityWeek, [...arr, activity]);
+    } else {
+      eventsMap.value.set(activityWeek, [activity]);
     }
-  ]);
-*/
+    console.log(eventsMap);
+  }
+
   return {
     eventsMap,
     displayDate,
     displayWeek,
     currentDate,
+
     changeDisplay,
     datesArr,
     weekName,
     dayToTop,
     timeToLeft,
     timeToWidth,
-    sameWeek
+    sameWeek,
+    addActivity
   };
 });

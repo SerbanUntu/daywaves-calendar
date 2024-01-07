@@ -2,6 +2,7 @@
 import HourMarker from "./calendar/HourMarker.vue";
 import DaySquare from "./calendar/DaySquare.vue";
 import TimeMarker from "./icons/IconTimeMarker25x92.vue";
+import Activity from "./calendar/CalendarActivity.vue";
 
 import { useActivitiesStore } from "@/stores/Activities";
 import { computed } from "vue";
@@ -9,7 +10,7 @@ import { storeToRefs } from "pinia";
 
 const store = useActivitiesStore();
 
-const { currentDate, displayDate } = storeToRefs(store);
+const { currentDate, displayDate, displayWeek, eventsMap } = storeToRefs(store);
 
 type HourMarkerType = {
   hour: string;
@@ -103,6 +104,18 @@ for (let i = 0; i < 49; i++) {
           <article :id="days[i - 1] + '-day-line'" class="day-line" />
         </section>
       </article>
+      <Activity
+        v-for="event in eventsMap.get(displayWeek)"
+        :key="event.name"
+        :name="event.name"
+        :hue="event.hue"
+        :date-d="event.dateD"
+        :date-m="event.dateM"
+        :date-y="event.dateY"
+        :time-h="event.timeH"
+        :time-m="event.timeM"
+        :duration-h="event.durationH"
+        :duration-m="event.durationM" />
     </section>
   </section>
 </template>
