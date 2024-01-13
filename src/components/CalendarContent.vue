@@ -105,8 +105,9 @@ for (let i = 0; i < 49; i++) {
         </section>
       </article>
       <Activity
-        v-for="event in eventsMap.get(displayWeek)"
-        :key="event.name"
+        v-for="[, event] in eventsMap.get(displayWeek)"
+        :key="event.hashId"
+        :hash-id="event.hashId"
         :name="event.name"
         :hue="event.hue"
         :date-d="event.dateD"

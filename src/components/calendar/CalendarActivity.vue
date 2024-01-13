@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { useActivitiesStore } from "@/stores/Activities";
+import { DataInputEvent, useActivitiesStore } from "@/stores/Activities";
+import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import Tooltip from "../util/TooltipItem.vue";
 
 const store = useActivitiesStore();
 
+const { formState, selected } = storeToRefs(store);
+
 const props = defineProps({
+  hashId: {
+    default: "AAAAAAAAAAAAAAAA",
+    type: String
+  },
   name: {
     default: "Unnamed",
     type: String
@@ -44,6 +51,8 @@ const props = defineProps({
   }
 });
 
+console.log(props);
+
 let activityName = ref<string>(props.name);
 let activityWidth: number = store.timeToWidth(props.durationH, props.durationM);
 
@@ -69,7 +78,19 @@ let computedStyleName = computed(() => ({
 </script>
 
 <template>
-  <article class="activity" :style="{ ...computedStyle }">
+  <article
+    :id="`${props.name}-${props.dateY}-${props.dateM}-${props.dateD}T${props.timeH}:${props.timeM}`"
+    :class="{
+      activity: true,
+      selected: formState == DataInputEvent.EDIT && selected == props.hashId
+    }"
+    :style="{ ...computedStyle }"
+    @click="
+      () => {
+        formState = DataInputEvent.EDIT;
+        selected = props.hashId;
+      }
+    ">
     <p
       id="activity-name"
       class="activity-name"
@@ -107,5 +128,9 @@ let computedStyleName = computed(() => ({
 .tooltip {
   top: -30px;
   left: -5px;
+}
+
+.selected {
+  outline: 3px solid white;
 }
 </style>

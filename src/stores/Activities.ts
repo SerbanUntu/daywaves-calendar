@@ -7,7 +7,14 @@ export enum ActivityType {
   FLAG
 }
 
+export enum DataInputEvent {
+  NONE,
+  EDIT,
+  CREATE
+}
+
 export type Activity = {
+  hashId: string;
   name: string;
   type: ActivityType;
   hue: number;
@@ -24,10 +31,12 @@ export type Activity = {
 };
 
 export const useActivitiesStore = defineStore("activities", () => {
-  const eventsMap = ref<Map<string, Activity[]>>(new Map());
+  const eventsMap = ref<Map<string, Map<string, Activity>>>(new Map());
   const displayDate = ref<Date>(new Date());
   const displayWeek = ref<string>(weekName(displayDate.value));
   const currentDate = ref<Date>(new Date());
+  const formState = ref<DataInputEvent>(DataInputEvent.NONE);
+  const selected = ref<string | undefined>(undefined);
 
   setInterval(() => (currentDate.value = new Date()), 1);
 
@@ -129,17 +138,33 @@ export const useActivitiesStore = defineStore("activities", () => {
   }
 
   function addActivity(activity: Activity) {
+    if (activity.hashId == "") {
+      activity.hashId = makeId(16);
+    }
     const activityDate: Date = new Date(
       `${activity.dateY}-${activity.dateM}-${activity.dateD}`
     );
     const activityWeek: string = weekName(activityDate);
-    const arr = eventsMap.value.get(activityWeek);
-    if (arr) {
-      eventsMap.value.set(activityWeek, [...arr, activity]);
+    const weekMap = eventsMap.value.get(activityWeek);
+    if (weekMap) {
+      weekMap.set(activity.hashId, activity);
     } else {
-      eventsMap.value.set(activityWeek, [activity]);
+      const newMap = new Map();
+      newMap.set(activity.hashId, activity);
+      eventsMap.value.set(activityWeek, newMap);
     }
     console.log(eventsMap);
+  }
+
+  function makeId(length: number): string {
+    let result: string = "";
+    const characters: string =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 
   return {
@@ -147,6 +172,8 @@ export const useActivitiesStore = defineStore("activities", () => {
     displayDate,
     displayWeek,
     currentDate,
+    formState,
+    selected,
 
     changeDisplay,
     datesArr,

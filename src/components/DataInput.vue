@@ -6,24 +6,22 @@ import IconPlus from "./icons/IconPlus16x16.vue";
 import TemplatesIcon from "./icons/IconTemplates70x70.vue";
 import ImportArrowIcon from "./icons/IconImportArrow33x24.vue";
 import PlusIcon from "./icons/IconPlus16x16.vue";
-import { computed, ref } from "vue";
-import { ActivityType } from "@/stores/Activities";
+import { computed, ref, watchEffect } from "vue";
+import { ActivityType, DataInputEvent } from "@/stores/Activities";
 import { useActivitiesStore } from "@/stores/Activities";
+import { storeToRefs } from "pinia";
 
 const store = useActivitiesStore();
 
-enum DataInputEvent {
-  None,
-  Edit,
-  Create
-}
+const { eventsMap, displayWeek, formState, selected } = storeToRefs(store);
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
-let formState = ref<DataInputEvent>(DataInputEvent.None);
-let dataInputValid = computed(
-  () =>
+let dataInputValid = computed(() => {
+  const durationMinutes: number =
+    Number(inputDurationH.value) * 60 + Number(inputDurationM.value);
+  return (
     inputName.value &&
-    inputHue.value &&
+    inputHue.value != undefined &&
     inputDateD.value &&
     inputDateM.value &&
     inputDateY.value &&
@@ -43,12 +41,13 @@ let dataInputValid = computed(
     (inputDurationH.value > 0 ||
       (inputDurationH.value == 0 && inputDurationM.value > 0)) &&
     inputDurationM.value >= 0 &&
-    Number(inputDurationH.value) * 60 +
-      Number(inputDurationM.value) +
+    durationMinutes +
       Number(inputTimeH.value) * 60 +
       Number(inputTimeM.value) <=
-      1440
-);
+      1440 &&
+    durationMinutes >= 10
+  );
+});
 
 let currentLink: string;
 
@@ -65,12 +64,35 @@ let inputDurationH = ref<number | undefined>();
 let inputDurationM = ref<number | undefined>();
 let inputLinks = ref<string[]>([]);
 let inputDescription = ref<string>();
+
+watchEffect(() => {
+  if (selected.value != undefined) {
+    let weekMap = eventsMap.value.get(displayWeek.value);
+    if (weekMap) {
+      let activityRef = weekMap.get(selected.value);
+      if (activityRef) {
+        inputName.value = activityRef.name;
+        inputType.value = activityRef.type;
+        inputHue.value = activityRef.hue;
+        inputDateD.value = activityRef.dateD;
+        inputDateM.value = activityRef.dateM;
+        inputDateY.value = activityRef.dateY;
+        inputTimeH.value = activityRef.timeH;
+        inputTimeM.value = activityRef.timeM;
+        inputDurationH.value = activityRef.durationH;
+        inputDurationM.value = activityRef.durationM;
+        inputLinks.value = activityRef.links;
+        inputDescription.value = activityRef.description;
+      }
+    }
+  }
+});
 </script>
 
 <template>
   <article id="data-input-container" class="data-input-container">
     <section
-      v-if="formState === DataInputEvent.None"
+      v-if="formState === DataInputEvent.NONE"
       id="data-input-selection"
       class="data-input-selection">
       <section
@@ -79,7 +101,23 @@ let inputDescription = ref<string>();
         <article
           id="add-activity-button"
           class="selection-button"
-          @click="formState = DataInputEvent.Create">
+          @click="
+            () => {
+              formState = DataInputEvent.CREATE;
+              inputName = undefined;
+              inputHue = undefined;
+              inputDateD = undefined;
+              inputDateM = undefined;
+              inputDateY = undefined;
+              inputTimeH = undefined;
+              inputTimeM = undefined;
+              inputDurationD = undefined;
+              inputDurationH = undefined;
+              inputDurationM = undefined;
+              inputLinks = [];
+              inputDescription = undefined;
+            }
+          ">
           <section id="plus-icon-container" class="plus-icon-container">
             <article id="vertical-line" class="vertical-line"></article>
             <article id="horizontal-line" class="horizontal-line"></article>
@@ -101,7 +139,7 @@ let inputDescription = ref<string>();
       </section>
     </section>
     <form
-      v-if="formState !== DataInputEvent.None"
+      v-if="formState !== DataInputEvent.NONE"
       id="data-input"
       class="data-input">
       <section id="setup-stage" class="setup-stage stage">
@@ -308,51 +346,104 @@ let inputDescription = ref<string>();
               v-model="inputDescription"
               name="description" />
           </section>
-          <article
-            id="submit-button"
-            :class="{ 'submit-button': true, 'submit-error': !dataInputValid }"
-            @click="
-              () => {
-                if (dataInputValid) {
-                  store.addActivity({
-                    name: inputName as string,
-                    type: inputType,
-                    hue: inputHue as number,
-                    dateD: inputDateD as number,
-                    dateM: inputDateM as number,
-                    dateY: inputDateY as number,
-                    timeH: inputTimeH as number,
-                    timeM: inputTimeM as number,
-                    durationD: 0,
-                    durationH: inputDurationH as number,
-                    durationM: inputDurationM as number,
-                    links: inputLinks as string[],
-                    description: inputDescription as string
-                  });
-                  formState = DataInputEvent.None;
-                  inputName = undefined;
-                  inputHue = undefined;
-                  inputDateD = undefined;
-                  inputDateM = undefined;
-                  inputDateY = undefined;
-                  inputTimeH = undefined;
-                  inputTimeM = undefined;
-                  inputDurationD = undefined;
-                  inputDurationH = undefined;
-                  inputDurationM = undefined;
-                  inputLinks = [];
-                  inputDescription = undefined;
+          <section
+            id="action-buttons-container"
+            class="action-buttons-container">
+            <article
+              v-if="
+                formState == DataInputEvent.EDIT ||
+                formState == DataInputEvent.CREATE
+              "
+              id="cancel-button"
+              class="cancel-button"
+              @click="
+                () => {
+                  formState = DataInputEvent.NONE;
                 }
-              }
-            ">
-            <p>Submit</p>
-          </article>
-          <article
-            id="cancel-button"
-            class="cancel-button"
-            @click="formState = DataInputEvent.None">
-            <p>Cancel</p>
-          </article>
+              ">
+              <p>Cancel</p>
+            </article>
+            <article
+              v-if="formState == DataInputEvent.EDIT"
+              id="delete-button"
+              class="delete-button"
+              @click="
+                () => {
+                  eventsMap.get(displayWeek)?.delete(selected as string);
+                  formState = DataInputEvent.NONE;
+                }
+              ">
+              <p>Delete</p>
+            </article>
+            <article
+              v-if="formState == DataInputEvent.CREATE"
+              id="submit-button"
+              :class="{
+                'submit-button': true,
+                'submit-error': !dataInputValid
+              }"
+              @click="
+                () => {
+                  if (dataInputValid) {
+                    store.addActivity({
+                      hashId: '',
+                      name: inputName as string,
+                      type: inputType,
+                      hue: inputHue as number,
+                      dateD: inputDateD as number,
+                      dateM: inputDateM as number,
+                      dateY: inputDateY as number,
+                      timeH: inputTimeH as number,
+                      timeM: inputTimeM as number,
+                      durationD: 0,
+                      durationH: inputDurationH as number,
+                      durationM: inputDurationM as number,
+                      links: inputLinks as string[],
+                      description: inputDescription as string
+                    });
+                    formState = DataInputEvent.NONE;
+                  }
+                }
+              ">
+              <p>Add</p>
+            </article>
+            <article
+              v-if="formState == DataInputEvent.EDIT"
+              id="save-button"
+              :class="{ 'save-button': true, 'save-error': !dataInputValid }"
+              @click="
+                () => {
+                  console.log(selected);
+                  if (dataInputValid) {
+                    let weekMap = eventsMap.get(displayWeek);
+                    if (weekMap) {
+                      if (selected) {
+                        weekMap.delete(selected);
+                        store.addActivity({
+                          hashId: '',
+                          name: inputName as string,
+                          type: inputType,
+                          hue: inputHue as number,
+                          dateD: inputDateD as number,
+                          dateM: inputDateM as number,
+                          dateY: inputDateY as number,
+                          timeH: inputTimeH as number,
+                          timeM: inputTimeM as number,
+                          durationD: 0,
+                          durationH: inputDurationH as number,
+                          durationM: inputDurationM as number,
+                          links: inputLinks as string[],
+                          description: inputDescription as string
+                        });
+                        formState = DataInputEvent.NONE;
+                      }
+                    }
+                  }
+                }
+              ">
+              <p>Save</p>
+            </article>
+          </section>
         </article>
       </section>
     </form>
@@ -713,13 +804,27 @@ textarea {
   max-height: 100%;
 }
 
+.action-buttons-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+}
+
 .cancel-button,
-.submit-button {
+.submit-button,
+.save-button,
+.delete-button {
   cursor: pointer;
 
-  position: absolute;
   z-index: 1030;
-  top: 10px;
 
   display: flex;
   align-items: center;
@@ -736,16 +841,10 @@ textarea {
   transition: 200ms;
 }
 
-.submit-button {
-  right: 10px;
-}
-
-.cancel-button {
-  right: 100px;
-}
-
 .submit-button:hover,
-.cancel-button:hover {
+.cancel-button:hover,
+.save-button:hover,
+.delete-button:hover {
   background: var(--highlight-gray);
   transition: 200ms;
 
@@ -755,12 +854,24 @@ textarea {
 }
 
 .cancel-button:active,
-.submit-button:active {
+.submit-button:active,
+.save-button:active,
+.delete-button:active {
   transition: 0ms;
 }
 
-.submit-button:active {
+.submit-button:active,
+.save-button:active {
   background-color: var(--intense-green);
+
+  p {
+    color: var(--almost-white);
+    transition: 0ms;
+  }
+}
+
+.delete-button:active {
+  background-color: var(--intense-red);
 
   p {
     color: var(--almost-white);
@@ -772,7 +883,8 @@ textarea {
   background-color: var(--almost-white);
 }
 
-.submit-error:active {
+.submit-error:active,
+.save-error:active {
   background-color: var(--intense-red);
 }
 

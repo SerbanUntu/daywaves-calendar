@@ -30,6 +30,6 @@ Routines are used to **automatically load** items into your calendar based on th
 
 # Roadmap
 
-The app is currently in version **v0.2.0**.
+The app is currently in version **v0.2.1**.
 
 ![Roadmap](./public/Roadmap.png)
