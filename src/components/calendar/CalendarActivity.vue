@@ -6,7 +6,7 @@ import Tooltip from "../util/TooltipItem.vue";
 
 const store = useActivitiesStore();
 
-const { formState, selected } = storeToRefs(store);
+const { formState, clickedActivity } = storeToRefs(store);
 
 const props = defineProps({
   hashId: {
@@ -81,7 +81,8 @@ let computedStyleName = computed(() => ({
     :class="{
       activity: true,
       selected:
-        formState == DataInputEvent.EDIT && selected?.hashId == props.hashId
+        formState == DataInputEvent.EDIT &&
+        clickedActivity?.getId() == props.hashId
     }"
     :style="{ ...computedStyle }"
     @click="
@@ -91,10 +92,7 @@ let computedStyleName = computed(() => ({
           const activityDate = new Date(
             `${props.dateY}-${props.dateM}-${props.dateD}`
           );
-          selected = {
-            hashId: props.hashId,
-            week: store.weekName(activityDate)
-          };
+          store.setClickedActivity(props.hashId, store.weekName(activityDate));
         }
       }
     ">

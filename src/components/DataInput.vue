@@ -13,7 +13,7 @@ import { storeToRefs } from "pinia";
 
 const store = useActivitiesStore();
 
-const { eventsMap, formState, selected } = storeToRefs(store);
+const { formState, clickedActivity } = storeToRefs(store);
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 let dataInputValid = computed(() => {
@@ -64,28 +64,24 @@ let inputDurationH = ref<number | undefined>();
 let inputDurationM = ref<number | undefined>();
 let inputLinks = ref<string[]>([]);
 let inputDescription = ref<string>();
+let addedLinksNumber: number = 0;
 
 watchEffect(() => {
-  if (selected.value != undefined) {
-    let weekMap = eventsMap.value.get(selected.value.week);
-    if (weekMap) {
-      let activityRef = weekMap.get(selected.value.hashId);
-      if (activityRef) {
-        inputName.value = activityRef.name;
-        inputType.value = activityRef.type;
-        inputHue.value = activityRef.hue;
-        inputDateD.value = activityRef.dateD;
-        inputDateM.value = activityRef.dateM;
-        inputDateY.value = activityRef.dateY;
-        inputTimeH.value = activityRef.timeH;
-        inputTimeM.value = activityRef.timeM;
-        inputDurationH.value = activityRef.durationH;
-        inputDurationM.value = activityRef.durationM;
-        inputLinks.value = activityRef.links;
-        inputDescription.value = activityRef.description;
-        currentLink = "";
-      }
-    }
+  if (formState.value == DataInputEvent.EDIT && clickedActivity.value) {
+    inputName.value = clickedActivity.value.getName();
+    inputType.value = clickedActivity.value.getType();
+    inputHue.value = clickedActivity.value.getHue();
+    inputDateD.value = clickedActivity.value.getDateD();
+    inputDateM.value = clickedActivity.value.getDateM();
+    inputDateY.value = clickedActivity.value.getDateY();
+    inputTimeH.value = clickedActivity.value.getTimeH();
+    inputTimeM.value = clickedActivity.value.getTimeM();
+    inputDurationH.value = clickedActivity.value.getDurationH();
+    inputDurationM.value = clickedActivity.value.getDateM();
+    inputLinks.value = clickedActivity.value.getLinks();
+    inputDescription.value = clickedActivity.value.getDescription();
+    currentLink = "";
+    addedLinksNumber = 0;
   }
 });
 </script>
@@ -330,6 +326,7 @@ watchEffect(() => {
                     currentLink != '' &&
                     inputLinks.length <= 4
                   ) {
+                    addedLinksNumber += 1;
                     inputLinks.push(currentLink);
                     currentLink = '';
                   }
@@ -360,6 +357,9 @@ watchEffect(() => {
               class="cancel-button"
               @click="
                 () => {
+                  for (let i = 0; i < addedLinksNumber; i++) {
+                    inputLinks.pop();
+                  }
                   formState = DataInputEvent.NONE;
                 }
               ">
@@ -371,11 +371,11 @@ watchEffect(() => {
               class="delete-button"
               @click="
                 () => {
-                  if (selected) {
-                    let weekMap = eventsMap.get(selected.week);
-                    if (weekMap) {
-                      weekMap.delete(selected.hashId);
-                    }
+                  if (clickedActivity) {
+                    store.deleteActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId()
+                    );
                   }
                   formState = DataInputEvent.NONE;
                 }
@@ -392,22 +392,21 @@ watchEffect(() => {
               @click="
                 () => {
                   if (dataInputValid) {
-                    store.addActivity({
-                      hashId: '',
-                      name: inputName as string,
-                      type: inputType,
-                      hue: inputHue as number,
-                      dateD: inputDateD as number,
-                      dateM: inputDateM as number,
-                      dateY: inputDateY as number,
-                      timeH: inputTimeH as number,
-                      timeM: inputTimeM as number,
-                      durationD: 0,
-                      durationH: inputDurationH as number,
-                      durationM: inputDurationM as number,
-                      links: inputLinks as string[],
-                      description: inputDescription as string
-                    });
+                    store.addActivity(
+                      inputName as string,
+                      inputType,
+                      inputHue as number,
+                      inputDateD as number,
+                      inputDateM as number,
+                      inputDateY as number,
+                      inputTimeH as number,
+                      inputTimeM as number,
+                      0,
+                      inputDurationH as number,
+                      inputDurationM as number,
+                      inputLinks as string[],
+                      inputDescription as string
+                    );
                     formState = DataInputEvent.NONE;
                   }
                 }
@@ -420,28 +419,27 @@ watchEffect(() => {
               :class="{ 'save-button': true, 'save-error': !dataInputValid }"
               @click="
                 () => {
-                  if (dataInputValid && selected) {
-                    let weekMap = eventsMap.get(selected.week);
-                    if (weekMap) {
-                      weekMap.delete(selected.hashId);
-                      store.addActivity({
-                        hashId: '',
-                        name: inputName as string,
-                        type: inputType,
-                        hue: inputHue as number,
-                        dateD: inputDateD as number,
-                        dateM: inputDateM as number,
-                        dateY: inputDateY as number,
-                        timeH: inputTimeH as number,
-                        timeM: inputTimeM as number,
-                        durationD: 0,
-                        durationH: inputDurationH as number,
-                        durationM: inputDurationM as number,
-                        links: inputLinks as string[],
-                        description: inputDescription as string
-                      });
-                      formState = DataInputEvent.NONE;
-                    }
+                  if (dataInputValid && clickedActivity) {
+                    store.deleteActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId()
+                    );
+                    store.addActivity(
+                      inputName as string,
+                      inputType,
+                      inputHue as number,
+                      inputDateD as number,
+                      inputDateM as number,
+                      inputDateY as number,
+                      inputTimeH as number,
+                      inputTimeM as number,
+                      0,
+                      inputDurationH as number,
+                      inputDurationM as number,
+                      inputLinks as string[],
+                      inputDescription as string
+                    );
+                    formState = DataInputEvent.NONE;
                   }
                 }
               ">
