@@ -51,8 +51,6 @@ const props = defineProps({
   }
 });
 
-console.log(props);
-
 let activityName = ref<string>(props.name);
 let activityWidth: number = store.timeToWidth(props.durationH, props.durationM);
 
@@ -82,13 +80,22 @@ let computedStyleName = computed(() => ({
     :id="`${props.name}-${props.dateY}-${props.dateM}-${props.dateD}T${props.timeH}:${props.timeM}`"
     :class="{
       activity: true,
-      selected: formState == DataInputEvent.EDIT && selected == props.hashId
+      selected:
+        formState == DataInputEvent.EDIT && selected?.hashId == props.hashId
     }"
     :style="{ ...computedStyle }"
     @click="
       () => {
-        formState = DataInputEvent.EDIT;
-        selected = props.hashId;
+        if (formState == DataInputEvent.NONE) {
+          formState = DataInputEvent.EDIT;
+          const activityDate = new Date(
+            `${props.dateY}-${props.dateM}-${props.dateD}`
+          );
+          selected = {
+            hashId: props.hashId,
+            week: store.weekName(activityDate)
+          };
+        }
       }
     ">
     <p

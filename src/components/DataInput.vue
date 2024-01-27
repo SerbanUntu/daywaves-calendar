@@ -13,7 +13,7 @@ import { storeToRefs } from "pinia";
 
 const store = useActivitiesStore();
 
-const { eventsMap, displayWeek, formState, selected } = storeToRefs(store);
+const { eventsMap, formState, selected } = storeToRefs(store);
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 let dataInputValid = computed(() => {
@@ -67,9 +67,9 @@ let inputDescription = ref<string>();
 
 watchEffect(() => {
   if (selected.value != undefined) {
-    let weekMap = eventsMap.value.get(displayWeek.value);
+    let weekMap = eventsMap.value.get(selected.value.week);
     if (weekMap) {
-      let activityRef = weekMap.get(selected.value);
+      let activityRef = weekMap.get(selected.value.hashId);
       if (activityRef) {
         inputName.value = activityRef.name;
         inputType.value = activityRef.type;
@@ -83,6 +83,7 @@ watchEffect(() => {
         inputDurationM.value = activityRef.durationM;
         inputLinks.value = activityRef.links;
         inputDescription.value = activityRef.description;
+        currentLink = "";
       }
     }
   }
@@ -116,6 +117,7 @@ watchEffect(() => {
               inputDurationM = undefined;
               inputLinks = [];
               inputDescription = undefined;
+              currentLink = '';
             }
           ">
           <section id="plus-icon-container" class="plus-icon-container">
@@ -369,7 +371,12 @@ watchEffect(() => {
               class="delete-button"
               @click="
                 () => {
-                  eventsMap.get(displayWeek)?.delete(selected as string);
+                  if (selected) {
+                    let weekMap = eventsMap.get(selected.week);
+                    if (weekMap) {
+                      weekMap.delete(selected.hashId);
+                    }
+                  }
                   formState = DataInputEvent.NONE;
                 }
               ">
@@ -413,30 +420,27 @@ watchEffect(() => {
               :class="{ 'save-button': true, 'save-error': !dataInputValid }"
               @click="
                 () => {
-                  console.log(selected);
-                  if (dataInputValid) {
-                    let weekMap = eventsMap.get(displayWeek);
+                  if (dataInputValid && selected) {
+                    let weekMap = eventsMap.get(selected.week);
                     if (weekMap) {
-                      if (selected) {
-                        weekMap.delete(selected);
-                        store.addActivity({
-                          hashId: '',
-                          name: inputName as string,
-                          type: inputType,
-                          hue: inputHue as number,
-                          dateD: inputDateD as number,
-                          dateM: inputDateM as number,
-                          dateY: inputDateY as number,
-                          timeH: inputTimeH as number,
-                          timeM: inputTimeM as number,
-                          durationD: 0,
-                          durationH: inputDurationH as number,
-                          durationM: inputDurationM as number,
-                          links: inputLinks as string[],
-                          description: inputDescription as string
-                        });
-                        formState = DataInputEvent.NONE;
-                      }
+                      weekMap.delete(selected.hashId);
+                      store.addActivity({
+                        hashId: '',
+                        name: inputName as string,
+                        type: inputType,
+                        hue: inputHue as number,
+                        dateD: inputDateD as number,
+                        dateM: inputDateM as number,
+                        dateY: inputDateY as number,
+                        timeH: inputTimeH as number,
+                        timeM: inputTimeM as number,
+                        durationD: 0,
+                        durationH: inputDurationH as number,
+                        durationM: inputDurationM as number,
+                        links: inputLinks as string[],
+                        description: inputDescription as string
+                      });
+                      formState = DataInputEvent.NONE;
                     }
                   }
                 }

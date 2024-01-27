@@ -36,7 +36,7 @@ export const useActivitiesStore = defineStore("activities", () => {
   const displayWeek = ref<string>(weekName(displayDate.value));
   const currentDate = ref<Date>(new Date());
   const formState = ref<DataInputEvent>(DataInputEvent.NONE);
-  const selected = ref<string | undefined>(undefined);
+  const selected = ref<{ hashId: string; week: string } | undefined>(undefined);
 
   setInterval(() => (currentDate.value = new Date()), 1);
 
@@ -153,7 +153,6 @@ export const useActivitiesStore = defineStore("activities", () => {
       newMap.set(activity.hashId, activity);
       eventsMap.value.set(activityWeek, newMap);
     }
-    console.log(eventsMap);
   }
 
   function makeId(length: number): string {
