@@ -10,7 +10,7 @@ import CancelIcon from "./icons/IconCancel16x16.vue";
 import DeleteIcon from "./icons/IconDelete12x16.vue";
 import EditIcon from "./icons/IconEdit16x16.vue";
 import SaveIcon from "./icons/IconSave16x16.vue";
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref } from "vue";
 import { ActivityType, DataInputEvent, type Link } from "@/stores/Activities";
 import { useActivitiesStore } from "@/stores/Activities";
 import { storeToRefs } from "pinia";
@@ -70,9 +70,11 @@ let currentLink = ref<Link>({ name: "", address: "" });
 let editedLinkIndex = ref<number>(-1);
 let linkCreated = ref<boolean>(false);
 let inputDescription = ref<string>();
+let savedLinks: Link[] = [];
+let check: boolean = false;
 
-watchEffect(() => {
-  if (formState.value == DataInputEvent.EDIT) {
+setInterval(() => {
+  if (formState.value === DataInputEvent.EDIT && check === false) {
     if (clickedActivity.value) {
       inputName.value = clickedActivity.value.getName();
       inputType.value = clickedActivity.value.getType();
@@ -85,11 +87,15 @@ watchEffect(() => {
       inputDurationH.value = clickedActivity.value.getDurationH();
       inputDurationM.value = clickedActivity.value.getDateM();
       inputLinks.value = clickedActivity.value.getLinks();
-      inputLinks.value = clickedActivity.value.getLinks();
+      saveLinks();
       inputDescription.value = clickedActivity.value.getDescription();
+      check = true;
     }
   }
-});
+  if (formState.value !== DataInputEvent.EDIT) {
+    check = false;
+  }
+}, 1);
 
 function resetInputs() {
   inputName.value = undefined;
@@ -107,6 +113,14 @@ function resetInputs() {
   currentLink.value = { name: "", address: "" };
   editedLinkIndex.value = -1;
   linkCreated.value = false;
+  savedLinks = [];
+}
+
+function saveLinks() {
+  savedLinks = [];
+  inputLinks.value?.forEach((link) => {
+    savedLinks.push({ name: link.name, address: link.address });
+  });
 }
 </script>
 
@@ -453,8 +467,29 @@ function resetInputs() {
               class="cancel-button"
               @click="
                 () => {
-                  resetInputs();
-                  formState = DataInputEvent.NONE;
+                  if (clickedActivity) {
+                    store.addActivity(
+                      clickedActivity.getName(),
+                      clickedActivity.getType(),
+                      clickedActivity.getHue(),
+                      clickedActivity.getDateD(),
+                      clickedActivity.getDateM(),
+                      clickedActivity.getDateY(),
+                      clickedActivity.getTimeH(),
+                      clickedActivity.getTimeM(),
+                      0,
+                      clickedActivity.getDurationH(),
+                      clickedActivity.getDurationM(),
+                      savedLinks,
+                      clickedActivity.getDescription()
+                    );
+                    store.deleteActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId()
+                    );
+                    resetInputs();
+                    formState = DataInputEvent.NONE;
+                  }
                 }
               ">
               <p>Cancel</p>
