@@ -6,8 +6,12 @@ import IconPlus from "./icons/IconPlus16x16.vue";
 import TemplatesIcon from "./icons/IconTemplates70x70.vue";
 import ImportArrowIcon from "./icons/IconImportArrow33x24.vue";
 import PlusIcon from "./icons/IconPlus16x16.vue";
+import CancelIcon from "./icons/IconCancel16x16.vue";
+import DeleteIcon from "./icons/IconDelete12x16.vue";
+import EditIcon from "./icons/IconEdit16x16.vue";
+import SaveIcon from "./icons/IconSave16x16.vue";
 import { computed, ref, watchEffect } from "vue";
-import { ActivityType, DataInputEvent } from "@/stores/Activities";
+import { ActivityType, DataInputEvent, type Link } from "@/stores/Activities";
 import { useActivitiesStore } from "@/stores/Activities";
 import { storeToRefs } from "pinia";
 
@@ -45,11 +49,10 @@ let dataInputValid = computed(() => {
       Number(inputTimeH.value) * 60 +
       Number(inputTimeM.value) <=
       1440 &&
-    durationMinutes >= 10
+    durationMinutes >= 10 &&
+    editedLinkIndex.value == -1
   );
 });
-
-let currentLink: string;
 
 let inputName = ref<string | undefined>();
 let inputType = ref<ActivityType>(ActivityType.ACTIVITY);
@@ -62,28 +65,49 @@ let inputTimeM = ref<number | undefined>();
 let inputDurationD = ref<number | undefined>();
 let inputDurationH = ref<number | undefined>();
 let inputDurationM = ref<number | undefined>();
-let inputLinks = ref<string[]>([]);
+let inputLinks = ref<Link[] | undefined>();
+let currentLink = ref<Link>({ name: "", address: "" });
+let editedLinkIndex = ref<number>(-1);
+let linkCreated = ref<boolean>(false);
 let inputDescription = ref<string>();
-let addedLinksNumber: number = 0;
 
 watchEffect(() => {
-  if (formState.value == DataInputEvent.EDIT && clickedActivity.value) {
-    inputName.value = clickedActivity.value.getName();
-    inputType.value = clickedActivity.value.getType();
-    inputHue.value = clickedActivity.value.getHue();
-    inputDateD.value = clickedActivity.value.getDateD();
-    inputDateM.value = clickedActivity.value.getDateM();
-    inputDateY.value = clickedActivity.value.getDateY();
-    inputTimeH.value = clickedActivity.value.getTimeH();
-    inputTimeM.value = clickedActivity.value.getTimeM();
-    inputDurationH.value = clickedActivity.value.getDurationH();
-    inputDurationM.value = clickedActivity.value.getDateM();
-    inputLinks.value = clickedActivity.value.getLinks();
-    inputDescription.value = clickedActivity.value.getDescription();
-    currentLink = "";
-    addedLinksNumber = 0;
+  if (formState.value == DataInputEvent.EDIT) {
+    if (clickedActivity.value) {
+      inputName.value = clickedActivity.value.getName();
+      inputType.value = clickedActivity.value.getType();
+      inputHue.value = clickedActivity.value.getHue();
+      inputDateD.value = clickedActivity.value.getDateD();
+      inputDateM.value = clickedActivity.value.getDateM();
+      inputDateY.value = clickedActivity.value.getDateY();
+      inputTimeH.value = clickedActivity.value.getTimeH();
+      inputTimeM.value = clickedActivity.value.getTimeM();
+      inputDurationH.value = clickedActivity.value.getDurationH();
+      inputDurationM.value = clickedActivity.value.getDateM();
+      inputLinks.value = clickedActivity.value.getLinks();
+      inputLinks.value = clickedActivity.value.getLinks();
+      inputDescription.value = clickedActivity.value.getDescription();
+    }
   }
 });
+
+function resetInputs() {
+  inputName.value = undefined;
+  inputHue.value = undefined;
+  inputDateD.value = undefined;
+  inputDateM.value = undefined;
+  inputDateY.value = undefined;
+  inputTimeH.value = undefined;
+  inputTimeM.value = undefined;
+  inputDurationD.value = undefined;
+  inputDurationH.value = undefined;
+  inputDurationM.value = undefined;
+  inputLinks.value = undefined;
+  inputDescription.value = undefined;
+  currentLink.value = { name: "", address: "" };
+  editedLinkIndex.value = -1;
+  linkCreated.value = false;
+}
 </script>
 
 <template>
@@ -101,19 +125,7 @@ watchEffect(() => {
           @click="
             () => {
               formState = DataInputEvent.CREATE;
-              inputName = undefined;
-              inputHue = undefined;
-              inputDateD = undefined;
-              inputDateM = undefined;
-              inputDateY = undefined;
-              inputTimeH = undefined;
-              inputTimeM = undefined;
-              inputDurationD = undefined;
-              inputDurationH = undefined;
-              inputDurationM = undefined;
-              inputLinks = [];
-              inputDescription = undefined;
-              currentLink = '';
+              resetInputs();
             }
           ">
           <section id="plus-icon-container" class="plus-icon-container">
@@ -302,33 +314,117 @@ watchEffect(() => {
         <h1>Links & Description</h1>
         <article id="links-desc-content" class="links-desc-content content">
           <section id="links-section" class="links-section section">
-            <label for="link-input">Links:</label>
-            <a
-              v-for="link in inputLinks"
-              :key="link"
-              class="added-link"
-              :href="link"
-              target="_blank"
-              v-text="link"></a>
-            <input
-              v-if="inputLinks.length <= 4"
-              id="link-input"
-              v-model="currentLink"
-              name="link"
-              type="url" />
+            <label for="link-inputs">Links:</label>
             <article
-              v-if="inputLinks.length <= 4"
+              v-for="(link, i) in inputLinks"
+              :key="i"
+              class="added-link-container">
+              <a
+                v-if="editedLinkIndex !== i"
+                class="added-link"
+                :href="link.address"
+                target="_blank"
+                v-text="link.name"></a>
+              <section v-else class="link-inputs">
+                <input
+                  v-model="currentLink.name"
+                  class="link-name-edit-input"
+                  name="link-name"
+                  type="text"
+                  placeholder="Name" />
+                <input
+                  v-model="currentLink.address"
+                  class="link-address-edit-input"
+                  name="link-address"
+                  type="url"
+                  placeholder="Address" />
+              </section>
+              <section class="link-buttons-container">
+                <article
+                  v-if="editedLinkIndex == i"
+                  class="cancel-link-editing link-button"
+                  @click="
+                    () => {
+                      editedLinkIndex = -1;
+                      if (linkCreated) {
+                        linkCreated = false;
+                        inputLinks?.pop();
+                      }
+                    }
+                  ">
+                  <CancelIcon class="cancel-link-editing-button" />
+                  <Tooltip text="Cancel" />
+                </article>
+                <article
+                  v-if="!linkCreated || editedLinkIndex != i"
+                  class="delete-link link-button"
+                  @click="
+                    () => {
+                      editedLinkIndex = -1;
+                      if (inputLinks) {
+                        inputLinks.splice(i, 1);
+                      }
+                    }
+                  ">
+                  <DeleteIcon class="delete-link-button" />
+                  <Tooltip text="Delete" />
+                </article>
+                <article
+                  v-if="editedLinkIndex == i"
+                  class="save-link link-button"
+                  @click="
+                    () => {
+                      if (
+                        inputLinks &&
+                        currentLink.name != '' &&
+                        currentLink.address != ''
+                      ) {
+                        inputLinks[i].name = currentLink.name;
+                        inputLinks[i].address = currentLink.address;
+                        editedLinkIndex = -1;
+                        linkCreated = false;
+                      }
+                    }
+                  ">
+                  <SaveIcon class="save-link-button" />
+                  <Tooltip text="Save" />
+                </article>
+                <article
+                  v-if="editedLinkIndex != i"
+                  class="edit-link link-button"
+                  @click="
+                    () => {
+                      if (editedLinkIndex == -1) {
+                        editedLinkIndex = i;
+                        if (inputLinks) {
+                          currentLink.name = inputLinks[i].name;
+                          currentLink.address = inputLinks[i].address;
+                        }
+                      }
+                    }
+                  ">
+                  <EditIcon class="edit-link-button" />
+                  <Tooltip text="Edit" />
+                </article>
+              </section>
+            </article>
+            <article
+              v-if="
+                !inputLinks ||
+                (inputLinks && inputLinks.length < 4 && !linkCreated)
+              "
               class="add-new-link"
               @click="
                 () => {
-                  if (
-                    currentLink &&
-                    currentLink != '' &&
-                    inputLinks.length <= 4
-                  ) {
-                    addedLinksNumber += 1;
-                    inputLinks.push(currentLink);
-                    currentLink = '';
+                  if (editedLinkIndex == -1) {
+                    linkCreated = true;
+                    currentLink = { name: '', address: '' };
+                    if (inputLinks) {
+                      inputLinks.push({ name: '', address: '' });
+                    } else {
+                      inputLinks = [{ name: '', address: '' }];
+                    }
+                    editedLinkIndex = inputLinks.length - 1;
                   }
                 }
               ">
@@ -357,9 +453,7 @@ watchEffect(() => {
               class="cancel-button"
               @click="
                 () => {
-                  for (let i = 0; i < addedLinksNumber; i++) {
-                    inputLinks.pop();
-                  }
+                  resetInputs();
                   formState = DataInputEvent.NONE;
                 }
               ">
@@ -377,6 +471,7 @@ watchEffect(() => {
                       clickedActivity.getId()
                     );
                   }
+                  resetInputs();
                   formState = DataInputEvent.NONE;
                 }
               ">
@@ -404,9 +499,10 @@ watchEffect(() => {
                       0,
                       inputDurationH as number,
                       inputDurationM as number,
-                      inputLinks as string[],
+                      inputLinks as Link[],
                       inputDescription as string
                     );
+                    resetInputs();
                     formState = DataInputEvent.NONE;
                   }
                 }
@@ -436,9 +532,10 @@ watchEffect(() => {
                       0,
                       inputDurationH as number,
                       inputDurationM as number,
-                      inputLinks as string[],
+                      inputLinks as Link[],
                       inputDescription as string
                     );
+                    resetInputs();
                     formState = DataInputEvent.NONE;
                   }
                 }
@@ -756,15 +853,39 @@ input[type="radio"]:checked {
   }
 }
 
+.added-link-container {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+
+  width: 100%;
+  height: 20px;
+}
+
 .added-link {
   overflow: hidden;
-  max-width: 430px;
+  max-width: 380px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.link-inputs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+
+  width: 100%;
+  height: 20px;
+}
+
 .add-new-link {
   cursor: pointer;
+
+  position: relative;
 
   display: flex;
   align-items: center;
@@ -792,12 +913,67 @@ input[type="radio"]:checked {
   transition: 0ms;
 }
 
+.link-buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.link-button {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+}
+
+.cancel-link-editing-button {
+  stroke: var(--light-gray);
+}
+
+.delete-link-button {
+  stroke: var(--intense-red);
+}
+
+.edit-link-button {
+  stroke: var(--light-gray);
+}
+
+.save-link-button {
+  stroke: var(--intense-green);
+}
+
+.cancel-link-editing-button,
+.delete-link-button,
+.edit-link-button,
+.save-link-button {
+  opacity: 0.6;
+  transition: 200ms;
+}
+
+.cancel-link-editing-button:hover,
+.delete-link-button:hover,
+.edit-link-button:hover,
+.save-link-button:hover {
+  opacity: 1;
+  transition: 200ms;
+}
+
 .data-input .tooltip {
   top: 140px;
 }
 
 .data-input-selection .tooltip {
   top: 105px;
+}
+
+.add-new-link .tooltip,
+.link-button .tooltip {
+  top: 30px;
 }
 
 textarea {

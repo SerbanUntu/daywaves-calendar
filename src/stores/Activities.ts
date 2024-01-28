@@ -13,6 +13,11 @@ export enum DataInputEvent {
   CREATE
 }
 
+export interface Link {
+  name: string;
+  address: string;
+}
+
 class Activity {
   private hashId: string;
   private name: string;
@@ -26,7 +31,7 @@ class Activity {
   private durationD: number;
   private durationH: number;
   private durationM: number;
-  private links: string[];
+  private links: Link[];
   private description: string;
 
   constructor(
@@ -42,7 +47,7 @@ class Activity {
     durationD: number,
     durationH: number,
     durationM: number,
-    links: string[],
+    links: Link[],
     description: string
   ) {
     this.hashId = hashId;
@@ -241,7 +246,7 @@ export const useActivitiesStore = defineStore("activities", () => {
     durationD: number,
     durationH: number,
     durationM: number,
-    links: string[],
+    links: Link[],
     description: string
   ) {
     const newActivity = new Activity(
