@@ -105,17 +105,18 @@ for (let i = 0; i < 49; i++) {
         </section>
       </article>
       <Activity
-        v-for="event in eventsMap.get(displayWeek)"
-        :key="event.name"
-        :name="event.name"
-        :hue="event.hue"
-        :date-d="event.dateD"
-        :date-m="event.dateM"
-        :date-y="event.dateY"
-        :time-h="event.timeH"
-        :time-m="event.timeM"
-        :duration-h="event.durationH"
-        :duration-m="event.durationM" />
+        v-for="[, event] in eventsMap.get(displayWeek)"
+        :key="event.getId()"
+        :hash-id="event.getId()"
+        :name="event.getName()"
+        :hue="event.getHue()"
+        :date-d="event.getDateD()"
+        :date-m="event.getDateM()"
+        :date-y="event.getDateY()"
+        :time-h="event.getTimeH()"
+        :time-m="event.getTimeM()"
+        :duration-h="event.getDurationH()"
+        :duration-m="event.getDurationM()" />
     </section>
   </section>
 </template>

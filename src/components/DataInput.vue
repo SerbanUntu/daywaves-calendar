@@ -6,24 +6,26 @@ import IconPlus from "./icons/IconPlus16x16.vue";
 import TemplatesIcon from "./icons/IconTemplates70x70.vue";
 import ImportArrowIcon from "./icons/IconImportArrow33x24.vue";
 import PlusIcon from "./icons/IconPlus16x16.vue";
+import CancelIcon from "./icons/IconCancel16x16.vue";
+import DeleteIcon from "./icons/IconDelete12x16.vue";
+import EditIcon from "./icons/IconEdit16x16.vue";
+import SaveIcon from "./icons/IconSave16x16.vue";
 import { computed, ref } from "vue";
-import { ActivityType } from "@/stores/Activities";
+import { ActivityType, DataInputEvent, type Link } from "@/stores/Activities";
 import { useActivitiesStore } from "@/stores/Activities";
+import { storeToRefs } from "pinia";
 
 const store = useActivitiesStore();
 
-enum DataInputEvent {
-  None,
-  Edit,
-  Create
-}
+const { formState, clickedActivity } = storeToRefs(store);
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
-let formState = ref<DataInputEvent>(DataInputEvent.None);
-let dataInputValid = computed(
-  () =>
+let dataInputValid = computed(() => {
+  const durationMinutes: number =
+    Number(inputDurationH.value) * 60 + Number(inputDurationM.value);
+  return (
     inputName.value &&
-    inputHue.value &&
+    inputHue.value != undefined &&
     inputDateD.value &&
     inputDateM.value &&
     inputDateY.value &&
@@ -43,14 +45,14 @@ let dataInputValid = computed(
     (inputDurationH.value > 0 ||
       (inputDurationH.value == 0 && inputDurationM.value > 0)) &&
     inputDurationM.value >= 0 &&
-    Number(inputDurationH.value) * 60 +
-      Number(inputDurationM.value) +
+    durationMinutes +
       Number(inputTimeH.value) * 60 +
       Number(inputTimeM.value) <=
-      1440
-);
-
-let currentLink: string;
+      1440 &&
+    durationMinutes >= 10 &&
+    editedLinkIndex.value == -1
+  );
+});
 
 let inputName = ref<string | undefined>();
 let inputType = ref<ActivityType>(ActivityType.ACTIVITY);
@@ -63,14 +65,69 @@ let inputTimeM = ref<number | undefined>();
 let inputDurationD = ref<number | undefined>();
 let inputDurationH = ref<number | undefined>();
 let inputDurationM = ref<number | undefined>();
-let inputLinks = ref<string[]>([]);
+let inputLinks = ref<Link[] | undefined>();
+let currentLink = ref<Link>({ name: "", address: "" });
+let editedLinkIndex = ref<number>(-1);
+let linkCreated = ref<boolean>(false);
 let inputDescription = ref<string>();
+let savedLinks: Link[] = [];
+let check: boolean = false;
+
+setInterval(() => {
+  if (formState.value === DataInputEvent.EDIT && check === false) {
+    if (clickedActivity.value) {
+      inputName.value = clickedActivity.value.getName();
+      inputType.value = clickedActivity.value.getType();
+      inputHue.value = clickedActivity.value.getHue();
+      inputDateD.value = clickedActivity.value.getDateD();
+      inputDateM.value = clickedActivity.value.getDateM();
+      inputDateY.value = clickedActivity.value.getDateY();
+      inputTimeH.value = clickedActivity.value.getTimeH();
+      inputTimeM.value = clickedActivity.value.getTimeM();
+      inputDurationH.value = clickedActivity.value.getDurationH();
+      inputDurationM.value = clickedActivity.value.getDateM();
+      inputLinks.value = clickedActivity.value.getLinks();
+      saveLinks();
+      inputDescription.value = clickedActivity.value.getDescription();
+      check = true;
+    }
+  }
+  if (formState.value !== DataInputEvent.EDIT) {
+    check = false;
+  }
+}, 1);
+
+function resetInputs() {
+  inputName.value = undefined;
+  inputHue.value = undefined;
+  inputDateD.value = undefined;
+  inputDateM.value = undefined;
+  inputDateY.value = undefined;
+  inputTimeH.value = undefined;
+  inputTimeM.value = undefined;
+  inputDurationD.value = undefined;
+  inputDurationH.value = undefined;
+  inputDurationM.value = undefined;
+  inputLinks.value = undefined;
+  inputDescription.value = undefined;
+  currentLink.value = { name: "", address: "" };
+  editedLinkIndex.value = -1;
+  linkCreated.value = false;
+  savedLinks = [];
+}
+
+function saveLinks() {
+  savedLinks = [];
+  inputLinks.value?.forEach((link) => {
+    savedLinks.push({ name: link.name, address: link.address });
+  });
+}
 </script>
 
 <template>
   <article id="data-input-container" class="data-input-container">
     <section
-      v-if="formState === DataInputEvent.None"
+      v-if="formState === DataInputEvent.NONE"
       id="data-input-selection"
       class="data-input-selection">
       <section
@@ -79,7 +136,12 @@ let inputDescription = ref<string>();
         <article
           id="add-activity-button"
           class="selection-button"
-          @click="formState = DataInputEvent.Create">
+          @click="
+            () => {
+              formState = DataInputEvent.CREATE;
+              resetInputs();
+            }
+          ">
           <section id="plus-icon-container" class="plus-icon-container">
             <article id="vertical-line" class="vertical-line"></article>
             <article id="horizontal-line" class="horizontal-line"></article>
@@ -101,7 +163,7 @@ let inputDescription = ref<string>();
       </section>
     </section>
     <form
-      v-if="formState !== DataInputEvent.None"
+      v-if="formState !== DataInputEvent.NONE"
       id="data-input"
       class="data-input">
       <section id="setup-stage" class="setup-stage stage">
@@ -266,32 +328,117 @@ let inputDescription = ref<string>();
         <h1>Links & Description</h1>
         <article id="links-desc-content" class="links-desc-content content">
           <section id="links-section" class="links-section section">
-            <label for="link-input">Links:</label>
-            <a
-              v-for="link in inputLinks"
-              :key="link"
-              class="added-link"
-              :href="link"
-              target="_blank"
-              v-text="link"></a>
-            <input
-              v-if="inputLinks.length <= 4"
-              id="link-input"
-              v-model="currentLink"
-              name="link"
-              type="url" />
+            <label for="link-inputs">Links:</label>
             <article
-              v-if="inputLinks.length <= 4"
+              v-for="(link, i) in inputLinks"
+              :key="i"
+              class="added-link-container">
+              <a
+                v-if="editedLinkIndex !== i"
+                class="added-link"
+                :href="link.address"
+                target="_blank"
+                v-text="link.name"></a>
+              <section v-else class="link-inputs">
+                <input
+                  v-model="currentLink.name"
+                  class="link-name-edit-input"
+                  name="link-name"
+                  type="text"
+                  placeholder="Name" />
+                <input
+                  v-model="currentLink.address"
+                  class="link-address-edit-input"
+                  name="link-address"
+                  type="url"
+                  placeholder="Address" />
+              </section>
+              <section class="link-buttons-container">
+                <article
+                  v-if="editedLinkIndex == i"
+                  class="cancel-link-editing link-button"
+                  @click="
+                    () => {
+                      editedLinkIndex = -1;
+                      if (linkCreated) {
+                        linkCreated = false;
+                        inputLinks?.pop();
+                      }
+                    }
+                  ">
+                  <CancelIcon class="cancel-link-editing-button" />
+                  <Tooltip text="Cancel" />
+                </article>
+                <article
+                  v-if="!linkCreated || editedLinkIndex != i"
+                  class="delete-link link-button"
+                  @click="
+                    () => {
+                      editedLinkIndex = -1;
+                      if (inputLinks) {
+                        inputLinks.splice(i, 1);
+                      }
+                    }
+                  ">
+                  <DeleteIcon class="delete-link-button" />
+                  <Tooltip text="Delete" />
+                </article>
+                <article
+                  v-if="editedLinkIndex == i"
+                  class="save-link link-button"
+                  @click="
+                    () => {
+                      if (
+                        inputLinks &&
+                        currentLink.name != '' &&
+                        currentLink.address != ''
+                      ) {
+                        inputLinks[i].name = currentLink.name;
+                        inputLinks[i].address = currentLink.address;
+                        editedLinkIndex = -1;
+                        linkCreated = false;
+                      }
+                    }
+                  ">
+                  <SaveIcon class="save-link-button" />
+                  <Tooltip text="Save" />
+                </article>
+                <article
+                  v-if="editedLinkIndex != i"
+                  class="edit-link link-button"
+                  @click="
+                    () => {
+                      if (editedLinkIndex == -1) {
+                        editedLinkIndex = i;
+                        if (inputLinks) {
+                          currentLink.name = inputLinks[i].name;
+                          currentLink.address = inputLinks[i].address;
+                        }
+                      }
+                    }
+                  ">
+                  <EditIcon class="edit-link-button" />
+                  <Tooltip text="Edit" />
+                </article>
+              </section>
+            </article>
+            <article
+              v-if="
+                !inputLinks ||
+                (inputLinks && inputLinks.length < 4 && !linkCreated)
+              "
               class="add-new-link"
               @click="
                 () => {
-                  if (
-                    currentLink &&
-                    currentLink != '' &&
-                    inputLinks.length <= 4
-                  ) {
-                    inputLinks.push(currentLink);
-                    currentLink = '';
+                  if (editedLinkIndex == -1) {
+                    linkCreated = true;
+                    currentLink = { name: '', address: '' };
+                    if (inputLinks) {
+                      inputLinks.push({ name: '', address: '' });
+                    } else {
+                      inputLinks = [{ name: '', address: '' }];
+                    }
+                    editedLinkIndex = inputLinks.length - 1;
                   }
                 }
               ">
@@ -308,51 +455,129 @@ let inputDescription = ref<string>();
               v-model="inputDescription"
               name="description" />
           </section>
-          <article
-            id="submit-button"
-            :class="{ 'submit-button': true, 'submit-error': !dataInputValid }"
-            @click="
-              () => {
-                if (dataInputValid) {
-                  store.addActivity({
-                    name: inputName as string,
-                    type: inputType,
-                    hue: inputHue as number,
-                    dateD: inputDateD as number,
-                    dateM: inputDateM as number,
-                    dateY: inputDateY as number,
-                    timeH: inputTimeH as number,
-                    timeM: inputTimeM as number,
-                    durationD: 0,
-                    durationH: inputDurationH as number,
-                    durationM: inputDurationM as number,
-                    links: inputLinks as string[],
-                    description: inputDescription as string
-                  });
-                  formState = DataInputEvent.None;
-                  inputName = undefined;
-                  inputHue = undefined;
-                  inputDateD = undefined;
-                  inputDateM = undefined;
-                  inputDateY = undefined;
-                  inputTimeH = undefined;
-                  inputTimeM = undefined;
-                  inputDurationD = undefined;
-                  inputDurationH = undefined;
-                  inputDurationM = undefined;
-                  inputLinks = [];
-                  inputDescription = undefined;
+          <section
+            id="action-buttons-container"
+            class="action-buttons-container">
+            <article
+              v-if="
+                formState == DataInputEvent.EDIT ||
+                formState == DataInputEvent.CREATE
+              "
+              id="cancel-button"
+              class="cancel-button"
+              @click="
+                () => {
+                  if (clickedActivity) {
+                    store.addActivity(
+                      clickedActivity.getName(),
+                      clickedActivity.getType(),
+                      clickedActivity.getHue(),
+                      clickedActivity.getDateD(),
+                      clickedActivity.getDateM(),
+                      clickedActivity.getDateY(),
+                      clickedActivity.getTimeH(),
+                      clickedActivity.getTimeM(),
+                      0,
+                      clickedActivity.getDurationH(),
+                      clickedActivity.getDurationM(),
+                      savedLinks,
+                      clickedActivity.getDescription()
+                    );
+                    store.deleteActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId()
+                    );
+                    resetInputs();
+                    formState = DataInputEvent.NONE;
+                  }
                 }
-              }
-            ">
-            <p>Submit</p>
-          </article>
-          <article
-            id="cancel-button"
-            class="cancel-button"
-            @click="formState = DataInputEvent.None">
-            <p>Cancel</p>
-          </article>
+              ">
+              <p>Cancel</p>
+            </article>
+            <article
+              v-if="formState == DataInputEvent.EDIT"
+              id="delete-button"
+              class="delete-button"
+              @click="
+                () => {
+                  if (clickedActivity) {
+                    store.deleteActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId()
+                    );
+                  }
+                  resetInputs();
+                  formState = DataInputEvent.NONE;
+                }
+              ">
+              <p>Delete</p>
+            </article>
+            <article
+              v-if="formState == DataInputEvent.CREATE"
+              id="submit-button"
+              :class="{
+                'submit-button': true,
+                'submit-error': !dataInputValid
+              }"
+              @click="
+                () => {
+                  if (dataInputValid) {
+                    store.addActivity(
+                      inputName as string,
+                      inputType,
+                      inputHue as number,
+                      inputDateD as number,
+                      inputDateM as number,
+                      inputDateY as number,
+                      inputTimeH as number,
+                      inputTimeM as number,
+                      0,
+                      inputDurationH as number,
+                      inputDurationM as number,
+                      inputLinks as Link[],
+                      inputDescription as string
+                    );
+                    resetInputs();
+                    formState = DataInputEvent.NONE;
+                  }
+                }
+              ">
+              <p>Add</p>
+            </article>
+            <article
+              v-if="formState == DataInputEvent.EDIT"
+              id="save-button"
+              :class="{ 'save-button': true, 'save-error': !dataInputValid }"
+              @click="
+                () => {
+                  if (dataInputValid && clickedActivity) {
+                    store.deleteActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId()
+                    );
+                    store.addActivity(
+                      inputName as string,
+                      inputType,
+                      inputHue as number,
+                      inputDateD as number,
+                      inputDateM as number,
+                      inputDateY as number,
+                      inputTimeH as number,
+                      inputTimeM as number,
+                      0,
+                      inputDurationH as number,
+                      inputDurationM as number,
+                      inputLinks as Link[],
+                      inputDescription as string
+                    );
+                    resetInputs();
+                    formState = DataInputEvent.NONE;
+                  }
+                }
+              ">
+              <p>Save</p>
+            </article>
+          </section>
         </article>
       </section>
     </form>
@@ -663,15 +888,39 @@ input[type="radio"]:checked {
   }
 }
 
+.added-link-container {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+
+  width: 100%;
+  height: 20px;
+}
+
 .added-link {
   overflow: hidden;
-  max-width: 430px;
+  max-width: 380px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.link-inputs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+
+  width: 100%;
+  height: 20px;
+}
+
 .add-new-link {
   cursor: pointer;
+
+  position: relative;
 
   display: flex;
   align-items: center;
@@ -699,6 +948,56 @@ input[type="radio"]:checked {
   transition: 0ms;
 }
 
+.link-buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.link-button {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+}
+
+.cancel-link-editing-button {
+  stroke: var(--light-gray);
+}
+
+.delete-link-button {
+  stroke: var(--intense-red);
+}
+
+.edit-link-button {
+  stroke: var(--light-gray);
+}
+
+.save-link-button {
+  stroke: var(--intense-green);
+}
+
+.cancel-link-editing-button,
+.delete-link-button,
+.edit-link-button,
+.save-link-button {
+  opacity: 0.6;
+  transition: 200ms;
+}
+
+.cancel-link-editing-button:hover,
+.delete-link-button:hover,
+.edit-link-button:hover,
+.save-link-button:hover {
+  opacity: 1;
+  transition: 200ms;
+}
+
 .data-input .tooltip {
   top: 140px;
 }
@@ -707,19 +1006,38 @@ input[type="radio"]:checked {
   top: 105px;
 }
 
+.add-new-link .tooltip,
+.link-button .tooltip {
+  top: 30px;
+}
+
 textarea {
   resize: vertical;
   width: 100%;
   max-height: 100%;
 }
 
+.action-buttons-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+}
+
 .cancel-button,
-.submit-button {
+.submit-button,
+.save-button,
+.delete-button {
   cursor: pointer;
 
-  position: absolute;
   z-index: 1030;
-  top: 10px;
 
   display: flex;
   align-items: center;
@@ -736,16 +1054,10 @@ textarea {
   transition: 200ms;
 }
 
-.submit-button {
-  right: 10px;
-}
-
-.cancel-button {
-  right: 100px;
-}
-
 .submit-button:hover,
-.cancel-button:hover {
+.cancel-button:hover,
+.save-button:hover,
+.delete-button:hover {
   background: var(--highlight-gray);
   transition: 200ms;
 
@@ -755,12 +1067,24 @@ textarea {
 }
 
 .cancel-button:active,
-.submit-button:active {
+.submit-button:active,
+.save-button:active,
+.delete-button:active {
   transition: 0ms;
 }
 
-.submit-button:active {
+.submit-button:active,
+.save-button:active {
   background-color: var(--intense-green);
+
+  p {
+    color: var(--almost-white);
+    transition: 0ms;
+  }
+}
+
+.delete-button:active {
+  background-color: var(--intense-red);
 
   p {
     color: var(--almost-white);
@@ -772,7 +1096,8 @@ textarea {
   background-color: var(--almost-white);
 }
 
-.submit-error:active {
+.submit-error:active,
+.save-error:active {
   background-color: var(--intense-red);
 }
 

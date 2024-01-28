@@ -7,27 +7,133 @@ export enum ActivityType {
   FLAG
 }
 
-export type Activity = {
+export enum DataInputEvent {
+  NONE,
+  EDIT,
+  CREATE
+}
+
+export interface Link {
   name: string;
-  type: ActivityType;
-  hue: number;
-  dateD: number;
-  dateM: number;
-  dateY: number;
-  timeH: number;
-  timeM: number;
-  durationD: number;
-  durationH: number;
-  durationM: number;
-  links: string[];
-  description: string;
-};
+  address: string;
+}
+
+class Activity {
+  private hashId: string;
+  private name: string;
+  private type: ActivityType;
+  private hue: number;
+  private dateD: number;
+  private dateM: number;
+  private dateY: number;
+  private timeH: number;
+  private timeM: number;
+  private durationD: number;
+  private durationH: number;
+  private durationM: number;
+  private links: Link[];
+  private description: string;
+
+  constructor(
+    hashId: string,
+    name: string,
+    type: ActivityType,
+    hue: number,
+    dateD: number,
+    dateM: number,
+    dateY: number,
+    timeH: number,
+    timeM: number,
+    durationD: number,
+    durationH: number,
+    durationM: number,
+    links: Link[],
+    description: string
+  ) {
+    this.hashId = hashId;
+    this.name = name;
+    this.type = type;
+    this.hue = hue;
+    this.dateD = dateD;
+    this.dateM = dateM;
+    this.dateY = dateY;
+    this.timeH = timeH;
+    this.timeM = timeM;
+    this.durationD = durationD;
+    this.durationH = durationH;
+    this.durationM = durationM;
+    this.links = links;
+    this.description = description;
+  }
+
+  getDate() {
+    return new Date(`${this.dateY}-${this.dateM}-${this.dateD}`);
+  }
+
+  getId() {
+    return this.hashId;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  getHue() {
+    return this.hue;
+  }
+
+  getDateD() {
+    return this.dateD;
+  }
+
+  getDateM() {
+    return this.dateM;
+  }
+
+  getDateY() {
+    return this.dateY;
+  }
+
+  getTimeH() {
+    return this.timeH;
+  }
+
+  getTimeM() {
+    return this.timeM;
+  }
+
+  getDurationD() {
+    return this.durationD;
+  }
+
+  getDurationH() {
+    return this.durationH;
+  }
+
+  getDurationM() {
+    return this.durationM;
+  }
+
+  getLinks() {
+    return this.links;
+  }
+
+  getDescription() {
+    return this.description;
+  }
+}
 
 export const useActivitiesStore = defineStore("activities", () => {
-  const eventsMap = ref<Map<string, Activity[]>>(new Map());
+  const eventsMap = ref<Map<string, Map<string, Activity>>>(new Map());
   const displayDate = ref<Date>(new Date());
   const displayWeek = ref<string>(weekName(displayDate.value));
   const currentDate = ref<Date>(new Date());
+  const formState = ref<DataInputEvent>(DataInputEvent.NONE);
+  const clickedActivity = ref<Activity>();
 
   setInterval(() => (currentDate.value = new Date()), 1);
 
@@ -128,18 +234,88 @@ export const useActivitiesStore = defineStore("activities", () => {
     return true;
   }
 
-  function addActivity(activity: Activity) {
-    const activityDate: Date = new Date(
-      `${activity.dateY}-${activity.dateM}-${activity.dateD}`
+  function addActivity(
+    name: string,
+    type: ActivityType,
+    hue: number,
+    dateD: number,
+    dateM: number,
+    dateY: number,
+    timeH: number,
+    timeM: number,
+    durationD: number,
+    durationH: number,
+    durationM: number,
+    links: Link[],
+    description: string
+  ) {
+    const newActivity = new Activity(
+      makeId(16),
+      name,
+      type,
+      hue,
+      dateD,
+      dateM,
+      dateY,
+      timeH,
+      timeM,
+      durationD,
+      durationH,
+      durationM,
+      links,
+      description
     );
-    const activityWeek: string = weekName(activityDate);
-    const arr = eventsMap.value.get(activityWeek);
-    if (arr) {
-      eventsMap.value.set(activityWeek, [...arr, activity]);
+    const activityWeek: string = weekName(newActivity.getDate());
+    const weekMap = eventsMap.value.get(activityWeek);
+    if (weekMap) {
+      weekMap.set(newActivity.getId(), newActivity);
     } else {
-      eventsMap.value.set(activityWeek, [activity]);
+      const newMap = new Map();
+      newMap.set(newActivity.getId(), newActivity);
+      eventsMap.value.set(activityWeek, newMap);
     }
-    console.log(eventsMap);
+  }
+
+  function makeId(length: number): string {
+    let result: string = "";
+    const characters: string =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  function setClickedActivity(hashId: string, week: string) {
+    const weekMap = eventsMap.value.get(week);
+    if (weekMap) {
+      const activityRef = weekMap.get(hashId);
+      if (activityRef) {
+        clickedActivity.value = new Activity(
+          activityRef.getId(),
+          activityRef.getName(),
+          activityRef.getType(),
+          activityRef.getHue(),
+          activityRef.getDateD(),
+          activityRef.getDateM(),
+          activityRef.getDateY(),
+          activityRef.getTimeH(),
+          activityRef.getTimeM(),
+          activityRef.getDurationD(),
+          activityRef.getDurationH(),
+          activityRef.getDurationM(),
+          activityRef.getLinks(),
+          activityRef.getDescription()
+        );
+      }
+    }
+  }
+
+  function deleteActivity(date: Date, id: string): void {
+    const activityWeek: string = weekName(date);
+    const weekMap = eventsMap.value.get(activityWeek);
+    weekMap?.delete(id);
   }
 
   return {
@@ -147,6 +323,8 @@ export const useActivitiesStore = defineStore("activities", () => {
     displayDate,
     displayWeek,
     currentDate,
+    formState,
+    clickedActivity,
 
     changeDisplay,
     datesArr,
@@ -155,6 +333,8 @@ export const useActivitiesStore = defineStore("activities", () => {
     timeToLeft,
     timeToWidth,
     sameWeek,
-    addActivity
+    addActivity,
+    setClickedActivity,
+    deleteActivity
   };
 });
