@@ -85,7 +85,7 @@ setInterval(() => {
       inputTimeH.value = clickedActivity.value.getTimeH();
       inputTimeM.value = clickedActivity.value.getTimeM();
       inputDurationH.value = clickedActivity.value.getDurationH();
-      inputDurationM.value = clickedActivity.value.getDateM();
+      inputDurationM.value = clickedActivity.value.getDurationM();
       inputLinks.value = clickedActivity.value.getLinks();
       saveLinks();
       inputDescription.value = clickedActivity.value.getDescription();

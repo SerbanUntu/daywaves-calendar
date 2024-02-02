@@ -12,31 +12,46 @@ import Tooltip from "./util/TooltipItem.vue";
 <template>
   <nav id="navbar">
     <section id="navbar-top-icons" class="top-icons">
-      <article id="navbar-note-icon-container" class="icon-container">
+      <article
+        id="navbar-note-icon-container"
+        class="icon-container"
+        @click="$router.push('/daily-note')">
         <i>
           <NoteIcon class="icon-svg" />
         </i>
         <Tooltip text="Open today's daily note" />
       </article>
-      <article id="navbar-templates-icon-container" class="icon-container">
+      <article
+        id="navbar-templates-icon-container"
+        class="icon-container"
+        @click="$router.push('/templates')">
         <i>
           <TemplatesIcon class="icon-svg" />
         </i>
         <Tooltip text="Templates" />
       </article>
-      <article id="navbar-routines-icon-container" class="icon-container">
+      <article
+        id="navbar-routines-icon-container"
+        class="icon-container"
+        @click="$router.push('/routines')">
         <i>
           <RoutinesIcon class="icon-svg" />
         </i>
         <Tooltip text="Routines" />
       </article>
-      <article id="navbar-pins-icon-container" class="icon-container">
+      <article
+        id="navbar-pins-icon-container"
+        class="icon-container"
+        @click="$router.push('/pins')">
         <i>
           <PinsIcon class="icon-svg" />
         </i>
         <Tooltip text="Pins" />
       </article>
-      <article id="navbar-birthdays-icon-container" class="icon-container">
+      <article
+        id="navbar-birthdays-icon-container"
+        class="icon-container"
+        @click="$router.push('/birthdays')">
         <i>
           <BirthdaysIcon class="icon-svg" />
         </i>
@@ -44,13 +59,19 @@ import Tooltip from "./util/TooltipItem.vue";
       </article>
     </section>
     <section id="navbar-bottom-icons" class="bottom-icons">
-      <article id="navbar-account-icon-container" class="icon-container">
+      <article
+        id="navbar-account-icon-container"
+        class="icon-container"
+        @click="$router.push('/account')">
         <i>
           <AccountIcon class="icon-svg" />
         </i>
         <Tooltip text="Account" />
       </article>
-      <article id="navbar-settings-icon-container" class="icon-container">
+      <article
+        id="navbar-settings-icon-container"
+        class="icon-container"
+        @click="$router.push('/settings')">
         <i>
           <SettingsIcon class="icon-svg" />
         </i>

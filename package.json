@@ -71,7 +71,8 @@
       ]
     },
     "ignorePatterns": [
-      "App.vue"
+      "App.vue",
+      "**/views/*"
     ]
   },
   "stylelint": {
