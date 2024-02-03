@@ -10,74 +10,64 @@ const { formState, clickedActivity } = storeToRefs(store);
 
 const props = defineProps({
   hashId: {
-    default: "AAAAAAAAAAAAAAAA",
+    default: "",
     type: String
   },
-  name: {
-    default: "Unnamed",
-    type: String
-  },
-  hue: {
-    default: 0,
-    type: Number
-  },
-  dateD: {
-    default: 1,
-    type: Number
-  },
-  dateM: {
-    default: 1,
-    type: Number
-  },
-  dateY: {
-    default: 1970,
-    type: Number
-  },
-  timeH: {
-    default: 12,
-    type: Number
-  },
-  timeM: {
-    default: 0,
-    type: Number
-  },
-  durationH: {
-    default: 1,
-    type: Number
-  },
-  durationM: {
-    default: 0,
-    type: Number
+  dateStart: {
+    default: "",
+    type: Date
   }
 });
 
-let activityName = ref<string>(props.name);
-let activityWidth: number = store.timeToWidth(props.durationH, props.durationM);
+let computedActivityRef = computed(() =>
+  store.getActivityRef(props.dateStart, props.hashId)
+);
 
-if (props.durationH == 0 && props.durationM < 30) {
+let activityName = ref<string>(computedActivityRef.value.getName());
+let activityWidth = computed(() =>
+  store.timeToWidth(
+    computedActivityRef.value.getDurationH(),
+    computedActivityRef.value.getDurationM()
+  )
+);
+
+if (
+  computedActivityRef.value.getDurationH() == 0 &&
+  computedActivityRef.value.getDurationM() < 30
+) {
   activityName.value = "";
 }
 
-let computedDate = new Date(`${props.dateY}-${props.dateM}-${props.dateD}`);
+let computedDate = computed(
+  () =>
+    new Date(
+      `${computedActivityRef.value.getDateY()}-${computedActivityRef.value.getDateM()}-${computedActivityRef.value.getDateD()}`
+    )
+);
 
-let adjustedDay: number =
-  computedDate.getDay() == 0 ? 7 : computedDate.getDay();
+let adjustedDay = computed(() =>
+  computedDate.value.getDay() == 0 ? 7 : computedDate.value.getDay()
+);
 
 let computedStyle = computed(() => ({
-  width: `${activityWidth}px`,
-  background: `hsl(${props.hue}deg 40% 60% / 100%)`,
-  left: `calc(11.6px + ${store.timeToLeft(props.timeH, props.timeM, 0)}px)`,
-  top: `calc(10px + ${store.dayToTop(adjustedDay - 1)}px)`
+  width: `${activityWidth.value}px`,
+  background: `hsl(${computedActivityRef.value.getHue()}deg 40% 60% / 100%)`,
+  left: `calc(11.6px + ${store.timeToLeft(
+    computedActivityRef.value.getTimeH(),
+    computedActivityRef.value.getTimeM(),
+    0
+  )}px)`,
+  top: `calc(10px + ${store.dayToTop(adjustedDay.value - 1)}px)`
 }));
 
 let computedStyleName = computed(() => ({
-  width: `${activityWidth - 5}px`
+  width: `${activityWidth.value - 5}px`
 }));
 </script>
 
 <template>
   <article
-    :id="`${props.name}-${props.dateY}-${props.dateM}-${props.dateD}T${props.timeH}:${props.timeM}`"
+    :id="`${props.hashId}`"
     :class="{
       activity: true,
       selected:
@@ -90,7 +80,7 @@ let computedStyleName = computed(() => ({
         if (formState == DataInputEvent.NONE) {
           formState = DataInputEvent.EDIT;
           const activityDate = new Date(
-            `${props.dateY}-${props.dateM}-${props.dateD}`
+            `${computedActivityRef.getDateY()}-${computedActivityRef.getDateM()}-${computedActivityRef.getDateD()}`
           );
           store.setClickedActivity(props.hashId, store.weekName(activityDate));
         }
@@ -102,7 +92,7 @@ let computedStyleName = computed(() => ({
       :style="{ ...computedStyleName }">
       {{ activityName }}
     </p>
-    <Tooltip :text="props.name" />
+    <Tooltip :text="computedActivityRef.getName()" />
   </article>
 </template>
 

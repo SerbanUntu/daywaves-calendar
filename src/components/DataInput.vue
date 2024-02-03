@@ -468,7 +468,9 @@ function saveLinks() {
               @click="
                 () => {
                   if (clickedActivity) {
-                    store.addActivity(
+                    store.editActivity(
+                      clickedActivity.getDate(),
+                      clickedActivity.getId(),
                       clickedActivity.getName(),
                       clickedActivity.getType(),
                       clickedActivity.getHue(),
@@ -482,10 +484,6 @@ function saveLinks() {
                       clickedActivity.getDurationM(),
                       savedLinks,
                       clickedActivity.getDescription()
-                    );
-                    store.deleteActivity(
-                      clickedActivity.getDate(),
-                      clickedActivity.getId()
                     );
                     resetInputs();
                     formState = DataInputEvent.NONE;
@@ -551,11 +549,9 @@ function saveLinks() {
               @click="
                 () => {
                   if (dataInputValid && clickedActivity) {
-                    store.deleteActivity(
+                    store.editActivity(
                       clickedActivity.getDate(),
-                      clickedActivity.getId()
-                    );
-                    store.addActivity(
+                      clickedActivity.getId(),
                       inputName as string,
                       inputType,
                       inputHue as number,

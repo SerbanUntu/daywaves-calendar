@@ -318,6 +318,77 @@ export const useActivitiesStore = defineStore("activities", () => {
     weekMap?.delete(id);
   }
 
+  function getActivityRef(date: Date, id: string) {
+    const activityWeek: string = weekName(date);
+    const weekMap = eventsMap.value.get(activityWeek);
+    const result = weekMap?.get(id);
+    if (result) {
+      return result;
+    } else {
+      return new Activity(
+        "",
+        "",
+        ActivityType.ACTIVITY,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        [],
+        ""
+      );
+    }
+  }
+
+  function editActivity(
+    date: Date,
+    id: string,
+    name: string,
+    type: ActivityType,
+    hue: number,
+    dateD: number,
+    dateM: number,
+    dateY: number,
+    timeH: number,
+    timeM: number,
+    durationD: number,
+    durationH: number,
+    durationM: number,
+    links: Link[],
+    description: string
+  ) {
+    const newActivity = new Activity(
+      id,
+      name,
+      type,
+      hue,
+      dateD,
+      dateM,
+      dateY,
+      timeH,
+      timeM,
+      durationD,
+      durationH,
+      durationM,
+      links,
+      description
+    );
+    deleteActivity(date, id);
+    const activityWeek: string = weekName(newActivity.getDate());
+    const weekMap = eventsMap.value.get(activityWeek);
+    if (weekMap) {
+      weekMap.set(newActivity.getId(), newActivity);
+    } else {
+      const newMap = new Map();
+      newMap.set(newActivity.getId(), newActivity);
+      eventsMap.value.set(activityWeek, newMap);
+    }
+  }
+
   return {
     eventsMap,
     displayDate,
@@ -335,6 +406,8 @@ export const useActivitiesStore = defineStore("activities", () => {
     sameWeek,
     addActivity,
     setClickedActivity,
-    deleteActivity
+    deleteActivity,
+    getActivityRef,
+    editActivity
   };
 });

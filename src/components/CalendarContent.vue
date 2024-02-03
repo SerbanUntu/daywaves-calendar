@@ -108,15 +108,7 @@ for (let i = 0; i < 49; i++) {
         v-for="[, event] in eventsMap.get(displayWeek)"
         :key="event.getId()"
         :hash-id="event.getId()"
-        :name="event.getName()"
-        :hue="event.getHue()"
-        :date-d="event.getDateD()"
-        :date-m="event.getDateM()"
-        :date-y="event.getDateY()"
-        :time-h="event.getTimeH()"
-        :time-m="event.getTimeM()"
-        :duration-h="event.getDurationH()"
-        :duration-m="event.getDurationM()" />
+        :date-start="event.getDate()" />
     </section>
   </section>
 </template>
