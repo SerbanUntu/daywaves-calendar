@@ -23,14 +23,16 @@ class Activity {
   private name: string;
   private type: ActivityType;
   private hue: number;
-  private dateD: number;
-  private dateM: number;
-  private dateY: number;
-  private timeH: number;
-  private timeM: number;
-  private durationD: number;
-  private durationH: number;
-  private durationM: number;
+  private dateStartD: number;
+  private dateStartM: number;
+  private dateStartY: number;
+  private dateEndD: number;
+  private dateEndM: number;
+  private dateEndY: number;
+  private timeStartH: number;
+  private timeStartM: number;
+  private timeEndH: number;
+  private timeEndM: number;
   private links: Link[];
   private description: string;
 
@@ -42,11 +44,10 @@ class Activity {
     dateD: number,
     dateM: number,
     dateY: number,
-    timeH: number,
-    timeM: number,
-    durationD: number,
-    durationH: number,
-    durationM: number,
+    timeStartH: number,
+    timeStartM: number,
+    timeEndH: number,
+    timeEndM: number,
     links: Link[],
     description: string
   ) {
@@ -54,20 +55,22 @@ class Activity {
     this.name = name;
     this.type = type;
     this.hue = hue;
-    this.dateD = dateD;
-    this.dateM = dateM;
-    this.dateY = dateY;
-    this.timeH = timeH;
-    this.timeM = timeM;
-    this.durationD = durationD;
-    this.durationH = durationH;
-    this.durationM = durationM;
+    this.dateStartD = dateD;
+    this.dateStartM = dateM;
+    this.dateStartY = dateY;
+    this.dateEndD = dateD;
+    this.dateEndM = dateM;
+    this.dateEndY = dateY;
+    this.timeStartH = timeStartH;
+    this.timeStartM = timeStartM;
+    this.timeEndH = timeEndH;
+    this.timeEndM = timeEndM;
     this.links = links;
     this.description = description;
   }
 
-  getDate() {
-    return new Date(`${this.dateY}-${this.dateM}-${this.dateD}`);
+  getDateObject() {
+    return new Date(`${this.dateStartY}-${this.dateStartM}-${this.dateStartD}`);
   }
 
   getId() {
@@ -86,36 +89,44 @@ class Activity {
     return this.hue;
   }
 
-  getDateD() {
-    return this.dateD;
+  getDateStartD() {
+    return this.dateStartD;
   }
 
-  getDateM() {
-    return this.dateM;
+  getDateStartM() {
+    return this.dateStartM;
   }
 
-  getDateY() {
-    return this.dateY;
+  getDateStartY() {
+    return this.dateStartY;
   }
 
-  getTimeH() {
-    return this.timeH;
+  getDateEndD() {
+    return this.dateEndD;
   }
 
-  getTimeM() {
-    return this.timeM;
+  getDateEndM() {
+    return this.dateEndM;
   }
 
-  getDurationD() {
-    return this.durationD;
+  getDateEndY() {
+    return this.dateEndY;
   }
 
-  getDurationH() {
-    return this.durationH;
+  getTimeStartH() {
+    return this.timeStartH;
   }
 
-  getDurationM() {
-    return this.durationM;
+  getTimeStartM() {
+    return this.timeStartM;
+  }
+
+  getTimeEndH() {
+    return this.timeEndH;
+  }
+
+  getTimeEndM() {
+    return this.timeEndM;
   }
 
   getLinks() {
@@ -124,6 +135,22 @@ class Activity {
 
   getDescription() {
     return this.description;
+  }
+
+  getDateStart() {
+    return `${this.dateStartY}-${this.dateStartM}-${this.dateStartD}`;
+  }
+
+  getDateEnd() {
+    return `${this.dateEndY}-${this.dateEndM}-${this.dateEndD}`;
+  }
+
+  getTimeStart() {
+    return `${this.timeStartH}:${this.timeStartM}:00`;
+  }
+
+  getTimeEnd() {
+    return `${this.timeEndH}:${this.timeEndM}:00`;
   }
 }
 
@@ -241,11 +268,10 @@ export const useActivitiesStore = defineStore("activities", () => {
     dateD: number,
     dateM: number,
     dateY: number,
-    timeH: number,
-    timeM: number,
-    durationD: number,
-    durationH: number,
-    durationM: number,
+    timeStartH: number,
+    timeStartM: number,
+    timeEndH: number,
+    timeEndM: number,
     links: Link[],
     description: string
   ) {
@@ -257,15 +283,14 @@ export const useActivitiesStore = defineStore("activities", () => {
       dateD,
       dateM,
       dateY,
-      timeH,
-      timeM,
-      durationD,
-      durationH,
-      durationM,
+      timeStartH,
+      timeStartM,
+      timeEndH,
+      timeEndM,
       links,
       description
     );
-    const activityWeek: string = weekName(newActivity.getDate());
+    const activityWeek: string = weekName(newActivity.getDateObject());
     const weekMap = eventsMap.value.get(activityWeek);
     if (weekMap) {
       weekMap.set(newActivity.getId(), newActivity);
@@ -297,14 +322,13 @@ export const useActivitiesStore = defineStore("activities", () => {
           activityRef.getName(),
           activityRef.getType(),
           activityRef.getHue(),
-          activityRef.getDateD(),
-          activityRef.getDateM(),
-          activityRef.getDateY(),
-          activityRef.getTimeH(),
-          activityRef.getTimeM(),
-          activityRef.getDurationD(),
-          activityRef.getDurationH(),
-          activityRef.getDurationM(),
+          activityRef.getDateStartD(),
+          activityRef.getDateStartM(),
+          activityRef.getDateStartY(),
+          activityRef.getTimeStartH(),
+          activityRef.getTimeStartM(),
+          activityRef.getTimeEndH(),
+          activityRef.getTimeEndM(),
           activityRef.getLinks(),
           activityRef.getDescription()
         );
@@ -337,7 +361,6 @@ export const useActivitiesStore = defineStore("activities", () => {
         0,
         0,
         0,
-        0,
         [],
         ""
       );
@@ -353,11 +376,10 @@ export const useActivitiesStore = defineStore("activities", () => {
     dateD: number,
     dateM: number,
     dateY: number,
-    timeH: number,
-    timeM: number,
-    durationD: number,
-    durationH: number,
-    durationM: number,
+    timeStartH: number,
+    timeStartM: number,
+    timeEndH: number,
+    timeEndM: number,
     links: Link[],
     description: string
   ) {
@@ -369,16 +391,15 @@ export const useActivitiesStore = defineStore("activities", () => {
       dateD,
       dateM,
       dateY,
-      timeH,
-      timeM,
-      durationD,
-      durationH,
-      durationM,
+      timeStartH,
+      timeStartM,
+      timeEndH,
+      timeEndM,
       links,
       description
     );
     deleteActivity(date, id);
-    const activityWeek: string = weekName(newActivity.getDate());
+    const activityWeek: string = weekName(newActivity.getDateObject());
     const weekMap = eventsMap.value.get(activityWeek);
     if (weekMap) {
       weekMap.set(newActivity.getId(), newActivity);

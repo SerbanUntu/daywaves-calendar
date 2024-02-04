@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DataInputEvent, useActivitiesStore } from "@/stores/Activities";
 import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import Tooltip from "../util/TooltipItem.vue";
 
 const store = useActivitiesStore();
@@ -23,25 +23,41 @@ let computedActivityRef = computed(() =>
   store.getActivityRef(props.dateStart, props.hashId)
 );
 
-let activityName = ref<string>(computedActivityRef.value.getName());
-let activityWidth = computed(() =>
-  store.timeToWidth(
-    computedActivityRef.value.getDurationH(),
-    computedActivityRef.value.getDurationM()
+let computedDurationH = computed(() =>
+  Math.floor(
+    (Number(computedActivityRef.value.getTimeEndH()) * 60 -
+      Number(computedActivityRef.value.getTimeStartH()) * 60 +
+      Number(computedActivityRef.value.getTimeEndM()) -
+      Number(computedActivityRef.value.getTimeStartM())) /
+      60
   )
 );
 
-if (
-  computedActivityRef.value.getDurationH() == 0 &&
-  computedActivityRef.value.getDurationM() < 30
-) {
-  activityName.value = "";
-}
+let computedDurationM = computed(() =>
+  Math.floor(
+    (Number(computedActivityRef.value.getTimeEndH()) * 60 -
+      Number(computedActivityRef.value.getTimeStartH()) * 60 +
+      Number(computedActivityRef.value.getTimeEndM()) -
+      Number(computedActivityRef.value.getTimeStartM())) %
+      60
+  )
+);
+
+let activityName = computed(() => {
+  if (computedDurationH.value == 0 && computedDurationM.value < 30) {
+    return "";
+  }
+  return computedActivityRef.value.getName();
+});
+
+let activityWidth = computed(() =>
+  store.timeToWidth(computedDurationH.value, computedDurationM.value)
+);
 
 let computedDate = computed(
   () =>
     new Date(
-      `${computedActivityRef.value.getDateY()}-${computedActivityRef.value.getDateM()}-${computedActivityRef.value.getDateD()}`
+      `${computedActivityRef.value.getDateStartY()}-${computedActivityRef.value.getDateStartM()}-${computedActivityRef.value.getDateStartD()}`
     )
 );
 
@@ -53,8 +69,8 @@ let computedStyle = computed(() => ({
   width: `${activityWidth.value}px`,
   background: `hsl(${computedActivityRef.value.getHue()}deg 40% 60% / 100%)`,
   left: `calc(11.6px + ${store.timeToLeft(
-    computedActivityRef.value.getTimeH(),
-    computedActivityRef.value.getTimeM(),
+    computedActivityRef.value.getTimeStartH(),
+    computedActivityRef.value.getTimeStartM(),
     0
   )}px)`,
   top: `calc(10px + ${store.dayToTop(adjustedDay.value - 1)}px)`
@@ -80,7 +96,7 @@ let computedStyleName = computed(() => ({
         if (formState == DataInputEvent.NONE) {
           formState = DataInputEvent.EDIT;
           const activityDate = new Date(
-            `${computedActivityRef.getDateY()}-${computedActivityRef.getDateM()}-${computedActivityRef.getDateD()}`
+            `${computedActivityRef.getDateStartY()}-${computedActivityRef.getDateStartM()}-${computedActivityRef.getDateStartD()}`
           );
           store.setClickedActivity(props.hashId, store.weekName(activityDate));
         }

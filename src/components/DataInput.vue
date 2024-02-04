@@ -21,35 +21,34 @@ const { formState, clickedActivity } = storeToRefs(store);
 
 const hues: number[] = Array.from({ length: 18 }, (_, index) => index * 20);
 let dataInputValid = computed(() => {
-  const durationMinutes: number =
-    Number(inputDurationH.value) * 60 + Number(inputDurationM.value);
+  const duration =
+    Number(inputTimeEndH.value) * 60 -
+    Number(inputTimeStartH.value) * 60 +
+    Number(inputTimeEndM.value) -
+    Number(inputTimeStartM.value);
   return (
     inputName.value &&
     inputHue.value != undefined &&
     inputDateD.value &&
     inputDateM.value &&
     inputDateY.value &&
-    inputTimeH.value &&
-    inputTimeM.value &&
-    inputDurationM.value &&
-    inputDurationH.value &&
+    inputTimeStartH.value &&
+    inputTimeStartM.value &&
+    inputTimeEndH.value &&
+    inputTimeEndM.value &&
     inputDateY.value >= 1970 &&
     inputDateY.value <= 2070 &&
     !isNaN(
       new Date(
-        `${inputDateY.value}-${inputDateM.value}-${inputDateD.value}T${inputTimeH.value}:${inputTimeM.value}Z`
+        `${inputDateY.value}-${inputDateM.value}-${inputDateD.value}T${inputTimeStartH.value}:${inputTimeStartM.value}Z`
       ).getTime()
     ) &&
-    inputDurationH.value < 24 &&
-    inputDurationM.value < 60 &&
-    (inputDurationH.value > 0 ||
-      (inputDurationH.value == 0 && inputDurationM.value > 0)) &&
-    inputDurationM.value >= 0 &&
-    durationMinutes +
-      Number(inputTimeH.value) * 60 +
-      Number(inputTimeM.value) <=
-      1440 &&
-    durationMinutes >= 10 &&
+    !isNaN(
+      new Date(
+        `${inputDateY.value}-${inputDateM.value}-${inputDateD.value}T${inputTimeEndH.value}:${inputTimeEndM.value}Z`
+      ).getTime()
+    ) &&
+    duration >= 10 &&
     editedLinkIndex.value == -1
   );
 });
@@ -60,11 +59,10 @@ let inputHue = ref<number | undefined>();
 let inputDateD = ref<number | undefined>();
 let inputDateM = ref<number | undefined>();
 let inputDateY = ref<number | undefined>();
-let inputTimeH = ref<number | undefined>();
-let inputTimeM = ref<number | undefined>();
-let inputDurationD = ref<number | undefined>();
-let inputDurationH = ref<number | undefined>();
-let inputDurationM = ref<number | undefined>();
+let inputTimeStartH = ref<number | undefined>();
+let inputTimeStartM = ref<number | undefined>();
+let inputTimeEndH = ref<number | undefined>();
+let inputTimeEndM = ref<number | undefined>();
 let inputLinks = ref<Link[] | undefined>();
 let currentLink = ref<Link>({ name: "", address: "" });
 let editedLinkIndex = ref<number>(-1);
@@ -79,13 +77,13 @@ setInterval(() => {
       inputName.value = clickedActivity.value.getName();
       inputType.value = clickedActivity.value.getType();
       inputHue.value = clickedActivity.value.getHue();
-      inputDateD.value = clickedActivity.value.getDateD();
-      inputDateM.value = clickedActivity.value.getDateM();
-      inputDateY.value = clickedActivity.value.getDateY();
-      inputTimeH.value = clickedActivity.value.getTimeH();
-      inputTimeM.value = clickedActivity.value.getTimeM();
-      inputDurationH.value = clickedActivity.value.getDurationH();
-      inputDurationM.value = clickedActivity.value.getDurationM();
+      inputDateD.value = clickedActivity.value.getDateStartD();
+      inputDateM.value = clickedActivity.value.getDateStartM();
+      inputDateY.value = clickedActivity.value.getDateStartY();
+      inputTimeStartH.value = clickedActivity.value.getTimeStartH();
+      inputTimeStartM.value = clickedActivity.value.getTimeStartM();
+      inputTimeEndH.value = clickedActivity.value.getTimeEndH();
+      inputTimeEndM.value = clickedActivity.value.getTimeEndM();
       inputLinks.value = clickedActivity.value.getLinks();
       saveLinks();
       inputDescription.value = clickedActivity.value.getDescription();
@@ -103,11 +101,10 @@ function resetInputs() {
   inputDateD.value = undefined;
   inputDateM.value = undefined;
   inputDateY.value = undefined;
-  inputTimeH.value = undefined;
-  inputTimeM.value = undefined;
-  inputDurationD.value = undefined;
-  inputDurationH.value = undefined;
-  inputDurationM.value = undefined;
+  inputTimeStartH.value = undefined;
+  inputTimeStartM.value = undefined;
+  inputTimeEndH.value = undefined;
+  inputTimeEndM.value = undefined;
   inputLinks.value = undefined;
   inputDescription.value = undefined;
   currentLink.value = { name: "", address: "" };
@@ -244,16 +241,16 @@ function saveLinks() {
                 placeholder="YYYY" />
             </article>
           </section>
-          <section id="time-section" class="time-section section">
-            <label for="time-h-input">Time:</label>
+          <section id="time-start-section" class="time-start-section section">
+            <label for="time-start-h-input">Start:</label>
             <article
-              id="time-inputs"
-              name="time-inputs"
-              class="time-inputs inputs-container">
+              id="time-start-inputs"
+              name="time-start-inputs"
+              class="time-inputs time-start-inputs inputs-container">
               <input
-                id="time-h-input"
-                v-model="inputTimeH"
-                name="time-h"
+                id="time-start-h-input"
+                v-model="inputTimeStartH"
+                name="time-start-h"
                 maxlength="2"
                 size="2"
                 min="0"
@@ -261,9 +258,9 @@ function saveLinks() {
                 placeholder="HH" />
               <p class="font-standard-large">&nbsp;:&nbsp;</p>
               <input
-                id="time-m-input"
-                v-model="inputTimeM"
-                name="time-m"
+                id="time-start-m-input"
+                v-model="inputTimeStartM"
+                name="time-start-m"
                 maxlength="2"
                 size="2"
                 min="0"
@@ -271,28 +268,16 @@ function saveLinks() {
                 placeholder="MM" />
             </article>
           </section>
-          <section id="duration-section" class="duration-section section">
-            <label for="duration-d-input">Duration:</label>
+          <section id="time-end-section" class="time-end-section section">
+            <label for="time-end-h-input">End:</label>
             <article
-              id="duration-inputs"
-              name="duration-inputs"
-              class="duration-inputs inputs-container">
-              <!--
+              id="time-end-inputs"
+              name="time-end-inputs"
+              class="time-inputs time-end-inputs inputs-container">
               <input
-                id="duration-d-input"
-                v-model="inputDurationD"
-                name="duration-d"
-                maxlength="2"
-                size="2"
-                min="1"
-                max="31"
-                placeholder="DD" />
-              <p class="font-standard-large">&nbsp;:&nbsp;</p>
-              -->
-              <input
-                id="duration-h-input"
-                v-model="inputDurationH"
-                name="duration-h"
+                id="time-end-h-input"
+                v-model="inputTimeEndH"
+                name="time-end-h"
                 maxlength="2"
                 size="2"
                 min="0"
@@ -300,9 +285,9 @@ function saveLinks() {
                 placeholder="HH" />
               <p class="font-standard-large">&nbsp;:&nbsp;</p>
               <input
-                id="duration-m-input"
-                v-model="inputDurationM"
-                name="duration-m"
+                id="time-end-m-input"
+                v-model="inputTimeEndM"
+                name="time-end-m"
                 maxlength="2"
                 size="2"
                 min="0"
@@ -469,19 +454,18 @@ function saveLinks() {
                 () => {
                   if (clickedActivity) {
                     store.editActivity(
-                      clickedActivity.getDate(),
+                      clickedActivity.getDateObject(),
                       clickedActivity.getId(),
                       clickedActivity.getName(),
                       clickedActivity.getType(),
                       clickedActivity.getHue(),
-                      clickedActivity.getDateD(),
-                      clickedActivity.getDateM(),
-                      clickedActivity.getDateY(),
-                      clickedActivity.getTimeH(),
-                      clickedActivity.getTimeM(),
-                      0,
-                      clickedActivity.getDurationH(),
-                      clickedActivity.getDurationM(),
+                      clickedActivity.getDateStartD(),
+                      clickedActivity.getDateStartM(),
+                      clickedActivity.getDateStartY(),
+                      clickedActivity.getTimeStartH(),
+                      clickedActivity.getTimeStartM(),
+                      clickedActivity.getTimeEndH(),
+                      clickedActivity.getTimeEndM(),
                       savedLinks,
                       clickedActivity.getDescription()
                     );
@@ -500,7 +484,7 @@ function saveLinks() {
                 () => {
                   if (clickedActivity) {
                     store.deleteActivity(
-                      clickedActivity.getDate(),
+                      clickedActivity.getDateObject(),
                       clickedActivity.getId()
                     );
                   }
@@ -527,11 +511,10 @@ function saveLinks() {
                       inputDateD as number,
                       inputDateM as number,
                       inputDateY as number,
-                      inputTimeH as number,
-                      inputTimeM as number,
-                      0,
-                      inputDurationH as number,
-                      inputDurationM as number,
+                      inputTimeStartH as number,
+                      inputTimeStartM as number,
+                      inputTimeEndH as number,
+                      inputTimeEndM as number,
                       inputLinks as Link[],
                       inputDescription as string
                     );
@@ -550,7 +533,7 @@ function saveLinks() {
                 () => {
                   if (dataInputValid && clickedActivity) {
                     store.editActivity(
-                      clickedActivity.getDate(),
+                      clickedActivity.getDateObject(),
                       clickedActivity.getId(),
                       inputName as string,
                       inputType,
@@ -558,11 +541,10 @@ function saveLinks() {
                       inputDateD as number,
                       inputDateM as number,
                       inputDateY as number,
-                      inputTimeH as number,
-                      inputTimeM as number,
-                      0,
-                      inputDurationH as number,
-                      inputDurationM as number,
+                      inputTimeStartH as number,
+                      inputTimeStartM as number,
+                      inputTimeEndH as number,
+                      inputTimeEndM as number,
                       inputLinks as Link[],
                       inputDescription as string
                     );
