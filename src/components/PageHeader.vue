@@ -2,13 +2,14 @@
 import Tooltip from "./util/TooltipItem.vue";
 import IconLeftArrow from "./icons/IconLeftArrow15x19.vue";
 import IconRightArrow from "./icons/IconRightArrow15x19.vue";
+import WeekSelectorMenu from "../components/menus/WeekSelectorMenu.vue";
 
 import { useActivitiesStore } from "@/stores/Activities";
 import { storeToRefs } from "pinia";
 
 let store = useActivitiesStore();
 
-const { displayWeek } = storeToRefs(store);
+const { displayWeek, openWeekSelectorMenu } = storeToRefs(store);
 </script>
 
 <template>
@@ -20,11 +21,19 @@ const { displayWeek } = storeToRefs(store);
       <article
         id="previous-week-button"
         class="week-button"
-        @click="store.changeDisplay(-1)">
+        @click="
+          () => {
+            store.changeDisplay(-1);
+            openWeekSelectorMenu = false;
+          }
+        ">
         <IconLeftArrow class="left-arrow" />
         <Tooltip text="Previous week" />
       </article>
-      <article id="open-calendar-button" class="week-display">
+      <article
+        id="open-calendar-button"
+        class="week-display"
+        @click="openWeekSelectorMenu = true">
         <h1 class="font-menu-title">
           {{ displayWeek }}
         </h1>
@@ -33,11 +42,17 @@ const { displayWeek } = storeToRefs(store);
       <article
         id="next-week-button"
         class="week-button"
-        @click="store.changeDisplay(1)">
+        @click="
+          () => {
+            store.changeDisplay(1);
+            openWeekSelectorMenu = false;
+          }
+        ">
         <IconRightArrow class="right-arrow" />
         <Tooltip text="Next week" />
       </article>
     </section>
+    <WeekSelectorMenu />
   </header>
 </template>
 

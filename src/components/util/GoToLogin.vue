@@ -1,17 +1,17 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="go-to-login">
+  <main class="go-to-login">
     <h1>Looks like you are not logged in</h1>
-    <div class="buttons">
-      <div class="nav-button" @click="$router.push('/login')">
+    <section class="buttons">
+      <article class="nav-button" @click="$router.push('/login')">
         <p>Log in</p>
-      </div>
-      <div class="nav-button" @click="$router.push('/register')">
+      </article>
+      <article class="nav-button" @click="$router.push('/register')">
         <p>Create an account</p>
-      </div>
-    </div>
-  </div>
+      </article>
+    </section>
+  </main>
 </template>
 
 <style scoped>

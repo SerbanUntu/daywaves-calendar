@@ -155,12 +155,20 @@ class Activity {
 }
 
 export const useActivitiesStore = defineStore("activities", () => {
+  /*
+  const localStorageData = localStorage.getItem("daywavesData");
+  const initialValue = localStorageData
+    ? JSON.parse(localStorageData)
+    : new Map();
+  */
+
   const eventsMap = ref<Map<string, Map<string, Activity>>>(new Map());
   const displayDate = ref<Date>(new Date());
   const displayWeek = ref<string>(weekName(displayDate.value));
   const currentDate = ref<Date>(new Date());
   const formState = ref<DataInputEvent>(DataInputEvent.NONE);
   const clickedActivity = ref<Activity>();
+  const openWeekSelectorMenu = ref<boolean>(false);
 
   setInterval(() => (currentDate.value = new Date()), 1);
 
@@ -417,6 +425,7 @@ export const useActivitiesStore = defineStore("activities", () => {
     currentDate,
     formState,
     clickedActivity,
+    openWeekSelectorMenu,
 
     changeDisplay,
     datesArr,

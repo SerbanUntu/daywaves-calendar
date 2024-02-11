@@ -8,13 +8,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <div id="placeholder-menu" class="placeholder-menu">
+  <main id="placeholder-menu" class="placeholder-menu">
     <h1>Not implemented</h1>
     <p>{{ props.msg }}</p>
-    <div class="go-back-button" @click="$router.push('/')">
+    <article class="go-back-button" @click="$router.push('/')">
       <p>Back</p>
-    </div>
-  </div>
+    </article>
+  </main>
 </template>
 
 <style scoped>
